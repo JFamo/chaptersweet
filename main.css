@@ -1,0 +1,231 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.titleText{
+	color: black;
+	font-weight: bold;
+	font-size: 40px;
+	letter-spacing: 2px;
+	position: relative;
+	top: 30px;
+	left: 80px;
+	float: left;
+	font-family:tahoma;
+}
+
+.subTitleText{
+	color: #49936e;
+	font-weight: bold;
+	font-size: 30px;
+	letter-spacing: 1px;
+	font-family:tahoma;
+}
+
+.bodyTextType1{
+	color: black;
+	font-size: 14px;
+	padding:20px 40px 20px 40px;
+	font-family:tahoma;
+}
+
+.bodyTextType2{
+	font-size: 14px;
+	padding:10px 10px 10px 10px;
+	font-family:tahoma;
+	font-style: italic;
+	color: white;
+}
+
+
+#wrapper{
+	width: 90%;
+	margin: 20px auto;
+	max-width: 90%;
+	text-align: center;
+}
+
+header{
+	width: 100%;
+	height: 100px;
+	background-color: #0038A8;
+}
+
+#subTitleBar{
+	width: 100%;
+	height: 50px;
+	background-color: #0038A8;
+}
+
+#navList{
+	width: auto;
+	float: left;
+	position: relative;
+	top: 50px;
+	left: 200px;
+}
+
+#navList li{
+	display: inline;
+	padding-right: 40px;
+}
+
+#navList a{
+	color: black;
+	text-decoration: none;
+	font-family:tahoma;
+	font-size: 12px;
+}
+
+.contentList{
+	width: auto;
+	color: black;
+	font-size: 14px;
+	font-family:tahoma;
+	list-style-type: none;
+}
+
+.contentList li{
+	padding-top: 10px;
+}
+
+#navList a:hover{
+	color: white;
+	text-decoration: none;
+}
+
+
+#contentPane{
+	width: 100%;
+	height: auto;
+	background-color: white;
+	padding-top: 20px; 
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+footer{
+	width: 100%;
+	height: 40px;
+	background-color: #0038A8;
+}
+
+.invisiframe{
+	display: none;
+}
+
+.taskBox{
+	width: 75%; 
+	height: auto; 
+	border: 10px solid #111593; 
+	margin: 20px; 
+	padding: 20px;
+}
+
+#iconMain{
+	float: left; 
+	position: relative; 
+	top: 10px; 
+	left: 50px;
+}
+
+.taskFormInput{
+	width: 300px;
+	height: 60px;
+	background-color: #cccccc;
+	font-size: 20px;
+}
+
+.submitButton{
+	color: black; 
+	font-size: 24px; 
+	font-family: tahoma; 
+	width: 200px; 
+	height: 40px; 
+	font-weight: bold;
+}
+
+.input1{
+	width: 300px;
+	height: 40px;
+	background-color: #cccccc;
+	font-size: 20px;
+}
+
+.inputButton1{
+	color: #0066CC; 
+	font-size: 20px; 
+	font-family: tahoma; 
+	width: 200px; 
+	height: 30px; 
+
+}
+
+.column-left{ 
+	float: left; 
+	width: 50%;
+	height: auto; 
+	border: 10px solid #111593; 
+	margin: 20px; 
+	padding: 20px;
+}
+
+.column-right{ 
+	float: right; 
+	width: 50%;
+	height: auto; 
+	border: 10px solid #111593; 
+	margin: 20px; 
+	padding: 20px;
+}
+
+.bigButton{
+	background-color: #0066CC;
+	font-size: 24px;
+	padding: 14px 40px;
+	border-radius: 4px;
+	width: 80%;
+	float: center;
+	font-family:tahoma;
+}
+
+.bigButton:hover{
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.backButton{
+	background-color: #0066CC;
+	font-size: 18px;
+	padding: 10px 30px;
+	border-radius: 4px;
+	float: right;
+	font-family:tahoma;
+	margin-right: 50px;
+}
+
+button.accordion {
+    background-color: #0066CC;
+    font-size: 24px;
+	padding: 14px 40px;
+	border-radius: 4px;
+	width: 80%;
+	float: center;
+	font-family:tahoma;
+    cursor: pointer;
+    width: 80%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+button.accordion.active, button.accordion:hover {
+    background-color: #082567;
+}
+
+div.panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+}
