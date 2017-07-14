@@ -42,6 +42,7 @@ $error = false;
    $error = true;
    $nameError = "Username must have atleat 3 characters.";
   }
+
   //basic email validation
   if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
    $error = true;
@@ -56,6 +57,7 @@ $error = false;
     $emailError = "Provided Email is already in use.";
    }
   }
+
   // password validation
   if (empty($password)){
    $error = true;
@@ -64,22 +66,36 @@ $error = false;
    $error = true;
    $passError = "Password must have at least 6 characters.";
   }
+
+  // basic name validation
+  if (empty($fullname)) {
+   $error = true;
+   $nameError = "Please enter your full name.";
+  } else if (strlen($fullname) < 3) {
+   $error = true;
+   $nameError = "Name must have at leat 3 characters.";
+  } else if (!preg_match("/^[a-zA-Z ]+$/",$fullname)) {
+   $error = true;
+   $nameError = "Name must contain only alphabetical characters and spaces.";
+  }
   
   // password encrypt using SHA256();
-  $password = hash('sha256', $pass);
+  $password = hash('sha256', $password);
   
   // if there's no error, continue to signup
   if( !$error ) {
    
-   $query = "INSERT INTO users(userName,userEmail,userPass) VALUES('$name','$email','$password')";
+   $query = "INSERT INTO users(fullname,username,password,email,grade) VALUES('$fullname','$username','$password','$email','$grade')";
    $res = mysql_query($query);
     
    if ($res) {
     $errTyp = "success";
     $errMSG = "Successfully registered, you may login now";
-    unset($name);
+    unset($fullname);
     unset($email);
-    unset($pass);
+    unset($password);
+    unset($username);
+    unset($grade);
    } else {
     $errTyp = "danger";
     $errMSG = "Something went wrong, try again later..."; 
