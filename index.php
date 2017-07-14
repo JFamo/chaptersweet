@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 
+<?php 
+
+	session_start(); 
+	$_SESSION['message'] = "Nop";
+
+?>
+
 <head>
 	<title>
 		Chapter Sweet
@@ -15,6 +22,7 @@
 				<p class="titleText">
 					Chapter Sweet
 				</p>
+				<?php echo $_SESSION['message']; unset($_SESSION['message']); ?>
 		</header>
 <!--Spooky stuff in the middle-->
 		<div id="contentPane">
