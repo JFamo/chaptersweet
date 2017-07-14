@@ -22,37 +22,33 @@ $error = false;
   $email = strip_tags($email);
   $email = htmlspecialchars($email);
   
-  $pass = trim($_POST['password']);
-  $pass = strip_tags($pass);
-  $pass = htmlspecialchars($pass);
+  $password = trim($_POST['password']);
+  $password = strip_tags($password);
+  $password = htmlspecialchars($password);
 
-  $pass = trim($_POST['grade']);
-  $pass = strip_tags($pass);
-  $pass = htmlspecialchars($pass);
+  $grade = trim($_POST['grade']);
+  $grade = strip_tags($grade);
+  $grade = htmlspecialchars($grade);
 
-  $pass = trim($_POST['fullname']);
-  $pass = strip_tags($pass);
-  $pass = htmlspecialchars($pass);
+  $fullname = trim($_POST['fullname']);
+  $fullname = strip_tags($fullname);
+  $fullname = htmlspecialchars($fullname);
   
   // basic name validation
-  if (empty($name)) {
+  if (empty($username)) {
    $error = true;
-   $nameError = "Please enter your full name.";
+   $nameError = "Please enter a username.";
   } else if (strlen($name) < 3) {
    $error = true;
-   $nameError = "Name must have atleat 3 characters.";
-  } else if (!preg_match("/^[a-zA-Z ]+$/",$name)) {
-   $error = true;
-   $nameError = "Name must contain alphabets and space.";
+   $nameError = "Username must have atleat 3 characters.";
   }
-  
   //basic email validation
   if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
    $error = true;
    $emailError = "Please enter valid email address.";
   } else {
    // check email exist or not
-   $query = "SELECT userEmail FROM users WHERE userEmail='$email'";
+   $query = "SELECT email FROM users WHERE email='$email'";
    $result = mysql_query($query);
    $count = mysql_num_rows($result);
    if($count!=0){
@@ -61,12 +57,12 @@ $error = false;
    }
   }
   // password validation
-  if (empty($pass)){
+  if (empty($password)){
    $error = true;
-   $passError = "Please enter password.";
-  } else if(strlen($pass) < 6) {
+   $passError = "Please enter a password.";
+  } else if(strlen($password) < 6) {
    $error = true;
-   $passError = "Password must have atleast 6 characters.";
+   $passError = "Password must have at least 6 characters.";
   }
   
   // password encrypt using SHA256();
