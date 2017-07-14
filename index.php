@@ -4,14 +4,14 @@
 	<title>
 		Chapter Sweet
 	</title>
-	<link href="main.css" rel="stylesheet" type="text/css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 	<div id="wrapper">
 <!--Spooky bar at the top-->
 		<header>
-				<img src="iconImage.png" alt="icon" width="80" height="80" id="iconMain">
+				<img src="imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
 				<p class="titleText">
 					Chapter Sweet
 				</p>
@@ -22,7 +22,7 @@
 		<button class="accordion">Register</button>
 			<div class="panel" id="result">
 
-			  	<form id="registerForm" action="register.php"> 
+			  	<form id="registerForm" action="php/register.php"> 
 
 			  		Enter your first and last name: <br>
 			  			<input class="input1" type="text" id="fullname" required/> <br>
@@ -46,7 +46,7 @@
 		<button class="accordion">Login</button>
 			<div class="panel">
 
-			 	<form action="login.php" method="post" name="loginForm" target="castAway">
+			 	<form action="php/login.php" name="loginForm">
 
 			  		Enter your username: <br>
 			  			<input class="input1" type="text" name="username" required/> <br>
@@ -70,10 +70,7 @@
 	</div>	
 </body>
 
-<!--HIDDEN MAGIC SPOOKY WITCHCRAFT-->
-<iframe name="castAway" class="invisiframe"></iframe>
-
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="scripts.js" type="text/javascript"></script>
+<script src="js/scripts.js" type="text/javascript"></script>
 
 </html>
