@@ -1,108 +1,31 @@
 <?php
-
-ob_start();
-session_start();
-
-if( isset($_SESSION['user'])!=""){
-	header(Location: main.php);
-}
-
-include_once 'dbconnect.php';
-
-$error = false;
-
- if ( isset($_POST['btn-signup']) ) {
-  
-  // clean user inputs to prevent sql injections
-  $username = trim($_POST['username']);
-  $username = strip_tags($username);
-  $username = htmlspecialchars($username);
-  
-  $email = trim($_POST['email']);
-  $email = strip_tags($email);
-  $email = htmlspecialchars($email);
-  
-  $password = trim($_POST['password']);
-  $password = strip_tags($password);
-  $password = htmlspecialchars($password);
-
-  $grade = trim($_POST['grade']);
-  $grade = strip_tags($grade);
-  $grade = htmlspecialchars($grade);
-
-  $fullname = trim($_POST['fullname']);
-  $fullname = strip_tags($fullname);
-  $fullname = htmlspecialchars($fullname);
-  
-  // basic name validation
-  if (empty($username)) {
-   $error = true;
-   $nameError = "Please enter a username.";
-  } else if (strlen($name) < 3) {
-   $error = true;
-   $nameError = "Username must have atleat 3 characters.";
-  }
-
-  //basic email validation
-  if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
-   $error = true;
-   $emailError = "Please enter valid email address.";
-  } else {
-   // check email exist or not
-   $query = "SELECT email FROM users WHERE email='$email'";
-   $result = mysql_query($query);
-   $count = mysql_num_rows($result);
-   if($count!=0){
-    $error = true;
-    $emailError = "Provided Email is already in use.";
-   }
-  }
-
-  // password validation
-  if (empty($password)){
-   $error = true;
-   $passError = "Please enter a password.";
-  } else if(strlen($password) < 6) {
-   $error = true;
-   $passError = "Password must have at least 6 characters.";
-  }
-
-  // basic name validation
-  if (empty($fullname)) {
-   $error = true;
-   $nameError = "Please enter your full name.";
-  } else if (strlen($fullname) < 3) {
-   $error = true;
-   $nameError = "Name must have at leat 3 characters.";
-  } else if (!preg_match("/^[a-zA-Z ]+$/",$fullname)) {
-   $error = true;
-   $nameError = "Name must contain only alphabetical characters and spaces.";
-  }
-  
-  // password encrypt using SHA256();
-  $password = hash('sha256', $password);
-  
-  // if there's no error, continue to signup
-  if( !$error ) {
-   
-   $query = "INSERT INTO users(fullname,username,password,email,grade) VALUES('$fullname','$username','$password','$email','$grade')";
-   $res = mysql_query($query);
-    
-   if ($res) {
-    $errTyp = "success";
-    $errMSG = "Successfully registered, you may login now";
-    unset($fullname);
-    unset($email);
-    unset($password);
-    unset($username);
-    unset($grade);
-   } else {
-    $errTyp = "danger";
-    $errMSG = "Something went wrong, try again later..."; 
-   } 
-    
-  }
-  
-  
+ 
+ require_once('config.php');
+ 
+ $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD);
+ 
+ if (!$link){
+ 	die('Could not connect: ' . mysql_error());
  }
-?>
+ 
+ $db_selected = mysql_select_db(DB_NAME,$link);
+ 
+ if (!$db_selected){
+ 	die('Connot use: ' . mysql_error());
+ }
+ 
+ $value1 = $_POST['fullname'];
+ $value2 = $_POST['username'];
+ $value3 = $_POST['password'];
+ $value4 = $_POST['email'];
+ $value5 = $_POST['grade'];
+ 
+ $sql = "INSERT INTO users (fullname, username, password, email, grade) VALUES ('$value1', '$value2', '$value3', '$value4', '$value5')";
+ 
+ if (!mysql_query($sql)){
+ 	die('Error: ' . mysql_error());
+ }
+ 
+ mysql_close();
+ 
+ ?>
