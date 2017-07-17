@@ -3,6 +3,7 @@
 session_start();
 
 $username = $_SESSION['username'];
+$rank = $_SESSION['rank'];
 
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
@@ -90,8 +91,15 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				<!--Description-->
 					<p class="bodyTextType1">
-						Here you can view all of your saved meeting minutes, or upload a new minutes file.
+						Here you can view all of your saved meeting minutes, and officers can upload a new minutes file.
 					</p>
+
+
+				<?php
+
+				if($rank == "officer" || $rank=="admin"){
+
+				?>
 
 				<button class="accordion">Upload</button>
 				<div class="panel" id="resultRegister">
@@ -105,6 +113,12 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 					</form>
 
 				</div>
+
+				<?php
+
+				}
+
+				?>
 
 				<br>
 				<br>
