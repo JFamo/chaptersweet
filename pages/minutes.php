@@ -4,6 +4,7 @@ session_start();
 
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
+$fullname = $_SESSION['fullname'];
 
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
@@ -28,9 +29,12 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 	//file viewability
 	$view = $_POST['view'];
 
+	//get poster
+	$poster = $_SESSION['fullname'];
+
 	require('../php/connect.php');
 
-	$query = "INSERT INTO minutes (name, size, type, content, date, view) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view')";
+	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster')";
 
 	$result = mysql_query($query);
 
@@ -143,13 +147,15 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				require('../php/connect.php');
 
-				$query="SELECT id, name, date, view FROM minutes";
+				$query="SELECT id, name, date, view, poster FROM minutes";
 
 				$result = mysql_query($query);
 
 				if (!$result){
 					die('Error: ' . mysql_error());
 				}
+
+				$doMemberSkip = 0;
 
 				if(mysql_num_rows($result) == 0){
 					echo "No Files Found!<br>";
@@ -160,7 +166,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 						$viewLevel = "all";
 
-						$query2="SELECT id, name, date, view FROM minutes WHERE view='$viewLevel'";
+						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel'";
 
 						$result2 = mysql_query($query2);
 
@@ -168,18 +174,23 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 							die('Error: ' . mysql_error());
 						}
 
+						if(mysql_num_rows($result2) == 0){
+							$doMemberSkip = 1;
+						}
+
 					}
 
-					if(mysql_num_rows($result2) == 0){
+					if($doMemberSkip == 1){
 							echo "No Files Found!<br>";
 					}
 					else{
-						while(list($id, $name, $date, $view) = mysql_fetch_array($result)){
+						while(list($id, $name, $date, $view, $poster) = mysql_fetch_array($result)){
 							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
 								?>
 
 							<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
 							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
+							<p style="float:right; padding-right: 10%;"><?php echo "".$poster ?></p>
 							<br>
 							
 							<?php
