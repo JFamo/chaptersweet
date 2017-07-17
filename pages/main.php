@@ -3,6 +3,7 @@
 session_start();
 
 $username = $_SESSION['username'];
+$rank = $_SESSION['rank'];
 
 ?>
 
@@ -31,13 +32,13 @@ $username = $_SESSION['username'];
 		<div id="contentPane">
 
 		<?php
-		if(isset($username)){
+		if(isset($username) && isset($rank)){
 		?>
 
 			<p class = "bodyTextType1">
 
 			<?php
-			echo "Welcome, " . $username . "";
+			echo "Welcome, " . $username . " who is a " . $rank . "";
 			?>
 
 			</p>

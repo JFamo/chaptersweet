@@ -2,6 +2,8 @@
 
 session_start();
 
+$username = $_SESSION['username'];
+
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 	$fileName = $_FILES['userfile']['name'];
@@ -116,7 +118,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				require('../php/connect.php');
 
-				$query="SELECT id, name FROM minutes";
+				$query="SELECT id, name, date FROM minutes";
 
 				$result = mysql_query($query);
 
@@ -128,10 +130,12 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 					echo "Database is empty!<br>";
 				}
 				else{
-					while(list($id, $name) = mysql_fetch_array($result)){
+					while(list($id, $name, $date) = mysql_fetch_array($result)){
 						?>
 
-						<a href="../php/download.php?id=<?php echo "".$id ?>"><?php echo "".$name ?></a><br>
+						<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
+						<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
+						<br>
 						
 						<?php
 					}

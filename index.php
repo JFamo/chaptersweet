@@ -22,7 +22,17 @@ if(isset($_POST['username']) and isset($_POST['password'])){
 
 	if($count == 1){
 
+		//fetch the rank of that user
+		$query2 = "SELECT rank FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
+		$result2 = mysql_query($query2);
+		if (!$result2){
+			die('Error: ' . mysql_error());
+		}
+
+		list($rankValue) = mysql_fetch_array($result2);
+
 		$_SESSION['username'] = $sessionUsername;
+		$_SESSION['rank'] = $rankValue;
 
 	}
 	else{
