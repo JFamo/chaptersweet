@@ -7,11 +7,13 @@ $rank = $_SESSION['rank'];
 
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
+	//file details
 	$fileName = $_FILES['userfile']['name'];
 	$tmpName = $_FILES['userfile']['tmp_name'];
 	$fileSize = $_FILES['userfile']['size'];
 	$fileType = $_FILES['userfile']['type'];
 
+	//file data manipulation
 	$fp = fopen($tmpName, 'r');
 	$content = fread($fp, filesize($tmpName));
 	$content = addslashes($content);
@@ -23,9 +25,12 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 	}
 
+	//file viewability
+	$view = $_POST['view'];
+
 	require('../php/connect.php');
 
-	$query = "INSERT INTO minutes (name, size, type, content, date) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now())";
+	$query = "INSERT INTO minutes (name, size, type, content, date, view) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view')";
 
 	$result = mysql_query($query);
 
@@ -109,6 +114,12 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 						<input class="taskFormInput" name="userfile" type="file" id="userfile">
 						<br><br>
+						Who Can View :
+						<select id="view" name="view">
+							<option value="all">All</option>
+							<option value="officer">Officers Only</option>
+						</select>
+						<br><br>
 						<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Upload">
 					</form>
 
@@ -132,7 +143,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				require('../php/connect.php');
 
-				$query="SELECT id, name, date FROM minutes";
+				$query="SELECT id, name, date, view FROM minutes";
 
 				$result = mysql_query($query);
 
@@ -144,16 +155,17 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 					echo "Database is empty!<br>";
 				}
 				else{
-					while(list($id, $name, $date) = mysql_fetch_array($result)){
-						?>
+					while(list($id, $name, $date, $view) = mysql_fetch_array($result)){
+						if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
+							?>
 
 						<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
 						<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
 						<br>
 						
 						<?php
+						}
 					}
-
 				}
 						
 				mysql_close();
