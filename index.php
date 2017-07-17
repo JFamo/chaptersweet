@@ -1,11 +1,47 @@
-<!DOCTYPE html>
+<?php
 
-<?php 
+session_start();
 
-	session_start(); 
-	$_SESSION['message'] = "Nop";
+require('php/connect.php');
+
+if(isset($_POST['username']) and isset($_POST['password'])){
+
+	$sessionUsername = $_POST['username'];
+
+	$sessionPassword = $_POST['password'];
+
+	$query = "SELECT * FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
+
+	$result = mysql_query($query);
+
+	if (!$result){
+		die('Error: ' . mysql_error());
+	}
+
+	$count = mysql_num_rows($result);
+
+	if($count == 1){
+
+		$_SESSION['username'] = $sessionUsername;
+
+	}
+	else{
+
+		$fmsg = "Invalid Login Credentials";
+
+	}
+
+}
+
+if(isset($_SESSION['username'])){
+
+	header('Location: pages/main.php');
+
+}else{
 
 ?>
+
+<!DOCTYPE html>
 
 <head>
 	<title>
@@ -22,13 +58,12 @@
 				<p class="titleText">
 					Chapter Sweet
 				</p>
-				<?php echo $_SESSION['message']; unset($_SESSION['message']); ?>
 		</header>
 <!--Spooky stuff in the middle-->
 		<div id="contentPane">
 
 		<button class="accordion">Register</button>
-			<div class="panel" id="result">
+			<div class="panel" id="resultRegister">
 
 			  	<form id="registerForm" action="php/register.php"> 
 
@@ -52,21 +87,37 @@
 		<br>
 
 		<button class="accordion">Login</button>
-			<div class="panel">
+			<div class="panel" id="resultLogin">
 
-			 	<form action="php/login.php" name="loginForm">
+			 	<form name="loginForm" method="POST">
 
 			  		Enter your username: <br>
 			  			<input class="input1" type="text" name="username" required/> <br>
 			  		Enter your password: <br>
 			  			<input class="input1" type="password" name="password" required/> <br>
-    				<input class="inputButton1" type="submit" value="Login" onclick="loginSubmit()"/>
+    				<input class="inputButton1" type="submit" value="Login"/>
 
 				</form>
 
 			</div>
 			
 		<br>
+
+		<?php
+		if(isset($fmsg)){
+		?>
+
+			<p class = "bodyTextType1">
+
+			<?php
+			echo $fmsg;
+			?>
+
+			</p>
+
+		<?php
+		}
+		?>
 
 		</div>
 <!--Less spooky stuff at the bottom-->
@@ -82,3 +133,9 @@
 <script src="js/scripts.js" type="text/javascript"></script>
 
 </html>
+
+<?php 
+
+}
+
+?>

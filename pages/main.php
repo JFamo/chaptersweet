@@ -1,19 +1,28 @@
+<?php
+
+session_start();
+
+$username = $_SESSION['username'];
+
+?>
+
 <!DOCTYPE html>
 
-<script src="scripts.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="../js/scripts.js" type="text/javascript"></script>
 
 <head>
 	<title>
 		Chapter Sweet
 	</title>
-	<link href="main.css" rel="stylesheet" type="text/css" />
+	<link href="../css/main.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 	<div id="wrapper">
 <!--Spooky bar at the top-->
 		<header>
-				<img src="iconImage.png" alt="icon" width="80" height="80" id="iconMain">
+				<img src="../imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
 				<p class="titleText">
 					Chapter Sweet
 				</p>
@@ -21,12 +30,32 @@
 <!--Spooky stuff in the middle-->
 		<div id="contentPane">
 
+		<?php
+		if(isset($username)){
+		?>
+
+			<p class = "bodyTextType1">
+
+			<?php
+			echo "Welcome, " . $username . "";
+			?>
+
+			</p>
+
+		<?php
+		}
+		?>
+
 			<form action="eventSelection.html">
     			<input class="bigButton" type="submit" value="Event Selection" />
 			</form>
 			<br>
-			<form action="minutes.html">
+			<form action="minutes.php">
     			<input class="bigButton" type="submit" value="Minutes" />
+			</form>
+			<br>
+			<form action="../php/logout.php">
+    			<input class="bigButton" type="submit" value="Logout" />
 			</form>
 
 

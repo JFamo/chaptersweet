@@ -74,6 +74,6 @@ for (i = 0; i < acc.length; i++) {
 
       /* Alerts the results */
       posting.done(function( data ) {
-          $('#result').html('<p class = "bodyTextType1">Successfully Registered</p>');
+          $('#resultRegister').html('<p class = "bodyTextType1">Successfully Registered</p>');
       });
     });
