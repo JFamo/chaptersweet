@@ -152,7 +152,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 				}
 
 				if(mysql_num_rows($result) == 0){
-					echo "Database is empty!<br>";
+					echo "No Files Found!<br>";
 				}
 				else{
 					while(list($id, $name, $date, $view) = mysql_fetch_array($result)){

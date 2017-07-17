@@ -8,42 +8,62 @@ $rank = $_SESSION['rank'];
 //encase the whole page - KEEP NON-ADMINS OUT
 if($rank == "admin"){
 
-if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
-
-	//file details
-	$fileName = $_FILES['userfile']['name'];
-	$tmpName = $_FILES['userfile']['tmp_name'];
-	$fileSize = $_FILES['userfile']['size'];
-	$fileType = $_FILES['userfile']['type'];
-
-	//file data manipulation
-	$fp = fopen($tmpName, 'r');
-	$content = fread($fp, filesize($tmpName));
-	$content = addslashes($content);
-	fclose($fp);
-
-	if(!get_magic_quotes_gpc()){
-
-		$fileName = addslashes($fileName);
-
-	}
+//functions for clearing members
+if(isset($_POST['verify'])){
 
 	//file viewability
-	$view = $_POST['view'];
+	$verify = $_POST['verify'];
+	$rankClear = "member";
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO minutes (name, size, type, content, date, view) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view')";
+	if($verify == "yes"){
 
-	$result = mysql_query($query);
+		$sql = "DELETE FROM users WHERE rank='$rankClear'";
 
-	if (!$result){
-		die('Error: ' . mysql_error());
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+		
+		$fmsg =  "Member Account Data Cleared Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Member Account Data Failed to Clear!";
+
 	}
 
 	mysql_close();
 
-	$fmsg =  "File ".$fileName." Uploaded Successfully!";
+}
+
+//functions for clearing minutes
+if(isset($_POST['verify2'])){
+
+	//file viewability
+	$verify = $_POST['verify2'];
+
+	require('../php/connect.php');
+
+	if($verify == "yes"){
+
+		$sql = "DELETE FROM minutes";
+
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+		
+		$fmsg =  "Minutes Data Cleared Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Minutes Data Failed to Clear!";
+
+	}
+
+	mysql_close();
 
 }
 
@@ -102,17 +122,10 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 						These settings are for ADMINS ONLY. They are <b> DANGEROUS </b> and have a risk of <b> OVERRIDING IMPORTANT DATA! </b> Proceed with caution, and verify that any function here is used intentionally.
 					</p>
 
-
-				<?php
-
-				if($rank == "officer" || $rank=="admin"){
-
-				?>
-
 				<button class="accordion">Clear Member Account Data</button>
-				<div class="panel">
+				<div class="panel" id="clearMemberDiv">
 					<!--clear member account data tab-->
-					<form method="post" action="../php/clearMemberData.php">
+					<form method="post" id="clearMemberForm">
 						<br>
 						Are You Sure? :
 						<select id="verify" name="verify">
@@ -125,22 +138,16 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				</div>
 
-				<?php
-
-				}
-
-				?>
-
 				<br>
 				<br>
 
 				<button class="accordion">Clear Minutes Data</button>
-				<div class="panel">
+				<div class="panel" id="clearMinutesDiv">
 					<!--clear member account data tab-->
-					<form method="post" action="../php/clearMinutesData.php">
+					<form method="post" id="clearMinutesForm">
 						<br>
 						Are You Sure? :
-						<select id="verify" name="verify">
+						<select id="verify2" name="verify2">
 							<option value="no">No</option>
 							<option value="yes">Yes</option>
 						</select>
