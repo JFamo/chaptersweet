@@ -5,6 +5,9 @@ session_start();
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 
+//encase the whole page - KEEP NON-ADMINS OUT
+if($rank == "admin"){
+
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 	//file details
@@ -72,7 +75,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
     			<input class="backButton" type="submit" value="Back" />
 			</form>
 			<center><p class="subTitleText">
-				Minutes
+				Admin Settings
 			</p></center>
 		</div>
 <!--Spooky stuff closer to the middle-->
@@ -96,7 +99,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				<!--Description-->
 					<p class="bodyTextType1">
-						Here you can view all of your saved meeting minutes, and officers can upload a new minutes file.
+						These settings are for ADMINS ONLY. They are <b> DANGEROUS </b> and have a risk of <b> OVERRIDING IMPORTANT DATA! </b> Proceed with caution, and verify that any function here is used intentionally.
 					</p>
 
 
@@ -106,21 +109,18 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				?>
 
-				<button class="accordion">Upload</button>
+				<button class="accordion">Clear Member Account Data</button>
 				<div class="panel">
-					<!--Minutes submission form-->
-					<form method="post" enctype="multipart/form-data">
+					<!--clear member account data tab-->
+					<form method="post" action="../php/clearMemberData.php">
 						<br>
-						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-						<input class="taskFormInput" name="userfile" type="file" id="userfile">
-						<br><br>
-						Who Can View :
-						<select id="view" name="view">
-							<option value="all">All</option>
-							<option value="officer">Officers Only</option>
+						Are You Sure? :
+						<select id="verify" name="verify">
+							<option value="no">No</option>
+							<option value="yes">Yes</option>
 						</select>
 						<br><br>
-						<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Upload">
+						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
 					</form>
 
 				</div>
@@ -134,43 +134,19 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 				<br>
 				<br>
 
-				<button class="accordion">Browse</button>
+				<button class="accordion">Clear Minutes Data</button>
 				<div class="panel">
-
-				<br>
-
-				<?php
-
-				require('../php/connect.php');
-
-				$query="SELECT id, name, date, view FROM minutes";
-
-				$result = mysql_query($query);
-
-				if (!$result){
-					die('Error: ' . mysql_error());
-				}
-
-				if(mysql_num_rows($result) == 0){
-					echo "Database is empty!<br>";
-				}
-				else{
-					while(list($id, $name, $date, $view) = mysql_fetch_array($result)){
-						if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
-							?>
-
-						<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
-						<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
+					<!--clear member account data tab-->
+					<form method="post" action="../php/clearMinutesData.php">
 						<br>
-						
-						<?php
-						}
-					}
-				}
-						
-				mysql_close();
-
-				?>
+						Are You Sure? :
+						<select id="verify" name="verify">
+							<option value="no">No</option>
+							<option value="yes">Yes</option>
+						</select>
+						<br><br>
+						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
+					</form>
 
 				</div>
 
@@ -189,3 +165,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 <script src="../js/scripts.js" type="text/javascript"></script>
 
 </html>
+
+<?php
+}
+?>

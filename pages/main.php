@@ -62,6 +62,17 @@ $rank = $_SESSION['rank'];
 			<form action="../php/logout.php">
     			<input class="bigButton" type="submit" value="Logout" />
 			</form>
+			<br>
+			<?php
+			if($rank == "admin"){
+			?>
+			<form action="danger.php">
+    			<input class="bigButton" style="background-color:red;" type="submit" value="! Admin Settings !" />
+			</form>
+			<br>
+			<?php
+			}
+			?>
 
 
 		</div>
