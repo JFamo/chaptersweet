@@ -38,7 +38,11 @@ $rank = $_SESSION['rank'];
 			<p class = "bodyTextType1">
 
 			<?php
-			echo "Welcome, " . $username . " who is a " . $rank . "";
+			$article = "a";
+			if($rank == "officer" || $rank == "admin"){
+				$article = "an";
+			}
+			echo "Welcome, " . $username . " who is " . $article . " " . $rank . "";
 			?>
 
 			</p>
