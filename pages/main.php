@@ -79,7 +79,7 @@ $rank = $_SESSION['rank'];
 <!--Less spooky stuff at the bottom-->
 		<footer>
 			<center><p class="bodyTextType2">
-				T1285
+				© Joshua Famous 2017
 			</p></center>
 		</footer>
 	</div>	

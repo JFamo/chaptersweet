@@ -162,7 +162,7 @@ if(isset($_POST['verify2'])){
 <!--Spooky stuff at the bottom-->
 		<footer>
 			<center><p class="bodyTextType2">
-				T1285
+				© Joshua Famous 2017
 			</p></center>
 		</footer>
 	</div>	

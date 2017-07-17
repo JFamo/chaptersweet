@@ -155,15 +155,35 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 					echo "No Files Found!<br>";
 				}
 				else{
-					while(list($id, $name, $date, $view) = mysql_fetch_array($result)){
-						if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
-							?>
+					//FOR MEMBERS - check if all available files are hidden
+					if($rank == "member"){
 
-						<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
-						<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
-						<br>
-						
-						<?php
+						$viewLevel = "all";
+
+						$query2="SELECT id, name, date, view FROM minutes WHERE view='$viewLevel'";
+
+						$result2 = mysql_query($query2);
+
+						if (!$result2){
+							die('Error: ' . mysql_error());
+						}
+
+					}
+
+					if(mysql_num_rows($result2) == 0){
+							echo "No Files Found!<br>";
+					}
+					else{
+						while(list($id, $name, $date, $view) = mysql_fetch_array($result)){
+							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
+								?>
+
+							<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
+							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
+							<br>
+							
+							<?php
+							}
 						}
 					}
 				}
@@ -179,7 +199,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 <!--Spooky stuff at the bottom-->
 		<footer>
 			<center><p class="bodyTextType2">
-				T1285
+				© Joshua Famous 2017
 			</p></center>
 		</footer>
 	</div>	
