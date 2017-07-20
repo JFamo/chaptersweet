@@ -85,6 +85,13 @@ if(isset($_POST['verify3'])){
 			die('Error: ' . mysql_error());
 		}
 
+		//reset TEAMS id
+		$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
+
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+
 		//get EVENTS data for the specified competition level
 		$query = "SELECT id, name, teams FROM events WHERE conference='$conference'";
 

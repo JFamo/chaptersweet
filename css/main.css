@@ -204,10 +204,6 @@ footer{
 	margin-right: 50px;
 }
 
-table, td, th{
-	border: 1px solid black;
-}
-
 .eventTableCell{
 	border: 1px solid black;
 }
