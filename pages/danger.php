@@ -95,22 +95,15 @@ if(isset($_POST['verify3'])){
 		//get EVENTS data for the specified competition level
 		$sql = "SELECT id, name, teams FROM events WHERE conference='$conference'";
 
-		if (!mysql_query($sql)){
+		$result = mysql_query($sql);
+
+		if (!$result){
 			die('Error: ' . mysql_error());
 		}
 
-		while(list($id, $name, $date, $view, $poster) = mysql_fetch_array($result)){
-							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
-								?>
-
-							<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
-							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
-							<p style="float:right; padding-right: 10%;"><?php echo "".$poster ?></p>
-							<br>
-							
-							<?php
-							}
-						}
+		while(list($id, $name, $teams) = mysql_fetch_array($result)){
+				
+		}
 		
 		$fmsg =  "Minutes Data Cleared Successfully!";
 
