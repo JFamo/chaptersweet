@@ -85,27 +85,33 @@ if(isset($_POST['verify3'])){
 			die('Error: ' . mysql_error());
 		}
 
-		//reset TEAMS id
-		$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
-
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
-		}
-
 		//get EVENTS data for the specified competition level
-		$sql = "SELECT id, name, teams FROM events WHERE conference='$conference'";
+		$query = "SELECT id, name, teams FROM events WHERE conference='$conference'";
 
-		$result = mysql_query($sql);
+		$result = mysql_query($query);
 
 		if (!$result){
 			die('Error: ' . mysql_error());
 		}
 
+		//for each event at the current competition level
 		while(list($id, $name, $teams) = mysql_fetch_array($result)){
 				
+			//for each team of each event
+			for($i = 1; $i <= $teams; $i++){
+
+				//add that event to the TEAMS table
+				$sql = "INSERT INTO teams (event, team) VALUES ('$name', '$i')";
+
+				if (!mysql_query($sql)){
+					die('Error: ' . mysql_error());
+				}
+
+			}
+
 		}
 		
-		$fmsg =  "Minutes Data Cleared Successfully!";
+		$fmsg =  "Event Selection Reset Successfully!";
 
 	}
 	else{
