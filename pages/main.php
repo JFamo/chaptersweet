@@ -51,7 +51,7 @@ $rank = $_SESSION['rank'];
 		}
 		?>
 
-			<form action="eventSelection.html">
+			<form action="eventSelection.php">
     			<input class="bigButton" type="submit" value="Event Selection" />
 			</form>
 			<br>

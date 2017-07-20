@@ -67,6 +67,64 @@ if(isset($_POST['verify2'])){
 
 }
 
+//functions for updating TEAMS table with info from EVENTS table
+if(isset($_POST['verify3'])){
+
+	//file viewability
+	$verify = $_POST['verify3'];
+	$conference = $_POST['conference'];
+
+	require('../php/connect.php');
+
+	if($verify == "yes"){
+
+		//clear TEAMS table
+		$sql = "DELETE FROM teams";
+
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+
+		//reset TEAMS id
+		$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
+
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+
+		//get EVENTS data for the specified competition level
+		$sql = "SELECT id, name, teams FROM events WHERE conference='$conference'";
+
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+
+		while(list($id, $name, $date, $view, $poster) = mysql_fetch_array($result)){
+							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
+								?>
+
+							<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
+							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
+							<p style="float:right; padding-right: 10%;"><?php echo "".$poster ?></p>
+							<br>
+							
+							<?php
+							}
+						}
+		
+		$fmsg =  "Minutes Data Cleared Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Failed to Reset Event Selection! It Was Not Verified!";
+
+	}
+
+	mysql_close();
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -148,6 +206,32 @@ if(isset($_POST['verify2'])){
 						<br>
 						Are You Sure? :
 						<select id="verify2" name="verify2">
+							<option value="no">No</option>
+							<option value="yes">Yes</option>
+						</select>
+						<br><br>
+						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
+					</form>
+
+				</div>
+
+				<br>
+				<br>
+
+				<button class="accordion">Reset Event Selection</button>
+				<div class="panel" id="updateTeamsDiv">
+					<!--clear member account data tab-->
+					<form method="post" id="clearMinutesForm">
+						<br>
+						Competition Level :
+						<select id="conference" name="conference">
+							<option value="regional">Regional</option>
+							<option value="state">State</option>
+							<option value="national">National</option>
+						</select>
+						<br><br>
+						Are You Sure? :
+						<select id="verify3" name="verify3">
 							<option value="no">No</option>
 							<option value="yes">Yes</option>
 						</select>

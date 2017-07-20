@@ -204,6 +204,14 @@ footer{
 	margin-right: 50px;
 }
 
+table, td, th{
+	border: 1px solid black;
+}
+
+.eventTableCell{
+	border: 1px solid black;
+}
+
 button.accordion {
     background-color: #0066CC;
     font-size: 24px;
