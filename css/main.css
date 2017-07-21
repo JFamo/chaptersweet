@@ -233,3 +233,14 @@ div.panel {
     background-color: white;
     display: none;
 }
+
+.eventSignupButton {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline: none;
+    width: 150px;
+    height: 30px;
+}
