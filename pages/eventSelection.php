@@ -21,7 +21,7 @@ if(isset($_POST['slot'])){
 
 		require('../php/connect.php');
 
-		$sql = "UPDATE teams SET $memberColumn='$username' WHERE event='$name' AND team='$team'";
+		$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
 
 		if (!mysql_query($sql)){
 			die('Error: ' . mysql_error());
