@@ -18,13 +18,36 @@ if(isset($_POST['slot'])){
 	if($open == "yes"){
 
 		$memberColumn = "member" . $slot;
+		$alreadyInEvent = "no";
 
 		require('../php/connect.php');
 
-		$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
+		//check if user is already in that event
+		$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name'";
 
-		if (!mysql_query($sql)){
+		$checkEventResult = mysql_query($checkEventSql);
+
+		if (!$checkEventResult){
 			die('Error: ' . mysql_error());
+		}
+
+		//for each team of the event the user is trying to enter
+		while(list($member1, $member2, $member3, $member4, $member5, $member6) = mysql_fetch_array($checkEventResult)){
+			if($member1 == $fullname || $member2 == $fullname || $member3 == $fullname || $member4 == $fullname || $member5 == $fullname || $member6 == $fullname){
+				$alreadyInEvent = "yes";
+			}
+		}
+
+		//only enter event if not already in it
+		if($alreadyInEvent == "no"){
+
+			//add the user to that team
+			$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
+
+			if (!mysql_query($sql)){
+				die('Error: ' . mysql_error());
+			}
+
 		}
 
 		mysql_close();
@@ -140,7 +163,7 @@ if(isset($_POST['slot'])){
 											list($memberUse) = mysql_fetch_array($eventresult);
 										?>
 										<!--clear member account data tab-->
-										<form method="post">
+										<form method="post" target="hideFrame">
 											<input type="hidden" id="name" name="name" value="<?php echo "".$name ?>">
 											<input type="hidden" id="team" name="team" value="<?php echo "".$i ?>">
 											<input type="hidden" id="slot" name="slot" value="<?php echo "".$q ?>">
@@ -182,6 +205,8 @@ if(isset($_POST['slot'])){
 		</footer>
 	</div>	
 </body>
+
+<iframe id="hideFrame" name="hideFrame" style="display:none;"></iframe>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
