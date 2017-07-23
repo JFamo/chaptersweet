@@ -77,3 +77,28 @@ for (i = 0; i < acc.length; i++) {
           $('#resultRegister').html('<p class = "bodyTextType1">Successfully Registered</p>');
       });
     });
+
+//WEBSOCKETS STUFF
+try{
+
+  var socket;
+  var host = "ws://localhost:8000/chaptersweet/server/startDaemon.php";
+    var socket = new WebSocket(host);
+
+        message('<p class="event">Socket Status: '+socket.readyState);
+
+        socket.onopen = function(){
+           message('<p class="event">Socket Status: '+socket.readyState+' (open)');
+        }
+
+        socket.onmessage = function(msg){
+           message('<p class="message">Received: '+msg.data);
+        }
+
+        socket.onclose = function(){
+           message('<p class="event">Socket Status: '+socket.readyState+' (Closed)');
+        }     
+
+    } catch(exception){
+       message('<p>Error'+exception);
+    }
