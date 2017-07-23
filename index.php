@@ -141,7 +141,6 @@ if(isset($_SESSION['username'])){
 </body>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="js/sockets.js" type="text/javascript"></script>
 <script src="js/scripts.js" type="text/javascript"></script>
 
 </html>
