@@ -1,0 +1,2 @@
+updateTeams();
+setInterval(updateTeams(), 1000);
