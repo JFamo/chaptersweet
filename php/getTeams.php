@@ -1,6 +1,5 @@
 <?php
-session_start();
-$outputVar = "Empty ";
+$outputVar = "";
 
 require('../php/connect.php');
 
@@ -17,28 +16,27 @@ if(mysql_num_rows($result) == 0){
 }
 else{
 
+	$outputVar = $outputVar . '<table class="eventTable">';
+
 	//for each database row
 	while(list($id, $name, $membermin, $membermax, $teams) = mysql_fetch_array($result)){
 
 		$outputVar = $outputVar . ' <tr>';
 
 		if($membermax == 1){
-			$outputVar = $outputVar . ' <th><?php echo "".$name ?> - Individual</th>';
+			$outputVar = $outputVar . ' <th>' . $name . ' - Individual</th>';
 		}
 		else{
-			$outputVar = $outputVar . ' <th><?php echo "".$name ?> - Team</th>';
+			$outputVar = $outputVar . ' <th>' . $name . ' - Team</th>';
 		}
 
 		$outputVar = $outputVar . ' </tr>';
 
 		//for each team of each event
 		for($i = 1; $i <= $teams; $i++){
-			?>
 
-			<!--Create a table row-->
-			<tr>
+			$outputVar = $outputVar . '<tr>';
 
-			<?php
 			//for each member in each event
 			for($q = 1; $q <= $membermax; $q++){
 
@@ -47,7 +45,7 @@ else{
 					$cellColor = "#0038A8";
 				}
 
-				$outputVar = $outputVar . ' <td style="background-color:<?php echo "".$cellColor ?>; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';
+				$outputVar = $outputVar . ' <td style="background-color: ' . $cellColor . '; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';
 
 					//this is what shows up in each event slot
 				$memberCheck = "member".$q;
@@ -61,29 +59,28 @@ else{
 				}
 
 				list($memberUse) = mysql_fetch_array($eventresult);
-				$outputVar = $outputVar . ' <form method="post" target="hideFrame">
-					<input type="hidden" id="name" name="name" value="<?php echo "".$name ?>">
-					<input type="hidden" id="team" name="team" value="<?php echo "".$i ?>">
-					<input type="hidden" id="slot" name="slot" value="<?php echo "".$q ?>">
-					<input type="hidden" id="open" name="open" value="<?php 
-					//this will give value to the OPEN field, stating if an event slot is available
+				//this will give value to the OPEN field, stating if an event slot is available
 					if(is_null($memberUse)){
-						echo "yes";
+						$isOpen = "yes";
 					}
 					else{
-						echo "no";
+						$isOpen = "no";
 					}
-					?>">
-					<input type="submit" id="signup" name="signup" class="eventSignupButton" 
-					value=" <?php
-						echo "".$memberUse;
-					?> ">
+					
+				$outputVar = $outputVar . ' <form method="post" target="hideFrame">
+					<input type="hidden" id="name" name="name" value="' . $name . '">
+					<input type="hidden" id="team" name="team" value="' . $i . '">
+					<input type="hidden" id="slot" name="slot" value="' . $q . '">
+					<input type="hidden" id="open" name="open" value="' . $isOpen . '">
+					<input type="submit" id="signup" name="signup" class="eventSignupButton" value="' . $memberUse . '">
 				</form>
 				</td>';
 
 			}
 		}
 	}
+
+	$outputVar = $outputVar . '</table>';
 }
 
 echo "" . $outputVar;

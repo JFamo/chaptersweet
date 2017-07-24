@@ -93,12 +93,9 @@ if(isset($_POST['slot'])){
 						Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team.
 					</p>
 <!--Event Selection Sheet-->
-					<table class="eventTable">
 					<?php
 						require('../php/getTeams.php');
 					?>
-					</table>
-
 			</div>
 
 <!--Spooky stuff at the bottom-->

@@ -1,5 +1,3 @@
-alert("javascript called!");
-
 $.post('getTeams.php', {}, function(result) { 
    alert(result); 
 });
