@@ -48,6 +48,9 @@ if(isset($_POST['slot'])){
 				die('Error: ' . mysql_error());
 			}
 
+		}else{
+			//this occurs when user tries to double-register
+			$fmsg = "Already In Event!";
 		}
 
 		mysql_close();
@@ -92,6 +95,21 @@ if(isset($_POST['slot'])){
 					<p class="bodyTextType1">
 						Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team.
 					</p>
+					<?php
+						if(isset($fmsg)){
+						?>
+
+							<p class = "bodyTextType1">
+
+							<?php
+							echo $fmsg;
+							?>
+
+							</p><br>
+
+						<?php
+						}
+					?>
 <!--Event Selection Sheet-->
 					<?php
 						//require('../php/getTeams.php');
