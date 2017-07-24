@@ -1,10 +1,8 @@
 $.post('getTeams.php', {}, function(result) { 
    alert(result); 
 });
-setInterval(updateTeams, 1000);
+setInterval(updateTeams, 500);
 
 function updateTeams(){
-	$.post('getTeams.php', {}, function(result) { 
-	   alert(result); 
-	});
+	$("#events").load('../php/getTeams.php');
 }

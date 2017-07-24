@@ -94,8 +94,9 @@ if(isset($_POST['slot'])){
 					</p>
 <!--Event Selection Sheet-->
 					<?php
-						require('../php/getTeams.php');
+						//require('../php/getTeams.php');
 					?>
+					<div id="events"></div>
 			</div>
 
 <!--Spooky stuff at the bottom-->
