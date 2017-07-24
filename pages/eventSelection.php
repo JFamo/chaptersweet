@@ -95,7 +95,7 @@ if(isset($_POST['slot'])){
 <!--Event Selection Sheet-->
 					<table class="eventTable">
 					<?php
-					echo $_SESSION['teamsOutput'];
+						require('../php/getTeams.php');
 					?>
 					</table>
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION['teamsOutput'] = "";
+$outputVar = "Empty ";
 
 require('../php/connect.php');
 
@@ -13,23 +13,23 @@ if (!$result){
 }
 
 if(mysql_num_rows($result) == 0){
-	$_SESSION['teamsOutput'] = $_SESSION['teamsOutput'] . "No Events Found!<br>";
+	$outputVar = $outputVar . "No Events Found!<br>";
 }
 else{
 
 	//for each database row
 	while(list($id, $name, $membermin, $membermax, $teams) = mysql_fetch_array($result)){
 
-		$_SESSION['teamsOutput'] = $_SESSION['teamsOutput'] . ' <tr>';
+		$outputVar = $outputVar . ' <tr>';
 
 		if($membermax == 1){
-			$_SESSION['teamsOutput'] = $_SESSION['teamsOutput'] . ' <th><?php echo "".$name ?> - Individual</th>';
+			$outputVar = $outputVar . ' <th><?php echo "".$name ?> - Individual</th>';
 		}
 		else{
-			$_SESSION['teamsOutput'] = $_SESSION['teamsOutput'] . ' <th><?php echo "".$name ?> - Team</th>';
+			$outputVar = $outputVar . ' <th><?php echo "".$name ?> - Team</th>';
 		}
 
-		$_SESSION['teamsOutput'] = $_SESSION['teamsOutput'] . ' </tr>';
+		$outputVar = $outputVar . ' </tr>';
 
 		//for each team of each event
 		for($i = 1; $i <= $teams; $i++){
@@ -47,7 +47,7 @@ else{
 					$cellColor = "#0038A8";
 				}
 
-				$_SESSION['teamsOutput'] = $_SESSION['teamsOutput'] . ' <td style="background-color:<?php echo "".$cellColor ?>; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';
+				$outputVar = $outputVar . ' <td style="background-color:<?php echo "".$cellColor ?>; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';
 
 					//this is what shows up in each event slot
 				$memberCheck = "member".$q;
@@ -61,8 +61,7 @@ else{
 				}
 
 				list($memberUse) = mysql_fetch_array($eventresult);
-				<!--clear member account data tab-->
-				$_SESSION['teamsOutput'] = $_SESSION['teamsOutput'] . ' <form method="post" target="hideFrame">
+				$outputVar = $outputVar . ' <form method="post" target="hideFrame">
 					<input type="hidden" id="name" name="name" value="<?php echo "".$name ?>">
 					<input type="hidden" id="team" name="team" value="<?php echo "".$i ?>">
 					<input type="hidden" id="slot" name="slot" value="<?php echo "".$q ?>">
@@ -87,7 +86,7 @@ else{
 	}
 }
 
-echo "" . $_SESSION['teamsOutput'];
+echo "" . $outputVar;
 		
 mysql_close();
 
