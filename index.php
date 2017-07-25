@@ -2,8 +2,6 @@
 
 session_start();
 
-$_SESSION['teamsOutput'] = "";
-
 require('php/connect.php');
 
 if(isset($_POST['username']) and isset($_POST['password'])){

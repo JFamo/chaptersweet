@@ -67,7 +67,7 @@ $rank = $_SESSION['rank'];
 			if($rank == "admin"){
 			?>
 			<form action="danger.php">
-    			<input class="bigButton" style="background-color:red;" type="submit" value="! Admin Settings !" />
+    			<input class="bigButton" style="background-color:#DF2935;" type="submit" value="! Admin Settings !" />
 			</form>
 			<br>
 			<?php
