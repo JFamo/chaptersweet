@@ -62,7 +62,7 @@ if(isset($_SESSION['username'])){
 </head>
 
 <body>
-	<div id="wrapper">
+	<div id="wrapper" style="text-align:left;">
 <!--Spooky bar at the top-->
 		<header>
 				<img src="imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
@@ -71,7 +71,35 @@ if(isset($_SESSION['username'])){
 				</p>
 		</header>
 <!--Spooky stuff in the middle-->
-		<div id="contentPane">
+		<div id="contentPane" style="text-align:left;">
+		<table class="columnsTable">
+		<tr class="columnsRow">
+		<td class="columns">
+			<!--ABOUT THIS APP-->
+			<p class="subTitleText" style="color:black; padding-left:40px;">
+				About
+			</p>
+				<p class="bodyTextType1">
+					This application was created by Joshua Famous, All Rights Reserved, 2017.<br><br>
+					It is intended for use by chapters of the Technology Student Association, for various chapter management functions. These functions aim to provide ease of access to a suite of convenience features to not just chapter adivsers and officers, but to all members. By including all involved individuals, this software is able to provide a comprehensive and complete overview of all chapter functions.
+				</p>
+			<!--HOW TO USE-->
+			<p class="subTitleText" style="color:black; padding-left:40px;">
+				How to Use
+			</p>
+				<p class="bodyTextType1">
+					If you already have an account, select the LOGIN tab to the right of the screen, enter your login information, and click the 'login' button.<br><br>
+					If you do not have an account, select the REGISTER tab to the right of the screen, complete all of the fields, and click the 'register' button.<br><br>
+					Each member should create only <b>one</b> account, to prevent contamination of the system. If you forget your password, contact an administrator to have it reset.<br><br>
+					Please <b>do not</b> use your student email for the email field, as some important communications may be lost if you do this.
+				</p>
+			<!--ANNOUNCEMENTS-->
+			<p class="subTitleText" style="color:black; float:left; padding-left:40px;">
+				Announcements
+			</p>
+		</td>
+		<td class="columns" style="vertical-align: top;">
+		<center>
 
 		<button class="accordion">Register</button>
 			<div class="panel" id="resultRegister">
@@ -130,6 +158,10 @@ if(isset($_SESSION['username'])){
 		}
 		?>
 
+		</td>
+		</center>
+		</tr>
+		</table>
 		</div>
 <!--Less spooky stuff at the bottom-->
 		<footer> 

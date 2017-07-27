@@ -16,7 +16,7 @@
 }
 
 .subTitleText{
-	color: #082567;
+	color: white;
 	font-weight: bold;
 	font-size: 30px;
 	letter-spacing: 1px;
@@ -54,7 +54,7 @@ header{
 #subTitleBar{
 	width: 100%;
 	height: 50px;
-	background-color: #DF2935;
+	background-color: #B60000;
 }
 
 #navList{
@@ -132,7 +132,6 @@ footer{
 .taskFormInput{
 	width: 300px;
 	height: 60px;
-	background-color: #B60000;
 	font-size: 20px;
 }
 
@@ -194,13 +193,14 @@ footer{
 }
 
 .backButton{
-	background-color: #0066CC;
+	background-color: #B60000;
 	font-size: 18px;
 	padding: 10px 30px;
 	border-radius: 4px;
 	float: right;
 	font-family:tahoma;
 	margin-right: 50px;
+	color: white;
 }
 
 .eventTableCell{
@@ -243,4 +243,26 @@ div.panel {
     outline: none;
     width: 150px;
     height: 30px;
+}
+
+.minutesLink, .minuteslink:link, .minutesLink:visited, .minutesLink:hover, .minutesLink:active {
+	color: #DF2935;
+}
+
+.columns {
+	min-width: 50%;
+	width: 50%;
+	max-width: 50%;
+}
+
+.columnsTable {
+	min-width: 100%;
+	width: 100%;
+	max-width: 100%;
+}
+
+.columnsRow {
+	min-width: 100%;
+	width: 100%;
+	max-width: 100%;
 }

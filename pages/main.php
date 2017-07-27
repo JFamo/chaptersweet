@@ -59,6 +59,10 @@ $rank = $_SESSION['rank'];
     			<input class="bigButton" type="submit" value="Minutes" />
 			</form>
 			<br>
+			<form action="announcements.php">
+    			<input class="bigButton" type="submit" value="Announcements" />
+			</form>
+			<br>
 			<form action="../php/logout.php">
     			<input class="bigButton" type="submit" value="Logout" />
 			</form>

@@ -40,9 +40,9 @@ else{
 			//for each member in each event
 			for($q = 1; $q <= $membermax; $q++){
 
-				$cellColor = "#0066CC";
+				$cellColor = "#e00000";
 				if($q <= $membermin){
-					$cellColor = "#0038A8";
+					$cellColor = "#B60000";
 				}
 
 				$outputVar = $outputVar . ' <td style="background-color: ' . $cellColor . '; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';

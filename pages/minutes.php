@@ -26,7 +26,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 	}
 
-	//file viewability
+	//file viewality
 	$view = $_POST['view'];
 
 	//get poster
@@ -188,7 +188,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
 								?>
 
-							<a href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
+							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
 							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
 							<p style="float:right; padding-right: 10%;"><?php echo "".$poster ?></p>
 							<br>
