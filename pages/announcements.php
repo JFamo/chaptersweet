@@ -9,9 +9,9 @@ $fullname = $_SESSION['fullname'];
 if(isset($_POST['body'])){
 
 	//variables assignment
-	$articleTitle = $_POST['title'];
-	$articleBody = $_POST['body'];
-	$articlePoster = $_SESSION['fullname'];
+	$articleTitle = addslashes($_POST['title']);
+	$articleBody = addslashes($_POST['body']);
+	$articlePoster = addslashes($_SESSION['fullname']);
 
 	require('../php/connect.php');
 

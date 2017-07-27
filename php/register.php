@@ -2,10 +2,10 @@
 
 require_once('connect.php');
 
-$value1 = $_POST['fullname'];
-$value2 = $_POST['username'];
-$value3 = $_POST['password'];
-$value4 = $_POST['email'];
+$value1 = addslashes($_POST['fullname']);
+$value2 = addslashes($_POST['username']);
+$value3 = addslashes($_POST['password']);
+$value4 = addslashes($_POST['email']);
 $value5 = $_POST['grade'];
 
 $sql = "INSERT INTO users (fullname, username, password, email, grade) VALUES ('$value1', '$value2', '$value3', '$value4', '$value5')";
