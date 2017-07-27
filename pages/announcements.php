@@ -118,16 +118,13 @@ if(isset($_POST['body'])){
 				<br>
 				<br>
 
-				<button class="accordion">Browse</button>
-				<div class="panel" style="text-align: left;">
-
-				<br>
+				<div style="text-align: left;">
 
 				<?php
 
 				require('../php/connect.php');
 
-				$query="SELECT id, title, body, poster, date FROM announcements";
+				$query="SELECT * FROM announcements ORDER BY id DESC";
 
 				$result = mysql_query($query);
 

@@ -97,6 +97,43 @@ if(isset($_SESSION['username'])){
 			<p class="subTitleText" style="color:black; float:left; padding-left:40px;">
 				Announcements
 			</p>
+			<br><br>
+			<?php
+
+				require('php/connect.php');
+
+				$query="SELECT id, title, body, poster, date FROM announcements ORDER BY id DESC";
+
+				$result = mysql_query($query);
+
+				if (!$result){
+					die('Error: ' . mysql_error());
+				}		
+
+				if(mysql_num_rows($result) == 0){
+					echo "No Articles Found!<br>";
+				}
+				else{
+					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
+						?>
+
+						<p style="color:white; font-family:tahoma; background-color:#B60000; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "".$date ?></p>
+						<br><br>
+						<pre>
+						<p style="font-size:12px; font-family:tahoma; padding-left:20%; padding-top:10px; padding-bottom: 10px;">
+<?php echo "".$body ?>
+						</p>
+						</pre>
+						
+						<?php
+					}
+				}
+						
+				mysql_close();
+
+				?>
 		</td>
 		<td class="columns" style="vertical-align: top;">
 		<center>
