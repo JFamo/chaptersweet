@@ -4,6 +4,7 @@ session_start();
 
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
+$grade = $_SESSION['grade'];
 
 ?>
 
@@ -42,7 +43,7 @@ $rank = $_SESSION['rank'];
 				if($rank == "officer" || $rank == "admin"){
 					$article = "an";
 				}
-				echo "Welcome, " . $username . " who is " . $article . " " . $rank . "";
+				echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
 			?>
 
 			</p>

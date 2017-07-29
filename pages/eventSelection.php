@@ -7,7 +7,7 @@ $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
 //functions for event signup
-if(isset($_POST['slot'])){
+if(isset($_POST['slot']) && $_SESSION['eventpoints'] > 0){
 
 	//file viewability
 	$name = $_POST['name'];
@@ -45,6 +45,18 @@ if(isset($_POST['slot'])){
 			$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
 
 			if (!mysql_query($sql)){
+				die('Error: ' . mysql_error());
+			}
+
+			//decrease event points
+			$newPoints = $_SESSION['eventpoints'] - 1;
+			$_SESSION['eventpoints'] -= 1;
+			$sessionUser = $_SESSION['username'];
+			$sessionName = $_SESSION['fullname'];
+
+			$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$sessionUser' AND fullname='$sessionName'";
+
+			if (!mysql_query($eventSql)){
 				die('Error: ' . mysql_error());
 			}
 
@@ -95,6 +107,13 @@ if(isset($_POST['slot'])){
 					<p class="bodyTextType1">
 						Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team.
 					</p>
+					<p class = "bodyTextType1">
+
+						<?php
+						echo "Event Points : <b>".$_SESSION['eventpoints']."</b>";
+						?>
+
+					</p><br>
 					<?php
 						if(isset($fmsg)){
 						?>
