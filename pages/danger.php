@@ -67,6 +67,35 @@ if(isset($_POST['verify2'])){
 
 }
 
+//functions for clearing announcements
+if(isset($_POST['verify4'])){
+
+	//file viewability
+	$verify = $_POST['verify4'];
+
+	require('../php/connect.php');
+
+	if($verify == "yes"){
+
+		$sql = "DELETE FROM announcements";
+
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+		
+		$fmsg =  "Announcements Data Cleared Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Announcements Data Failed to Clear!";
+
+	}
+
+	mysql_close();
+
+}
+
 //functions for updating TEAMS table with info from EVENTS table
 if(isset($_POST['verify3'])){
 
@@ -238,6 +267,25 @@ if(isset($_POST['verify3'])){
 						<br><br>
 						Are You Sure? :
 						<select id="verify3" name="verify3">
+							<option value="no">No</option>
+							<option value="yes">Yes</option>
+						</select>
+						<br><br>
+						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
+					</form>
+
+				</div>
+
+				<br>
+				<br>
+
+				<button class="accordion">Clear Announcements Data</button>
+				<div class="panel" id="clearAnnouncementsDiv">
+					<!--clear announcements data tab-->
+					<form method="post" id="clearMinutesForm">
+						<br>
+						Are You Sure? :
+						<select id="verify4" name="verify4">
 							<option value="no">No</option>
 							<option value="yes">Yes</option>
 						</select>

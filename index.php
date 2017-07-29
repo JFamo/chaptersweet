@@ -117,7 +117,7 @@ if(isset($_SESSION['username'])){
 					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
 						?>
 
-						<p style="color:white; font-family:tahoma; background-color:#B60000; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
+						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "".$date ?></p>
 						<br><br>
