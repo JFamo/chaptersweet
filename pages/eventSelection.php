@@ -48,13 +48,21 @@ if(isset($_POST['slot']) && $_SESSION['eventpoints'] > 0){
 				die('Error: ' . mysql_error());
 			}
 
-			//decrease event points
-			$newPoints = $_SESSION['eventpoints'] - 1;
-			$_SESSION['eventpoints'] -= 1;
-			$sessionUser = $_SESSION['username'];
-			$sessionName = $_SESSION['fullname'];
+			//get user's eventpoints
+			$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
 
-			$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$sessionUser' AND fullname='$sessionName'";
+			$pointsresult = mysql_query($pointsquery);
+
+			if (!$pointsresult){
+				die('Error: ' . mysql_error());
+			}
+
+			list($eventpoints) = mysql_fetch_array($pointsresult);
+
+			//decrease event points
+			$newPoints = $eventpoints - 1;
+
+			$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname'";
 
 			if (!mysql_query($eventSql)){
 				die('Error: ' . mysql_error());
@@ -145,6 +153,9 @@ if(isset($_POST['slot']) && $_SESSION['eventpoints'] > 0){
 		</footer>
 	</div>	
 </body>
+
+<iframe id="hideFrame" name="hideFrame" style="display:none;"></iframe>		
+<form action="../php/getTeams.php" target="hideFrame" style="display:none;" name="teamsUpdateForm"></form>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
