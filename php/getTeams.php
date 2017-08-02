@@ -38,7 +38,7 @@ else{
 	//for each database row
 	while(list($id, $name, $membermin, $membermax, $teams) = mysql_fetch_array($result)){
 
-		$outputVar = $outputVar . ' <tr>';
+		$outputVar = $outputVar . ' <tr><td></td>';
 
 		if($membermax == 1){
 			$outputVar = $outputVar . ' <th>' . $name . ' - Individual</th>';
@@ -52,7 +52,7 @@ else{
 		//for each team of each event
 		for($i = 1; $i <= $teams; $i++){
 
-			$outputVar = $outputVar . '<tr>';
+			$outputVar = $outputVar . '<tr><td style="min-width:100px;">Group '.$i;
 
 			//for each member in each event
 			for($q = 1; $q <= $membermax; $q++){
