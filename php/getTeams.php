@@ -8,8 +8,19 @@ require('../php/connect.php');
 $sessionUser = $_SESSION['username'];
 $sessionName = $_SESSION['fullname'];
 
+//get the conference
+$conferencequery="SELECT value FROM settings WHERE name='conference'";
+
+$conferenceresult = mysql_query($conferencequery);
+
+if (!$conferenceresult){
+	die('Error: ' . mysql_error());
+}
+
+list($conference) = mysql_fetch_array($conferenceresult);
+
 //actually update events
-$query="SELECT id, name, membermin, membermax, teams FROM events";
+$query="SELECT id, name, membermin, membermax, teams FROM events WHERE conference='$conference'";
 
 $result = mysql_query($query);
 

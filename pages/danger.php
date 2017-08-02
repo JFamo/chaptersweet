@@ -107,6 +107,13 @@ if(isset($_POST['verify3'])){
 
 	if($verify == "yes"){
 
+		//update the conference
+		$sql = "UPDATE settings SET value='$conference' WHERE name='conference'";
+
+		if (!mysql_query($sql)){
+			die('Error: ' . mysql_error());
+		}
+
 		//clear TEAMS table
 		$sql = "DELETE FROM teams";
 
@@ -146,7 +153,7 @@ if(isset($_POST['verify3'])){
 			}
 
 		}
-		
+
 		$fmsg =  "Event Selection Reset Successfully!";
 
 	}
