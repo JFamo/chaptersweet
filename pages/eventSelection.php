@@ -110,8 +110,9 @@ if(isset($_POST['slot']) && $_SESSION['eventpoints'] > 0){
 					<p class = "bodyTextType1">
 
 						<?php
-						echo "Event Points : <b>".$_SESSION['eventpoints']."</b>";
+						//echo "Event Points : <b>".$_SESSION['eventpoints']."</b>";
 						?>
+						<div id="eventPoints">Loading Event Points...</div>
 
 					</p><br>
 					<?php
@@ -133,7 +134,7 @@ if(isset($_POST['slot']) && $_SESSION['eventpoints'] > 0){
 					<?php
 						//require('../php/getTeams.php');
 					?>
-					<div id="events"></div>
+					<div id="events"><center>Loading Teams...</center></div>
 			</div>
 
 <!--Spooky stuff at the bottom-->
@@ -144,9 +145,6 @@ if(isset($_POST['slot']) && $_SESSION['eventpoints'] > 0){
 		</footer>
 	</div>	
 </body>
-
-<iframe id="hideFrame" name="hideFrame" style="display:none;"></iframe>
-<form action="../php/getTeams.php" target="hideFrame" style="display:none;" name="teamsUpdateForm"></form>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
