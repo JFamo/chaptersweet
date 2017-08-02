@@ -138,8 +138,19 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 				<br>
 				<br>
 
+				<?php
+					if($rank == "officer" || $rank=="admin"){
+				?>
 				<button class="accordion">Browse</button>
 				<div class="panel">
+				<?php
+					}
+					else{
+				?>
+				<div>
+				<?php
+					}
+				?>
 
 				<br>
 
