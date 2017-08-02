@@ -2,80 +2,85 @@
 
 session_start();
 
+//global variables
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
 //functions for event signup
-if(isset($_POST['slot']) && $_SESSION['eventpoints'] > 0){
+if(isset($_POST['slot'])){
 
-	//file viewability
-	$name = $_POST['name'];
-	$team = $_POST['team'];
-	$slot = $_POST['slot'];
-	$open = $_POST['open'];
+	require('../php/connect.php');
 
-	if($open == "yes"){
+	//get user's eventpoints
+	$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
 
-		$memberColumn = "member" . $slot;
-		$alreadyInEvent = "no";
+	$pointsresult = mysql_query($pointsquery);
 
-		require('../php/connect.php');
-
-		//check if user is already in that event
-		$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name'";
-
-		$checkEventResult = mysql_query($checkEventSql);
-
-		if (!$checkEventResult){
-			die('Error: ' . mysql_error());
-		}
-
-		//for each team of the event the user is trying to enter
-		while(list($member1, $member2, $member3, $member4, $member5, $member6) = mysql_fetch_array($checkEventResult)){
-			if($member1 == $fullname || $member2 == $fullname || $member3 == $fullname || $member4 == $fullname || $member5 == $fullname || $member6 == $fullname){
-				$alreadyInEvent = "yes";
-			}
-		}
-
-		//only enter event if not already in it
-		if($alreadyInEvent == "no"){
-
-			//add the user to that team
-			$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
-
-			if (!mysql_query($sql)){
-				die('Error: ' . mysql_error());
-			}
-
-			//get user's eventpoints
-			$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
-
-			$pointsresult = mysql_query($pointsquery);
-
-			if (!$pointsresult){
-				die('Error: ' . mysql_error());
-			}
-
-			list($eventpoints) = mysql_fetch_array($pointsresult);
-
-			//decrease event points
-			$newPoints = $eventpoints - 1;
-
-			$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname'";
-
-			if (!mysql_query($eventSql)){
-				die('Error: ' . mysql_error());
-			}
-
-		}else{
-			//this occurs when user tries to double-register
-			$fmsg = "Already In Event!";
-		}
-
-		mysql_close();
-
+	if (!$pointsresult){
+		die('Error: ' . mysql_error());
 	}
+
+	list($eventpoints) = mysql_fetch_array($pointsresult);
+
+	//if the user has event points
+	if($eventpoints > 0){
+
+		//file viewability
+		$name = $_POST['name'];
+		$team = $_POST['team'];
+		$slot = $_POST['slot'];
+		$open = $_POST['open'];
+
+		//if this slot is open
+		if($open == "yes"){
+
+			//default variable values
+			$memberColumn = "member" . $slot;
+			$alreadyInEvent = "no";
+
+			//check if user is already in that event
+			$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name'";
+
+			$checkEventResult = mysql_query($checkEventSql);
+
+			if (!$checkEventResult){
+				die('Error: ' . mysql_error());
+			}
+
+			//for each team of the event the user is trying to enter
+			while(list($member1, $member2, $member3, $member4, $member5, $member6) = mysql_fetch_array($checkEventResult)){
+				if($member1 == $fullname || $member2 == $fullname || $member3 == $fullname || $member4 == $fullname || $member5 == $fullname || $member6 == $fullname){
+					$alreadyInEvent = "yes";
+				}
+			}
+
+			//only enter event if not already in it
+			if($alreadyInEvent == "no"){
+
+				//add the user to that team
+				$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
+
+				if (!mysql_query($sql)){
+					die('Error: ' . mysql_error());
+				}
+
+				//decrease event points
+				$newPoints = $eventpoints - 1;
+
+				$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname'";
+
+				if (!mysql_query($eventSql)){
+					die('Error: ' . mysql_error());
+				}
+
+			}else{
+				//this occurs when user tries to double-register
+				$fmsg = "Already In Event!";
+			}
+		}
+	}
+	mysql_close();
 }
 
 ?>
