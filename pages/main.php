@@ -51,30 +51,45 @@ $grade = $_SESSION['grade'];
 		<?php
 		}
 		?>
-
+			<!--Pages Tabs-->
 			<form action="eventSelection.php">
     			<input class="bigButton" type="submit" value="Event Selection" />
 			</form>
 			<br>
+
 			<form action="minutes.php">
     			<input class="bigButton" type="submit" value="Minutes" />
 			</form>
 			<br>
+
 			<form action="announcements.php">
     			<input class="bigButton" type="submit" value="Announcements" />
 			</form>
 			<br>
+
+			<?php
+			if($rank == "admin"){
+			?>
+				<form action="assignpoints.php">
+	    			<input class="bigButton" type="submit" value="Assign Points" />
+				</form>
+				<br>
+			<?php
+			}
+			?>
+
 			<form action="../php/logout.php">
     			<input class="bigButton" type="submit" value="Logout" />
 			</form>
 			<br>
+
 			<?php
 			if($rank == "admin"){
 			?>
-			<form action="danger.php">
-    			<input class="bigButton" style="background-color:#DF2935;" type="submit" value="! Admin Settings !" />
-			</form>
-			<br>
+				<form action="danger.php">
+	    			<input class="bigButton" style="background-color:#DF2935;" type="submit" value="! Admin Settings !" />
+				</form>
+				<br>
 			<?php
 			}
 			?>
