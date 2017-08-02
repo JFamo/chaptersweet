@@ -154,7 +154,12 @@ if(isset($_SESSION['username'])){
 			  		Enter your email: <br>
 			  			<input class="input1" type="email" id="email" required/> <br>
 			  		Enter your grade: <br>
-			  			<input class="input1" type="number" id="grade" required/> <br>
+			  			<select class="input1" id="grade" name="grade" required>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+						</select> <br><br>
     				<input class="inputButton1" type="submit" value="Register"/>
 
 				</form>
