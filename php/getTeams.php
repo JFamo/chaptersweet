@@ -57,7 +57,7 @@ else{
 			//for each member in each event
 			for($q = 1; $q <= $membermax; $q++){
 
-				$cellColor = "#e00000";
+				$cellColor = "#e5e5e5";
 				if($q <= $membermin){
 					$cellColor = "#B60000";
 				}
