@@ -203,6 +203,16 @@ footer{
 	color: white;
 }
 
+.utilityButton{
+	background-color: #B60000;
+	font-size: 18px;
+	padding: 10px 30px;
+	border-radius: 4px;
+	font-family:tahoma;
+	margin-right: 50px;
+	color: white;
+}
+
 .eventTableCell{
 	border: 1px solid black;
 }
