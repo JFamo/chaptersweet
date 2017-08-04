@@ -22,7 +22,12 @@ function updateMenu(){
 						<img src="../imgs/arrowRight.png" width="20px" height="20px" onclick="right();" />
 					</td>
 				</tr>
-			</table>`;
+			</table>
+			<center><br><br>
+				<p class="bodyTextType1">
+					In event selection you can use Event Points to sign up for events. You can also view event slots available, team sizes, team requirements, and all current signups. Administrators can print the event list from this menu.
+				</p>
+			</center>`;
 	}
 
 	//1 - Minutes
