@@ -31,11 +31,26 @@ $grade = $_SESSION['grade'];
 		</header>
 <!--Spooky stuff in the middle-->
 		<div id="contentPane">
-		<table class="columnsTable">
-		<tr class="columnsRow">
-		<td class="columns">
-			<div id="menus">
 
+		<?php
+		if(isset($username) && isset($rank)){
+		?>
+
+			<p class = "bodyTextType1">
+
+			<?php
+				$article = "a";
+				if($rank == "officer" || $rank == "admin"){
+					$article = "an";
+				}
+				echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
+			?>
+
+			</p>
+
+		<?php
+		}
+		?>
 			<!--Pages Tabs-->
 			<form action="eventSelection.php">
     			<input class="bigButton" type="submit" value="Event Selection" />
@@ -79,33 +94,7 @@ $grade = $_SESSION['grade'];
 			}
 			?>
 
-			</div>
-		</td>
-		<td class="columns">
 
-			<?php
-			if(isset($username) && isset($rank)){
-			?>
-
-				<p class = "bodyTextType1">
-
-				<?php
-					$article = "a";
-					if($rank == "officer" || $rank == "admin"){
-						$article = "an";
-					}
-					echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
-				?>
-
-				</p>
-
-			<?php
-			}
-			?>
-
-		</td>
-		</tr>
-		</table>
 		</div>
 <!--Less spooky stuff at the bottom-->
 		<footer>
@@ -115,7 +104,5 @@ $grade = $_SESSION['grade'];
 		</footer>
 	</div>	
 </body>
-
-<script src="../js/menu.js" type="text/javascript"></script>
 
 </html>
