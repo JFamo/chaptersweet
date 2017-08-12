@@ -91,6 +91,29 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 }
 
+if(isset($_POST['body'])){
+
+	//variables assignment
+	$articleTitle = addslashes($_POST['title']);
+	$articleBody = addslashes($_POST['body']);
+	$articlePoster = addslashes($_SESSION['fullname']);
+
+	require('../php/connect.php');
+
+	$query = "INSERT INTO announcements (title, body, poster, date) VALUES ('$articleTitle', '$articleBody', '$articlePoster', now())";
+
+	$result = mysql_query($query);
+
+	if (!$result){
+		die('Error: ' . mysql_error());
+	}
+
+	mysql_close();
+
+	$fmsg =  "Article '".$articleTitle."' Uploaded Successfully!";
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -151,6 +174,10 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 					<span onclick="showMinutes();"><a href="#"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Minutes</p></a></span>
 				<!--Announcements-->
 					<span onclick="showAnnouncements();"><a href="#"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
+				<!--Announce-->
+				<?php if($rank == "officer" || $rank == "admin"){ ?>
+					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Post Announcement</p></a></span>
+				<?php } ?>
 
 				</div>
 
@@ -349,7 +376,7 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 				<!--Description-->
 				<p class="bodyTextType1">
-					Here you can view all of your chapter's announcements. Officers and Admins can write and post new announcements.
+					Here you can view all of your chapter's announcements.
 				</p>
 
 				<br>
@@ -393,6 +420,33 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 				?>
 				</div>
+
+				</div>
+
+				<!--ANNOUNCE-->
+				<div id="postDiv" style="overflow:auto; display:none;">
+
+				<div class="userDashHeader" style="width:80%;">
+					<p class="subTitleText" style="padding-top:15px">Post Announcement</p>
+				</div>
+
+				<!--Description-->
+				<p class="bodyTextType1">
+					Officers and Admins can write and post announcements here.
+				</p>
+
+				<form method="post" id="articleWriteForm">
+					<br>
+					Title:
+					<br>
+					<input class="taskFormInput" style="width:800px; height:40px;" type="text" name="title" id="title">
+					<br><br>
+					Body:
+					<br>
+					<textarea form="articleWriteForm" cols="110" rows="15" name="body" id="body"></textarea>
+					<br><br>
+					<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Post">
+				</form>
 
 				</div>
 

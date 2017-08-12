@@ -81,22 +81,33 @@ for (i = 0; i < acc.length; i++) {
 var filesDiv = document.getElementById("filesDiv");
 var minutesDiv = document.getElementById("minutesDiv");
 var announcementsDiv = document.getElementById('announcementsDiv');
+var announceDiv = document.getElementById('postDiv');
 
 //function for Information Page files tab
 function showFiles(){
     filesDiv.style.display = "block";
     minutesDiv.style.display = "none";
     announcementsDiv.style.display = "none";
+    announceDiv.style.display = "none";
 }
 //function for Information Page minutes tab
 function showMinutes(){
     filesDiv.style.display = "none";
     minutesDiv.style.display = "block";
     announcementsDiv.style.display = "none";
+    announceDiv.style.display = "none";
 }
 //function for Information Page announcements tab
 function showAnnouncements(){
     filesDiv.style.display = "none";
     minutesDiv.style.display = "none";
     announcementsDiv.style.display = "block";
+    announceDiv.style.display = "none";
+}
+//function for Information Page announce tab
+function showPost(){
+    filesDiv.style.display = "none";
+    minutesDiv.style.display = "none";
+    announcementsDiv.style.display = "none";
+    announceDiv.style.display = "block";
 }

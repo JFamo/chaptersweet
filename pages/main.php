@@ -158,12 +158,12 @@ $name = $_SESSION['fullname'];
 					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
 						?>
 
-						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "".$date ?></p>
-						<br><br>
+						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "".$date ?></p>
+						<br>
 						<pre>
-						<p style="font-size:12px; font-family:tahoma; padding-left:20%; padding-top:10px; padding-bottom: 10px;">
+						<p style="font-size:12px; font-family:tahoma; padding-left:10%; padding-top:10px; padding-bottom: 10px;">
 <?php echo "".$body ?>
 						</p>
 						</pre>
