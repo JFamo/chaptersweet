@@ -276,3 +276,19 @@ div.panel {
 	width: 100%;
 	max-width: 100%;
 }
+
+.iconLinks{
+	height: 200px;
+	display: table;
+	width: 80%;
+	table-layout: fixed;
+}
+
+.iconLinks span {
+	display: table-cell;
+	text-align: center;
+}
+
+.userDash{
+	height:2000px;
+}

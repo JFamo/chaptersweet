@@ -31,39 +31,74 @@ $grade = $_SESSION['grade'];
 		</header>
 <!--Spooky stuff in the middle-->
 		<div id="contentPane">
+		<center>
 
-		<?php
-		if(isset($username) && isset($rank)){
-		?>
+		<!--ICON LINKS DIV-->
+		<div class="iconLinks">
 
-			<p class = "bodyTextType1">
+		<!--Events-->
+			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="64" width="64"><p class="bodyTextType1">Events</p></a></span>
+		<!--Minutes-->
+			<span><a href="minutes.php"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Minutes</p></a></span>
+		<!--Announcements-->
+			<span><a href="announcements.php"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
+		<!--Users-->
+				<?php
+				if($rank == "admin"){
+				?>
+			<span><a href="assignpoints.php"><img src="../imgs/icon_users.png" height="64" width="64"><p class="bodyTextType1">Users</p></a></span>
+				<?php
+				}
+				?>
+		<!--Logout-->
+			<span><a href="../php/logout.php"><img src="../imgs/icon_logout.png" height="64" width="64"><p class="bodyTextType1">Logout</p></a></span>
+		<!--Admin Settings-->
+				<?php
+				if($rank == "admin"){
+				?>
+			<span><a href="danger.php"><img src="../imgs/icon_settings.png" height="64" width="64"><p class="bodyTextType1">Admin Settings</p></a></span>
+				<?php
+				}
+				?>
+
+		</div>
+
+		<!--USER DASH DIV-->
+		<div class="userDash">
 
 			<?php
-				$article = "a";
-				if($rank == "officer" || $rank == "admin"){
-					$article = "an";
-				}
-				echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
+			if(isset($username) && isset($rank)){
 			?>
 
-			</p>
+				<p class = "bodyTextType1">
 
-		<?php
-		}
-		?>
+				<?php
+					$article = "a";
+					if($rank == "officer" || $rank == "admin"){
+						$article = "an";
+					}
+					echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
+				?>
+
+				</p>
+
+			<?php
+			}
+			?>
+
 			<!--Pages Tabs-->
 			<form action="eventSelection.php">
-    			<input class="bigButton" type="submit" value="Event Selection" />
+				<input class="bigButton" type="submit" value="Event Selection" />
 			</form>
 			<br>
 
 			<form action="minutes.php">
-    			<input class="bigButton" type="submit" value="Minutes" />
+				<input class="bigButton" type="submit" value="Minutes" />
 			</form>
 			<br>
 
 			<form action="announcements.php">
-    			<input class="bigButton" type="submit" value="Announcements" />
+				<input class="bigButton" type="submit" value="Announcements" />
 			</form>
 			<br>
 
@@ -79,7 +114,7 @@ $grade = $_SESSION['grade'];
 			?>
 
 			<form action="../php/logout.php">
-    			<input class="bigButton" type="submit" value="Logout" />
+				<input class="bigButton" type="submit" value="Logout" />
 			</form>
 			<br>
 
@@ -94,7 +129,9 @@ $grade = $_SESSION['grade'];
 			}
 			?>
 
+		</div>
 
+		</center>
 		</div>
 <!--Less spooky stuff at the bottom-->
 		<footer>
