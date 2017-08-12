@@ -5,6 +5,7 @@ session_start();
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $grade = $_SESSION['grade'];
+$name = $_SESSION['fullname'];
 
 ?>
 
@@ -96,14 +97,59 @@ $grade = $_SESSION['grade'];
 			<tr class="columnsRow">
 			<td class="columns">
 			<div class="userDashSection">
+				<p class="userDashSectionHeader">
+					My Events
+				</p>
 			</div>
 			<div class="userDashSection">
+				<p class="userDashSectionHeader">
+					My Account
+				</p>
 			</div>
 			</td>
 			<td class="columns">
-			<div class="userDashSection">
+			<div class="userDashSection" style="height:800px">
+				<p class="userDashSectionHeader">
+					Announcements
+				</p>
+				<br>
+				<?php
+
+				require('../php/connect.php');
+
+				$query="SELECT * FROM announcements ORDER BY id DESC";
+
+				$result = mysql_query($query);
+
+				if (!$result){
+					die('Error: ' . mysql_error());
+				}		
+
+				if(mysql_num_rows($result) == 0){
+					echo "No Articles Found!<br>";
+				}
+				else{
+					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
+						?>
+
+						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "".$date ?></p>
+						<br><br>
+						<pre>
+						<p style="font-size:12px; font-family:tahoma; padding-left:20%; padding-top:10px; padding-bottom: 10px;">
+<?php echo "".$body ?>
+						</p>
+						</pre>
+						
+						<?php
+					}
+				}
+						
+				mysql_close();
+
+				?>
 			</div>
-			<div class="userDashSection">
 			</div>
 			</td>
 			</tr>
