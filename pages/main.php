@@ -33,6 +33,28 @@ $grade = $_SESSION['grade'];
 		<div id="contentPane">
 		<center>
 
+		<!--
+		<?php
+			if(isset($username) && isset($rank)){
+			?>
+
+				<p class = "bodyTextType1">
+
+				<?php
+					$article = "a";
+					if($rank == "officer" || $rank == "admin"){
+						$article = "an";
+					}
+					echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
+				?>
+
+				</p>
+
+			<?php
+			}
+			?>
+		-->
+
 		<!--ICON LINKS DIV-->
 		<div class="iconLinks">
 
@@ -66,25 +88,26 @@ $grade = $_SESSION['grade'];
 		<!--USER DASH DIV-->
 		<div class="userDash">
 
-			<?php
-			if(isset($username) && isset($rank)){
-			?>
+			<div class="userDashHeader">
+				<p class="subTitleText" style="padding-top:15px">My Dashboard</p>
+			</div>
 
-				<p class = "bodyTextType1">
-
-				<?php
-					$article = "a";
-					if($rank == "officer" || $rank == "admin"){
-						$article = "an";
-					}
-					echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
-				?>
-
-				</p>
-
-			<?php
-			}
-			?>
+			<table class="columnsTable">
+			<tr class="columnsRow">
+			<td class="columns">
+			<div class="userDashSection">
+			</div>
+			<div class="userDashSection">
+			</div>
+			</td>
+			<td class="columns">
+			<div class="userDashSection">
+			</div>
+			<div class="userDashSection">
+			</div>
+			</td>
+			</tr>
+			</table>
 
 		</div>
 
