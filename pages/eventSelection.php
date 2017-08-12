@@ -120,7 +120,13 @@ if(isset($_POST['slot'])){
 					<p class="bodyTextType1">
 						Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team.
 					</p>
-					<button onclick="window.print()" class="utilityButton">Print Sheet</button>
+					<?php
+					if($rank == "admin" || $rank == "officer"){
+					?>
+						<button onclick="window.print()" class="utilityButton">Print Sheet</button>
+					<?php
+					}
+					?>
 					<p class = "bodyTextType1">
 
 						<?php
