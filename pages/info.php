@@ -6,7 +6,7 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
-if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
+if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 
 	//file details
 	$fileName = $_FILES['userfile']['name'];
@@ -35,6 +35,49 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 	require('../php/connect.php');
 
 	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster')";
+
+	$result = mysql_query($query);
+
+	if (!$result){
+		die('Error: ' . mysql_error());
+	}
+
+	mysql_close();
+
+	$fmsg =  "File ".$fileName." Uploaded Successfully!";
+
+}
+
+if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
+
+	//file details
+	$fileName = $_FILES['userfile']['name'];
+	$tmpName = $_FILES['userfile']['tmp_name'];
+	$fileSize = $_FILES['userfile']['size'];
+	$fileType = $_FILES['userfile']['type'];
+
+	//file data manipulation
+	$fp = fopen($tmpName, 'r');
+	$content = fread($fp, filesize($tmpName));
+	$content = addslashes($content);
+	fclose($fp);
+
+	if(!get_magic_quotes_gpc()){
+
+		$fileName = addslashes($fileName);
+
+	}
+
+	//file viewality
+	$view = $_POST['view'];
+	$class = "minutes";
+
+	//get poster
+	$poster = $_SESSION['fullname'];
+
+	require('../php/connect.php');
+
+	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster, class) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster', '$class')";
 
 	$result = mysql_query($query);
 
@@ -123,21 +166,18 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 					Here you can view all of your chapter's important files. Officers and Admins can upload new files.
 				</p>
 
-				<!--
-					<form method="post" enctype="multipart/form-data">
-						<br>
+				<?php if($rank == "officer" || $rank == "admin"){ ?>
+					<form method="post" enctype="multipart/form-data" class="fileForm">
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-						<input class="taskFormInput" name="userfile" type="file" id="userfile">
-						<br><br>
-						Who Can View :
+						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
+						<span>Who Can View :
 						<select id="view" name="view">
 							<option value="all">All</option>
 							<option value="officer">Officers Only</option>
-						</select>
-						<br><br>
-						<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Upload">
+						</select></span>
+						<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="uploadFile" type="submit" class="box" id="uploadFile" value="Upload"></span>
 					</form>
-				-->
+				<?php } ?>
 
 				<br>
 				<br>
@@ -218,6 +258,19 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 				<p class="bodyTextType1">
 					Here you can view the minutes of chapter meetings. The secretary can upload minutes here.
 				</p>
+
+				<?php if($rank == "officer" || $rank == "admin"){ ?>
+					<form method="post" enctype="multipart/form-data" class="fileForm">
+						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
+						<span>Who Can View :
+						<select id="view" name="view">
+							<option value="all">All</option>
+							<option value="officer">Officers Only</option>
+						</select></span>
+						<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="uploadMinutes" type="submit" class="box" id="uploadMinutes" value="Upload"></span>
+					</form>
+				<?php } ?>
 
 				<br>
 				<br>
