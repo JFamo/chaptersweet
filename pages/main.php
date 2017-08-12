@@ -60,7 +60,7 @@ $name = $_SESSION['fullname'];
 		<div class="iconLinks">
 
 		<!--Events-->
-			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="64" width="64"><p class="bodyTextType1">Events</p></a></span>
+			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="64" width="64"><p class="bodyTextType1">Event Selection</p></a></span>
 		<!--Minutes-->
 			<span><a href="minutes.php"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Minutes</p></a></span>
 		<!--Announcements-->
@@ -125,7 +125,14 @@ $name = $_SESSION['fullname'];
 						}
 
 						list($email) = mysql_fetch_array($emailresult); 
-						echo $email;
+
+						$email = unserialize($email);
+						
+						for($i=0; $i<count($email); $i++){
+							echo $email[$i];
+							echo "<br>";
+						}
+
 						?>
 					<br><br>
 					<b>Rank:</b> <?php echo ucwords($rank) ?>
