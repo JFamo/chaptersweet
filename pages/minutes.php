@@ -76,7 +76,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
     			<input class="backButton" type="submit" value="Back" />
 			</form>
 			<center><p class="subTitleText">
-				Minutes
+				Information
 			</p></center>
 		</div>
 <!--Spooky stuff closer to the middle-->
@@ -98,21 +98,32 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 				}
 				?>
 
+				<!--INFO TYPES LINKS-->
+				<center>
+				<div class="iconLinks">
+
+				<!--Files-->
+					<span onclick="showFiles();"><a href="#"><img src="../imgs/icon_files.png" height="64" width="64"><p class="bodyTextType1">Files</p></a></span>
+				<!--Minutes-->
+					<span onclick="showMinutes();"><a href="#"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Minutes</p></a></span>
+				<!--Announcements-->
+					<span onclick="showAnnouncements();"><a href="#"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
+
+				</div>
+
+				<!--FILES-->
+				<div id="filesDiv">
+
+				<div class="userDashHeader" style="width:80%;">
+					<p class="subTitleText" style="padding-top:15px">Files</p>
+				</div>
+
 				<!--Description-->
-					<p class="bodyTextType1">
-						Here you can view all of your saved meeting minutes, and officers can upload a new minutes file.
-					</p>
+				<p class="bodyTextType1">
+					Here you can view all of your chapter's important files. Officers and Admins can upload new files.
+				</p>
 
-
-				<?php
-
-				if($rank == "officer" || $rank=="admin"){
-
-				?>
-
-				<button class="accordion">Upload</button>
-				<div class="panel">
-					<!--Minutes submission form-->
+				<!--
 					<form method="post" enctype="multipart/form-data">
 						<br>
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
@@ -126,39 +137,16 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 						<br><br>
 						<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Upload">
 					</form>
-
-				</div>
-
-				<?php
-
-				}
-
-				?>
+				-->
 
 				<br>
-				<br>
-
-				<?php
-					if($rank == "officer" || $rank=="admin"){
-				?>
-				<button class="accordion">Browse</button>
-				<div class="panel">
-				<?php
-					}
-					else{
-				?>
-				<div>
-				<?php
-					}
-				?>
-
 				<br>
 
 				<?php
 
 				require('../php/connect.php');
 
-				$query="SELECT id, name, date, view, poster FROM minutes";
+				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='file'";
 
 				$result = mysql_query($query);
 
@@ -198,8 +186,11 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 						while(list($id, $name, $date, $view, $poster) = mysql_fetch_array($result)){
 							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
 								?>
-
 							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
+							<?php
+							if($view == "officer"){ ?>
+									<p style="float:left; padding-left: 10%;">Private</p>
+								<?php } ?>
 							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
 							<p style="float:right; padding-right: 10%;"><?php echo "".$poster ?></p>
 							<br>
@@ -215,6 +206,17 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 				?>
 
 				</div>
+
+				<!--MINUTES-->
+				<div id="minutesDiv">
+
+				</div>
+
+				<!--ANNOUNCEMENTS-->
+				<div id="announcementsDiv">
+
+				</div>
+
 
 			</div>
 

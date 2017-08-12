@@ -126,12 +126,8 @@ $name = $_SESSION['fullname'];
 
 						list($email) = mysql_fetch_array($emailresult); 
 
-						$email = unserialize($email);
-						
-						for($i=0; $i<count($email); $i++){
-							echo $email[$i];
-							echo "<br>";
-						}
+						//$email = unserialize($email);
+						echo $email;
 
 						?>
 					<br><br>
