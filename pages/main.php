@@ -105,6 +105,31 @@ $name = $_SESSION['fullname'];
 				<p class="userDashSectionHeader">
 					My Account
 				</p>
+				<p class="bodyTextType1">
+					<b>Full Name:</b> <?php echo $name ?>
+					<br><br>
+					<b>User Name:</b> <?php echo $username ?>
+					<br><br>
+					<b>Grade:</b> <?php echo $grade ?>
+					<br><br>
+					<b>Email:</b> <?php 
+						require('../php/connect.php');
+
+						//get user's email
+						$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name'";
+
+						$emailresult = mysql_query($emailquery);
+
+						if (!$emailresult){
+							die('Error: ' . mysql_error());
+						}
+
+						list($email) = mysql_fetch_array($emailresult); 
+						echo $email;
+						?>
+					<br><br>
+					<b>Rank:</b> <?php echo ucwords($rank) ?>
+				</p>
 			</div>
 			</td>
 			<td class="columns">
