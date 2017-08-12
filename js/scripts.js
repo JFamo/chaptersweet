@@ -78,30 +78,25 @@ for (i = 0; i < acc.length; i++) {
       });
     });
 
+var filesDiv = document.getElementById("filesDiv");
+var minutesDiv = document.getElementById("minutesDiv");
+var announcementsDiv = document.getElementById('announcementsDiv');
+
 //function for Information Page files tab
 function showFiles(){
-    var filesDiv = document.getElementById('filesDiv');
-    var minutesDiv = document.getElementById('minutesDiv');
-    var announcementsDiv = document.getElementById('announcementsDiv');
-    filesDiv.style.dislay = "block";
-    minutesDiv.style.dislay = "none";
-    announcementsDiv.style.dislay = "none";
+    filesDiv.style.display = "block";
+    minutesDiv.style.display = "none";
+    announcementsDiv.style.display = "none";
 }
 //function for Information Page minutes tab
 function showMinutes(){
-    var filesDiv = document.getElementById('filesDiv');
-    var minutesDiv = document.getElementById('minutesDiv');
-    var announcementsDiv = document.getElementById('announcementsDiv');
-    filesDiv.style.dislay = "none";
-    minutesDiv.style.dislay = "block";
-    announcementsDiv.style.dislay = "none";
+    filesDiv.style.display = "none";
+    minutesDiv.style.display = "block";
+    announcementsDiv.style.display = "none";
 }
 //function for Information Page announcements tab
 function showAnnouncements(){
-    var filesDiv = document.getElementById('filesDiv');
-    var minutesDiv = document.getElementById('minutesDiv');
-    var announcementsDiv = document.getElementById('announcementsDiv');
-    filesDiv.style.dislay = "none";
-    minutesDiv.style.dislay = "none";
-    announcementsDiv.style.dislay = "block";
+    filesDiv.style.display = "none";
+    minutesDiv.style.display = "none";
+    announcementsDiv.style.display = "block";
 }

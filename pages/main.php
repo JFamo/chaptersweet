@@ -62,9 +62,7 @@ $name = $_SESSION['fullname'];
 		<!--Events-->
 			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="64" width="64"><p class="bodyTextType1">Event Selection</p></a></span>
 		<!--Minutes-->
-			<span><a href="minutes.php"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Minutes</p></a></span>
-		<!--Announcements-->
-			<span><a href="announcements.php"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
+			<span><a href="info.php"><img src="../imgs/icon_info.png" height="64" width="64"><p class="bodyTextType1">Information</p></a></span>
 		<!--Users-->
 				<?php
 				if($rank == "admin"){
