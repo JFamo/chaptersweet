@@ -5,7 +5,7 @@ require_once('connect.php');
 $value1 = addslashes($_POST['fullname']);
 $value2 = addslashes($_POST['username']);
 $value3 = addslashes($_POST['password']);
-$emails = array( addslashes($_POST['email']) , addslashes($_POST['email1']) , addslashes($_POST['email2']) , addslashes($_POST['email3']) );
+$emails = array(addslashes($_POST['email']),addslashes($_POST['secondmail']),addslashes($_POST['thirdmail']),addslashes($_POST['fourthmail']));
 $value5 = $_POST['grade'];
 
 /**

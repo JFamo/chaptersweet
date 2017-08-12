@@ -154,9 +154,9 @@ if(isset($_SESSION['username'])){
 			  		Enter your email: <br>
 			  			<input class="input1" type="email" id="email" required/> <br>
 			  		Enter any additional emails: <br>
-			  			<input class="input1" type="email" id="email1" /> <br>
-			  			<input class="input1" type="email" id="email2" /> <br>
-			  			<input class="input1" type="email" id="email3" /> <br>
+			  			<input class="input1" type="email" id="secondmail" name="secondmail" /> <br>
+			  			<input class="input1" type="email" id="thirdmail" name="thirdmail" /> <br>
+			  			<input class="input1" type="email" id="fourthmail" name="fourthmail" /> <br>
 			  		Enter your grade: <br>
 			  			<select class="input1" id="grade" name="grade" required>
 							<option value="9">9</option>
