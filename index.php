@@ -76,7 +76,7 @@ if(isset($_SESSION['username'])){
 		<div id="contentPane" style="text-align:left;">
 		<table class="columnsTable">
 		<tr class="columnsRow">
-		<td class="columns">
+		<td class="columns" style="overflow:auto;">
 			<!--ABOUT THIS APP-->
 			<p class="subTitleText" style="color:black; padding-left:40px;">
 				About
@@ -119,12 +119,12 @@ if(isset($_SESSION['username'])){
 					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
 						?>
 
-						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "".$date ?></p>
+						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:60px; padding-top:10px;"><?php echo "".$title ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:60px; padding-top:10px;"><?php echo "By : ".$poster ?></p>
+						<p style="font-size:14px; font-family:tahoma; padding-left:60px; padding-top:10px;"><?php echo "".$date ?></p>
 						<br><br>
 						<pre>
-						<p style="font-size:12px; font-family:tahoma; padding-left:20%; padding-top:10px; padding-bottom: 10px;">
+						<p style="font-size:12px; font-family:tahoma; padding-left:80px; padding-top:10px; padding-bottom: 10px;">
 <?php echo "".$body ?>
 						</p>
 						</pre>
@@ -137,7 +137,7 @@ if(isset($_SESSION['username'])){
 
 				?>
 		</td>
-		<td class="columns" style="vertical-align: top;">
+		<td class="columns" style="vertical-align: top; overflow: auto;">
 		<center>
 
 		<button class="accordion">Register</button>
