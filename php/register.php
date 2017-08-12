@@ -5,7 +5,8 @@ require_once('connect.php');
 $value1 = addslashes($_POST['fullname']);
 $value2 = addslashes($_POST['username']);
 $value3 = addslashes($_POST['password']);
-$emails = array(addslashes($_POST['email']),addslashes($_POST['secondmail']),addslashes($_POST['thirdmail']),addslashes($_POST['fourthmail']));
+$value4 = addslashes($_POST['email']);
+//$emails = array(addslashes($_POST['email']),addslashes($_POST['secondmail']),addslashes($_POST['thirdmail']),addslashes($_POST['fourthmail']));
 $value5 = $_POST['grade'];
 
 /**
@@ -20,9 +21,9 @@ if(isSet($email3)){
 }
 **/
 
-$valueE = serialize($emails);
+//$valueE = serialize($emails);
 
-$sql = "INSERT INTO users (fullname, username, password, email, grade) VALUES ('$value1', '$value2', '$value3', '$valueE', '$value5')";
+$sql = "INSERT INTO users (fullname, username, password, email, grade) VALUES ('$value1', '$value2', '$value3', '$value4', '$value5')";
 
 if (!mysql_query($sql)){
 	die('Error: ' . mysql_error());
