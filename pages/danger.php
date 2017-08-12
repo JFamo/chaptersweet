@@ -233,7 +233,7 @@ if(isset($_POST['verify3'])){
 							<option value="yes">Yes</option>
 						</select>
 						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
+						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Clear Data">
 					</form>
 
 				</div>
@@ -252,7 +252,7 @@ if(isset($_POST['verify3'])){
 							<option value="yes">Yes</option>
 						</select>
 						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
+						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Clear Data">
 					</form>
 
 				</div>
@@ -278,7 +278,7 @@ if(isset($_POST['verify3'])){
 							<option value="yes">Yes</option>
 						</select>
 						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
+						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Reset">
 					</form>
 
 				</div>
@@ -297,7 +297,7 @@ if(isset($_POST['verify3'])){
 							<option value="yes">Yes</option>
 						</select>
 						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:red;" value="Clear Data">
+						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Clear Data">
 					</form>
 
 				</div>
