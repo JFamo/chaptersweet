@@ -80,7 +80,7 @@ for (i = 0; i < acc.length; i++) {
 
 //function for Information Page files tab
 function showFiles(){
-   var filesDiv = document.getElementById('filesDiv');
+    var filesDiv = document.getElementById('filesDiv');
     var minutesDiv = document.getElementById('minutesDiv');
     var announcementsDiv = document.getElementById('announcementsDiv');
     filesDiv.style.dislay = "block";
@@ -90,8 +90,8 @@ function showFiles(){
 //function for Information Page minutes tab
 function showMinutes(){
     var filesDiv = document.getElementById('filesDiv');
-var minutesDiv = document.getElementById('minutesDiv');
-var announcementsDiv = document.getElementById('announcementsDiv');
+    var minutesDiv = document.getElementById('minutesDiv');
+    var announcementsDiv = document.getElementById('announcementsDiv');
     filesDiv.style.dislay = "none";
     minutesDiv.style.dislay = "block";
     announcementsDiv.style.dislay = "none";
@@ -99,8 +99,8 @@ var announcementsDiv = document.getElementById('announcementsDiv');
 //function for Information Page announcements tab
 function showAnnouncements(){
     var filesDiv = document.getElementById('filesDiv');
-var minutesDiv = document.getElementById('minutesDiv');
-var announcementsDiv = document.getElementById('announcementsDiv');
+    var minutesDiv = document.getElementById('minutesDiv');
+    var announcementsDiv = document.getElementById('announcementsDiv');
     filesDiv.style.dislay = "none";
     minutesDiv.style.dislay = "none";
     announcementsDiv.style.dislay = "block";

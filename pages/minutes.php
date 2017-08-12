@@ -217,7 +217,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 
 				</div>
 
-
+			</center>
 			</div>
 
 <!--Spooky stuff at the bottom-->
