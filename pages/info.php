@@ -379,9 +379,6 @@ if(isset($_POST['body'])){
 					Here you can view all of your chapter's announcements.
 				</p>
 
-				<br>
-				<br>
-
 				<div style="text-align: left;">
 				<?php
 

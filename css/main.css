@@ -314,6 +314,10 @@ div.panel {
 	overflow: auto;
 }
 
+.userDashSection:hover{
+	box-shadow: inset 0 0 0 2px black;
+}
+
 .userDashSectionHeader{
 	font-weight: bold; 
 	font-family:tahoma; 
