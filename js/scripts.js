@@ -83,17 +83,46 @@ var minutesDiv = document.getElementById("minutesDiv");
 var announcementsDiv = document.getElementById('announcementsDiv');
 var announceDiv = document.getElementById('postDiv');
 
+//function to get current info tab
+function getCurrentTab(){
+    if(filesDiv.style.display == "block"){
+        return filesDiv;
+    }
+    if(minutesDiv.style.display == "block"){
+        return minutesDiv;
+    }
+    if(announcementsDiv.style.display == "block"){
+        return announcementsDiv;
+    }
+    if(postDiv.style.display == "block"){
+        return postDiv;
+    }
+    return null;
+}
+
 //function for Information Page files tab
 function showFiles(){
-    setTimeout(function () {
+    var currentDiv = getCurrentTab();
+    if(!currentDiv == filesDiv){
+        //slide current tab out
+        currentDiv.style.transform = "translate(100%)";
+        //make current tab invisible
+        setTimeout(function () {
+        currentDiv.style.display = "none";
+        //make new tab visible
         filesDiv.style.display = "block";
-        minutesDiv.style.display = "none";
-        announcementsDiv.style.display = "none";
-        announceDiv.style.display = "none";
+        filesDiv.style.transition = "0s";
+        //set new tab on side of screen
+        filesDiv.style.transform = "translate(-100%)";
+        filesDiv.style.transition = "0.5s ease-in-out";
+        //slide new tab in
+        setTimeout(function () {
         filesDiv.style.transform = "translate(0%)";
-    }, 1000);
-    minutesDiv.style.transform = "translate(100%)";
+        }, 500);
+        }, 500);
+    }
 }
+
 //function for Information Page minutes tab
 function showMinutes(){
     setTimeout(function () {
@@ -105,6 +134,7 @@ function showMinutes(){
     }, 1000);
     filesDiv.style.transform = "translate(-100%)";
 }
+
 //function for Information Page announcements tab
 function showAnnouncements(){
     filesDiv.style.display = "none";
@@ -114,8 +144,23 @@ function showAnnouncements(){
 }
 //function for Information Page announce tab
 function showPost(){
-    filesDiv.style.display = "none";
-    minutesDiv.style.display = "none";
-    announcementsDiv.style.display = "none";
-    announceDiv.style.display = "block";
+    var currentDiv = getCurrentTab();
+    if(!currentDiv == postDiv){
+        //slide current tab out
+        currentDiv.style.transform = "translate(-100%)";
+        //make current tab invisible
+        setTimeout(function () {
+        currentDiv.style.display = "none";
+        //make new tab visible
+        postDiv.style.display = "block";
+        postDiv.style.transition = "0s";
+        //set new tab on side of screen
+        postDiv.style.transform = "translate(100%)";
+        postDiv.style.transition = "0.5s ease-in-out";
+        //slide new tab in
+        setTimeout(function () {
+        postDiv.style.transform = "translate(0%)";
+        }, 500);
+        }, 500);
+    }
 }
