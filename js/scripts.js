@@ -78,84 +78,114 @@ for (i = 0; i < acc.length; i++) {
       });
     });
 
+//get info page tab variables
 var filesDiv = document.getElementById("filesDiv");
 var minutesDiv = document.getElementById("minutesDiv");
 var announcementsDiv = document.getElementById('announcementsDiv');
 var announceDiv = document.getElementById('postDiv');
+var currentDiv = filesDiv;
+var inTransition = false;
 
-//function to get current info tab
-function getCurrentTab(){
-    if(filesDiv.style.display === "block"){
-        return filesDiv;
-    }
-    if(minutesDiv.style.display === "block"){
-        return minutesDiv;
-    }
-    if(announcementsDiv.style.display === "block"){
-        return announcementsDiv;
-    }
-    if(postDiv.style.display === "block"){
-        return postDiv;
-    }
-}
-
-//function for Information Page files tab
-function showFiles(){
-    var currentDiv = getCurrentTab();
+//the function to slide tabs, given a target tab and a direction
+function changeInfoTab(newDiv, dir){
+  if(newDiv.style.display == "none"){
+    inTransition = true;
     //slide current tab out
-    currentDiv.style.transform = "translate(100%)";
+    if(dir == "left"){
+      currentDiv.style.transform = "translate(100%)";
+    }
+    else{
+      currentDiv.style.transform = "translate(-100%)";
+    }
     //make current tab invisible
     setTimeout(function () {
       currentDiv.style.display = "none";
       //make new tab visible
-      filesDiv.style.display = "block";
-      filesDiv.style.transition = "0s";
+      newDiv.style.display = "block";
+      newDiv.style.transition = "0s";
       //set new tab on side of screen
-      filesDiv.style.transform = "translate(-100%)";
-      filesDiv.style.transition = "0.5s ease-in-out";
+      if(dir == "left"){
+        newDiv.style.transform = "translate(-100%)";
+      }
+      else{
+        newDiv.style.transform = "translate(100%)";
+      }
+      newDiv.style.transition = "0.5s ease-in-out";
       //slide new tab in
       setTimeout(function () {
-      filesDiv.style.transform = "translate(0%)";
+          newDiv.style.transform = "translate(0%)";
+          currentDiv = newDiv;
+          setTimeout(function () {
+              inTransition = false;
+          }, 500);
       }, 500);
     }, 500);
+  }
+}
+
+//get the direction to slide, given the current tab and the target tab
+function getDirection(goDiv){
+  var myval;
+  var goval;
+  //get the current tab value
+  if(currentDiv == filesDiv){
+    myval = 1;
+  }
+  if(currentDiv == minutesDiv){
+    myval = 2;
+  }
+  if(currentDiv == announcementsDiv){
+    myval = 3;
+  }
+  if(currentDiv == postDiv){
+    myval = 4;
+  }
+  //get the target tab value
+  if(goDiv == filesDiv){
+    goval = 1;
+  }
+  if(goDiv == minutesDiv){
+    goval = 2;
+  }
+  if(goDiv == announcementsDiv){
+    goval = 3;
+  }
+  if(goDiv == postDiv){
+    goval = 4;
+  }
+  //get the direction
+  if(myval < goval){
+    return 'right';
+  }
+  if(myval > goval){
+    return 'left';
+  }
+}
+
+//function for Information Page files tab
+function showFiles(){
+  if(!inTransition){
+    changeInfoTab(filesDiv, getDirection(filesDiv));
+  }
 }
 
 //function for Information Page minutes tab
 function showMinutes(){
-    setTimeout(function () {
-        filesDiv.style.display = "none";
-        minutesDiv.style.display = "block";
-        announcementsDiv.style.display = "none";
-        announceDiv.style.display = "none";
-        minutesDiv.style.transform = "translate(0%)";
-    }, 1000);
-    filesDiv.style.transform = "translate(-100%)";
+  if(!inTransition){
+    changeInfoTab(minutesDiv, getDirection(minutesDiv));
+  }
 }
 
 //function for Information Page announcements tab
 function showAnnouncements(){
-    filesDiv.style.display = "none";
-    minutesDiv.style.display = "none";
-    announcementsDiv.style.display = "block";
-    announceDiv.style.display = "none";
+  if(!inTransition){
+    changeInfoTab(announcementsDiv, getDirection(announcementsDiv));
+  }
 }
+
 //function for Information Page announce tab
 function showPost(){
-    var currentDiv = getCurrentTab();
-    //slide current tab out
-    currentDiv.style.transform = "translate(-100%)";
-    //make current tab invisible
-    setTimeout(function () {
-        currentDiv.style.display = "none";
-        //make new tab visible
-        postDiv.style.display = "block";
-        postDiv.style.transition = "0s";
-        //set new tab on side of screen
-        postDiv.style.transform = "translate(100%)";
-        postDiv.style.transition = "0.5s ease-in-out";
-        //slide new tab in
-        setTimeout(function () {
-        postDiv.style.transform = "translate(0%)";
-        }, 500);
-    }, 500);
+  if(!inTransition){
+    changeInfoTab(postDiv, getDirection(postDiv));
+  }
 }
