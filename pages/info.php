@@ -146,7 +146,7 @@ if(isset($_POST['body'])){
 			</p></center>
 		</div>
 <!--Spooky stuff closer to the middle-->
-			<div id="contentPane">
+			<div id="contentPane" style="overflow:hidden">
 
 			<?php
 				if(isset($fmsg)){
@@ -182,7 +182,7 @@ if(isset($_POST['body'])){
 				</div>
 
 				<!--FILES-->
-				<div id="filesDiv">
+				<div id="filesDiv" class="infoTab">
 
 				<div class="userDashHeader" style="width:80%;">
 					<p class="subTitleText" style="padding-top:15px">Files</p>
@@ -275,7 +275,7 @@ if(isset($_POST['body'])){
 				</div>
 
 				<!--MINUTES-->
-				<div id="minutesDiv" style="overflow:auto; display:none;">
+				<div id="minutesDiv" style="display:none;" class="infoTab">
 
 				<div class="userDashHeader" style="width:80%;">
 					<p class="subTitleText" style="padding-top:15px">Minutes</p>
@@ -368,7 +368,7 @@ if(isset($_POST['body'])){
 				</div>
 
 				<!--ANNOUNCEMENTS-->
-				<div id="announcementsDiv" style="overflow:auto; display:none;">
+				<div id="announcementsDiv" style="display:none;" class="infoTab">
 
 				<div class="userDashHeader" style="width:80%;">
 					<p class="subTitleText" style="padding-top:15px">Announcements</p>
@@ -424,7 +424,7 @@ if(isset($_POST['body'])){
 				</div>
 
 				<!--ANNOUNCE-->
-				<div id="postDiv" style="overflow:auto; display:none;">
+				<div id="postDiv" style="display:none;" class="infoTab">
 
 				<div class="userDashHeader" style="width:80%;">
 					<p class="subTitleText" style="padding-top:15px">Post Announcement</p>

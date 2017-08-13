@@ -94,12 +94,12 @@ $name = $_SESSION['fullname'];
 			<table class="columnsTable">
 			<tr class="columnsRow">
 			<td class="columns">
-			<div class="userDashSection">
+			<div class="userDashSection" style="height:550px;">
 				<p class="userDashSectionHeader">
 					My Events
 				</p>
 			</div>
-			<div class="userDashSection">
+			<div class="userDashSection" style="height:250px;">
 				<p class="userDashSectionHeader">
 					My Account
 				</p>

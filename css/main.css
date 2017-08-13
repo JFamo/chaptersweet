@@ -288,6 +288,12 @@ div.panel {
 .iconLinks span {
 	display: table-cell;
 	text-align: center;
+	transition: .2s ease-in-out;
+	transform: scale(0.9);
+}
+
+.iconLinks span:hover{
+	transform: scale(1);
 }
 
 .userDashHeader{
@@ -331,4 +337,9 @@ div.panel {
 .fileForm span{
 	display: table-cell;
 	text-align: center;
+}
+
+.infoTab{
+	overflow: auto;
+	transition: 1s ease-in-out;
 }

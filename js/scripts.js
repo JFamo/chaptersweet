@@ -85,17 +85,25 @@ var announceDiv = document.getElementById('postDiv');
 
 //function for Information Page files tab
 function showFiles(){
-    filesDiv.style.display = "block";
-    minutesDiv.style.display = "none";
-    announcementsDiv.style.display = "none";
-    announceDiv.style.display = "none";
+    setTimeout(function () {
+        filesDiv.style.display = "block";
+        minutesDiv.style.display = "none";
+        announcementsDiv.style.display = "none";
+        announceDiv.style.display = "none";
+        filesDiv.style.transform = "translate(0%)";
+    }, 1000);
+    minutesDiv.style.transform = "translate(100%)";
 }
 //function for Information Page minutes tab
 function showMinutes(){
-    filesDiv.style.display = "none";
-    minutesDiv.style.display = "block";
-    announcementsDiv.style.display = "none";
-    announceDiv.style.display = "none";
+    setTimeout(function () {
+        filesDiv.style.display = "none";
+        minutesDiv.style.display = "block";
+        announcementsDiv.style.display = "none";
+        announceDiv.style.display = "none";
+        minutesDiv.style.transform = "translate(0%)";
+    }, 1000);
+    filesDiv.style.transform = "translate(-100%)";
 }
 //function for Information Page announcements tab
 function showAnnouncements(){
