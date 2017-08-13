@@ -85,42 +85,39 @@ var announceDiv = document.getElementById('postDiv');
 
 //function to get current info tab
 function getCurrentTab(){
-    if(filesDiv.style.display == "block"){
+    if(filesDiv.style.display === "block"){
         return filesDiv;
     }
-    if(minutesDiv.style.display == "block"){
+    if(minutesDiv.style.display === "block"){
         return minutesDiv;
     }
-    if(announcementsDiv.style.display == "block"){
+    if(announcementsDiv.style.display === "block"){
         return announcementsDiv;
     }
-    if(postDiv.style.display == "block"){
+    if(postDiv.style.display === "block"){
         return postDiv;
     }
-    return null;
 }
 
 //function for Information Page files tab
 function showFiles(){
     var currentDiv = getCurrentTab();
-    if(!currentDiv == filesDiv){
-        //slide current tab out
-        currentDiv.style.transform = "translate(100%)";
-        //make current tab invisible
-        setTimeout(function () {
-        currentDiv.style.display = "none";
-        //make new tab visible
-        filesDiv.style.display = "block";
-        filesDiv.style.transition = "0s";
-        //set new tab on side of screen
-        filesDiv.style.transform = "translate(-100%)";
-        filesDiv.style.transition = "0.5s ease-in-out";
-        //slide new tab in
-        setTimeout(function () {
-        filesDiv.style.transform = "translate(0%)";
-        }, 500);
-        }, 500);
-    }
+    //slide current tab out
+    currentDiv.style.transform = "translate(100%)";
+    //make current tab invisible
+    setTimeout(function () {
+      currentDiv.style.display = "none";
+      //make new tab visible
+      filesDiv.style.display = "block";
+      filesDiv.style.transition = "0s";
+      //set new tab on side of screen
+      filesDiv.style.transform = "translate(-100%)";
+      filesDiv.style.transition = "0.5s ease-in-out";
+      //slide new tab in
+      setTimeout(function () {
+      filesDiv.style.transform = "translate(0%)";
+      }, 500);
+    }, 500);
 }
 
 //function for Information Page minutes tab
@@ -145,11 +142,10 @@ function showAnnouncements(){
 //function for Information Page announce tab
 function showPost(){
     var currentDiv = getCurrentTab();
-    if(!currentDiv == postDiv){
-        //slide current tab out
-        currentDiv.style.transform = "translate(-100%)";
-        //make current tab invisible
-        setTimeout(function () {
+    //slide current tab out
+    currentDiv.style.transform = "translate(-100%)";
+    //make current tab invisible
+    setTimeout(function () {
         currentDiv.style.display = "none";
         //make new tab visible
         postDiv.style.display = "block";
@@ -161,6 +157,5 @@ function showPost(){
         setTimeout(function () {
         postDiv.style.transform = "translate(0%)";
         }, 500);
-        }, 500);
-    }
+    }, 500);
 }
