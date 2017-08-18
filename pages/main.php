@@ -7,6 +7,29 @@ $rank = $_SESSION['rank'];
 $grade = $_SESSION['grade'];
 $name = $_SESSION['fullname'];
 
+if(isset($_POST['newTask'])){
+
+	//variables assignment
+	$taskName = addslashes($_POST['name']);
+	$taskEvent = addslashes($_POST['event']);
+	$taskUser = addslashes($_SESSION['fullname']);
+
+	require('../php/connect.php');
+
+	$query = "INSERT INTO tasks (user, event, task) VALUES ('$taskUser', '$taskEvent', '$taskName')";
+
+	$result = mysql_query($query);
+
+	if (!$result){
+		die('Error: ' . mysql_error());
+	}
+
+	mysql_close();
+
+	$fmsg =  "Task '".$taskName."' Added Successfully!";
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -94,11 +117,24 @@ $name = $_SESSION['fullname'];
 			<table class="columnsTable">
 			<tr class="columnsRow">
 			<td class="columns">
-			<div class="userDashSection" style="height:550px;">
+			<div class="userDashSection" style="height:550px; overflow:visible;">
 				<p class="userDashSectionHeader">
 					My Events
 				</p>
 				<?php
+				if(isset($fmsg)){
+				?>
+
+					<p class = "bodyTextType1">
+
+					<?php
+					echo $fmsg;
+					?>
+
+					</p>
+
+				<?php
+				}
 				//script stuff to get the user's events
 
 					require('../php/connect.php');
@@ -110,6 +146,11 @@ $name = $_SESSION['fullname'];
 
 					if (!$result){
 						die('Error: ' . mysql_error());
+					}
+
+					//check for users with no events
+					if(mysql_num_rows($result) == 0){
+						echo "<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>You Are Not Registered For Any Events!</b></p>";
 					}
 
 					//space out events when they're displayed
@@ -130,7 +171,52 @@ $name = $_SESSION['fullname'];
 							$doEventNewline = 1;
 						}
 
-						echo "<td><p class='bodyTextType1'><b>" . $event . "</b></p></td>";
+						echo "<td style='width:225px;'>
+							<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
+							<a id="newTaskLink" href='#'>New Task+</a>
+							<div id="newTaskDiv">
+								<form method="post">
+									<b>New Task</b>
+									<input type="hidden" name="event" id="event" value=" <?php echo $event ?> " />
+									<br><br>
+									Name:<input type="text" id="name" name="name" style="width:125px"/>
+									<br><br>
+									<input type="submit" value="Create" name="newTask" id="newTask"/>
+								</form>
+							</div>
+						<?php 
+
+						//event tasks
+
+						// /require('../php/connect.php');
+
+						$checkName = addslashes($_SESSION['fullname']);
+						$checkEvent = addslashes($event);
+
+						echo $checkName;
+						echo $checkEvent;
+
+						//get user's tasks
+						$taskQuery="SELECT id, task, done FROM tasks WHERE user='$checkName' AND event='$checkEvent'";
+
+						$taskResult = mysql_query($taskQuery);
+
+						if (!$taskResult){
+							die('Error: ' . mysql_error());
+						}
+
+						//check for users with no events
+						if(mysql_num_rows($taskResult) == 0){
+							echo "<p style='font-family:tahoma; font-size:12px; padding-left:20px; padding-top:15px;'>No Tasks!</p>";
+						}
+
+						//for each task
+						while(list($id, $task, $done) = mysql_fetch_array($taskResult)){
+							echo $task . " is " . $done;
+						}
+
+
+						echo "</td>";
 
 					}
 
