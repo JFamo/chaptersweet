@@ -11,7 +11,7 @@ if(isset($_POST['newTask'])){
 
 	//variables assignment
 	$taskName = addslashes($_POST['name']);
-	$taskEvent = addslashes($_POST['event']);
+	$taskEvent = addslashes($_POST['thisEvent']);
 	$taskUser = addslashes($_SESSION['fullname']);
 
 	require('../php/connect.php');
@@ -177,7 +177,7 @@ if(isset($_POST['newTask'])){
 							<div id="newTaskDiv">
 								<form method="post">
 									<b>New Task</b>
-									<input type="hidden" name="event" id="event" value=" <?php echo $event ?> " />
+									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
 									<br><br>
 									Name:<input type="text" id="name" name="name" style="width:125px"/>
 									<br><br>
@@ -192,9 +192,6 @@ if(isset($_POST['newTask'])){
 
 						$checkName = addslashes($_SESSION['fullname']);
 						$checkEvent = addslashes($event);
-
-						echo $checkName;
-						echo $checkEvent;
 
 						//get user's tasks
 						$taskQuery="SELECT id, task, done FROM tasks WHERE user='$checkName' AND event='$checkEvent'";
@@ -212,7 +209,9 @@ if(isset($_POST['newTask'])){
 
 						//for each task
 						while(list($id, $task, $done) = mysql_fetch_array($taskResult)){
-							echo $task . " is " . $done;
+							echo "<br>";
+							echo "<input style='padding-left:20px;' type='checkbox' checked>";
+							echo "<p style='padding-left:20px; display:inline-block;'>" . $task . "</p>";
 						}
 
 
