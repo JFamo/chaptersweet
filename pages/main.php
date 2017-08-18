@@ -103,7 +103,7 @@ $name = $_SESSION['fullname'];
 
 					require('../php/connect.php');
 
-					//get user's email
+					//get user's events
 					$query="SELECT event FROM teams WHERE member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name'";
 
 					$result = mysql_query($query);
@@ -112,12 +112,30 @@ $name = $_SESSION['fullname'];
 						die('Error: ' . mysql_error());
 					}
 
+					//space out events when they're displayed
+					$doEventNewline = 0;
+
+					//in a table, of course
+					echo "<table>";
+					echo "<tr style='height: 225px; vertical-align: top;'>";
+
 					while(list($event) = mysql_fetch_array($result)){
 
-						//$email = unserialize($email);
-						echo "<br><p class='bodyTextType1'><b>" . $event . "</b></p>";
+						$doEventNewline += 1;
+
+						//rows of 3
+						if($doEventNewline > 3){
+							echo "</tr>";
+							echo "<tr style='height: 225px; vertical-align: top;'>";
+							$doEventNewline = 1;
+						}
+
+						echo "<td><p class='bodyTextType1'><b>" . $event . "</b></p></td>";
 
 					}
+
+					echo "</tr>";
+					echo "</table>";
 
 				?>
 			</div>
