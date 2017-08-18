@@ -98,6 +98,28 @@ $name = $_SESSION['fullname'];
 				<p class="userDashSectionHeader">
 					My Events
 				</p>
+				<?php
+				//script stuff to get the user's events
+
+					require('../php/connect.php');
+
+					//get user's email
+					$query="SELECT event FROM teams WHERE member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name'";
+
+					$result = mysql_query($query);
+
+					if (!$result){
+						die('Error: ' . mysql_error());
+					}
+
+					while(list($event) = mysql_fetch_array($result)){
+
+						//$email = unserialize($email);
+						echo "<br><p class='bodyTextType1'><b>" . $event . "</b></p>";
+
+					}
+
+				?>
 			</div>
 			<div class="userDashSection" style="height:250px;">
 				<p class="userDashSectionHeader">
