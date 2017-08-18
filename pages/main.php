@@ -30,6 +30,35 @@ if(isset($_POST['newTask'])){
 
 }
 
+if(isset($_POST['done'])){
+
+	//variables assignment
+	$taskName = addslashes($_POST['task']);
+	$taskEvent = addslashes($_POST['event']);
+	$taskUser = addslashes($_SESSION['fullname']);
+
+	//check for task status update
+	if(isset($_POST['done'])){
+		$done = $_POST['done'];
+	}
+	else{
+		$done = "no";
+	}
+
+	require('../php/connect.php');
+
+	$query = "UPDATE tasks SET done='$done' WHERE user='$taskUser' AND event='$taskEvent' AND task='$taskName'";
+
+	$result = mysql_query($query);
+
+	if (!$result){
+		die('Error: ' . mysql_error());
+	}
+
+	mysql_close();
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -190,6 +219,8 @@ if(isset($_POST['newTask'])){
 
 						// /require('../php/connect.php');
 
+						echo "<br>";
+
 						$checkName = addslashes($_SESSION['fullname']);
 						$checkEvent = addslashes($event);
 
@@ -210,8 +241,17 @@ if(isset($_POST['newTask'])){
 						//for each task
 						while(list($id, $task, $done) = mysql_fetch_array($taskResult)){
 							echo "<br>";
-							echo "<input style='padding-left:20px;' type='checkbox' checked>";
+							echo "<form method='post'>";
+							echo "<input type='hidden' name='event' value='" . $event . "'>";
+							echo "<input type='hidden' name='task' value='" . $task . "'>";
+							if($done == "yes"){
+								echo "<input style='padding-left:20px;' name='done' type='checkbox' value='yes' onchange='this.form.submit()' checked>";
+							}
+							else{
+								echo "<input style='padding-left:20px;' name='done' type='checkbox' value='yes' onchange='this.form.submit()'>";
+							}
 							echo "<p style='padding-left:20px; display:inline-block;'>" . $task . "</p>";
+							echo "</form>";
 						}
 
 
