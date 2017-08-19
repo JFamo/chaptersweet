@@ -199,17 +199,9 @@ $(window).scroll(function () {
 
   if(document.body.scrollTop > 250){
     eventPointsDiv.style.position = "fixed";
-    eventPointsDiv.style.backgroundColor = "#B60000";
-    eventPointsDiv.style.borderRadius = "15px";
-    eventPointsDiv.style.width = "175px";
-    eventPointsDiv.style.height = "25px";
   }
   else{
     eventPointsDiv.style.position = "static";
-    eventPointsDiv.style.backgroundColor = "transparent";
-    eventPointsDiv.style.borderRadius = "0px";
-    eventPointsDiv.style.width = "auto";
-    eventPointsDiv.style.height = "auto";
   }
 
 });

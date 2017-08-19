@@ -200,7 +200,7 @@ if(isset($_POST['done'])){
 							$doEventNewline = 1;
 						}
 
-						echo "<td style='width:225px;'>
+						echo "<td style='width:225px; position:relative;'>
 							<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
 							<a id="newTaskLink" href='#'>New Task+</a>
 							<div id="newTaskDiv">
