@@ -119,7 +119,7 @@ if(isset($_POST['done'])){
 				<?php
 				if($rank == "admin"){
 				?>
-			<span><a href="assignpoints.php"><img src="../imgs/icon_users.png" height="64" width="64"><p class="bodyTextType1">Users</p></a></span>
+			<span><a href="users.php"><img src="../imgs/icon_users.png" height="64" width="64"><p class="bodyTextType1">Users</p></a></span>
 				<?php
 				}
 				?>
@@ -147,6 +147,7 @@ if(isset($_POST['done'])){
 			<tr class="columnsRow">
 			<td class="columns">
 			<div class="userDashSection" style="height:550px; overflow:visible;">
+			<div style="padding-left: 20px;">
 				<p class="userDashSectionHeader">
 					My Events
 				</p>
@@ -263,6 +264,7 @@ if(isset($_POST['done'])){
 					echo "</table>";
 
 				?>
+			</div>
 			</div>
 			<div class="userDashSection" style="height:250px;">
 				<p class="userDashSectionHeader">

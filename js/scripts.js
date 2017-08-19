@@ -213,3 +213,15 @@ $(window).scroll(function () {
   }
 
 });
+
+$('input[class="noCheckBox"]').click(function(event) {
+    var $checkbox = $(this);
+
+    // Ensures this code runs AFTER the browser handles click however it wants.
+    setTimeout(function() {
+      //$checkbox.removeAttr('checked');
+    }, 0);
+
+    event.preventDefault();
+    event.stopPropagation();
+});
