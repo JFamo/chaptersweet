@@ -25,10 +25,10 @@ if(isSet($email3)){
 
 $sql = "INSERT INTO users (fullname, username, password, email, grade) VALUES ('$value1', '$value2', '$value3', '$value4', '$value5')";
 
-if (!mysql_query($sql)){
-	die('Error: ' . mysql_error());
+if (!mysqli_query($link, $sql)){
+	die('Error: ' . mysql_error($link));
 }
 
-mysql_close();
+mysql_close($link);
 
 ?>
