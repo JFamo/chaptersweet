@@ -12,24 +12,24 @@ if(isset($_POST['username']) and isset($_POST['password'])){
 
 	$query = "SELECT * FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
 
-	$result = mysql_query($query);
+	$result = mysqli_query($query);
 
 	if (!$result){
-		die('Error: ' . mysql_error());
+		die('Error: ' . mysqli_error());
 	}
 
-	$count = mysql_num_rows($result);
+	$count = mysqli_num_rows($result);
 
 	if($count == 1){
 
 		//fetch the rank of that user
 		$query2 = "SELECT fullname, rank, grade, eventpoints FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
-		$result2 = mysql_query($query2);
+		$result2 = mysqli_query($query2);
 		if (!$result2){
-			die('Error: ' . mysql_error());
+			die('Error: ' . mysqli_error());
 		}
 
-		list($fullnameValue, $rankValue, $gradeValue, $eventPointsValue) = mysql_fetch_array($result2);
+		list($fullnameValue, $rankValue, $gradeValue, $eventPointsValue) = mysqli_fetch_array($result2);
 
 		$_SESSION['username'] = $sessionUsername;
 		$_SESSION['rank'] = $rankValue;
@@ -106,17 +106,17 @@ if(isset($_SESSION['username'])){
 
 				$query="SELECT id, title, body, poster, date FROM announcements ORDER BY id DESC";
 
-				$result = mysql_query($query);
+				$result = mysqli_query($query);
 
 				if (!$result){
-					die('Error: ' . mysql_error());
+					die('Error: ' . mysqli_error());
 				}		
 
 				if(mysql_num_rows($result) == 0){
 					echo "No Articles Found!<br>";
 				}
 				else{
-					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
+					while(list($id, $title, $body, $poster, $date) = mysqli_fetch_array($result)){
 						?>
 
 						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:60px; padding-top:10px;"><?php echo "".$title ?></p>
@@ -133,7 +133,7 @@ if(isset($_SESSION['username'])){
 					}
 				}
 						
-				mysql_close();
+				mysqli_close();
 
 				?>
 		</td>

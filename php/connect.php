@@ -2,16 +2,16 @@
 
 require_once('config.php');
 
-$link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD);
+$link = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD);
 
 if (!$link){
-	die('Could not connect: ' . mysql_error());
+	die('Could not connect: ' . mysqli_error());
 }
 
-$db_selected = mysql_select_db(DB_NAME,$link);
+$db_selected = mysqli_select_db($link,DB_NAME);
 
 if (!$db_selected){
-	die('Connot use: ' . mysql_error());
+	die('Connot use: ' . mysqli_error());
 }
 
 ?>
