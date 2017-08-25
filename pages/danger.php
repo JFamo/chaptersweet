@@ -121,6 +121,13 @@ if(isset($_POST['verify3'])){
 			die('Error: ' . mysqli_error($link));
 		}
 
+		//clear TASKS table
+		$sql = "DELETE FROM tasks";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+
 		//reset TEAMS id
 		$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
 
