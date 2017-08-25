@@ -20,13 +20,13 @@ if(isset($_POST['grade'])){
 
 		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='$grade'";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Added " . $points . " Event Points to Users in Grade " . $grade . " Successfully!";
 
-	mysql_close();
+	mysqli_close($link);
 
 }
 
@@ -41,13 +41,13 @@ if(isset($_POST['rank'])){
 
 		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE rank='$rank'";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Added " . $points . " Event Points to Users of Rank " . $rank . " Successfully!";
 
-	mysql_close();
+	mysqli_close($link);
 
 }
 
@@ -131,52 +131,52 @@ if(isset($_POST['viewEvents'])){
 					//get number of users
 					$query="SELECT id FROM users";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Total Users : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of admins
 					$query="SELECT id FROM users WHERE rank='admin'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Admins : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of officers
 					$query="SELECT id FROM users WHERE rank='officer'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Officers : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of members
 					$query="SELECT id FROM users WHERE rank='member'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Members : <b>" . $numUsers . "</b></p></span>";
 
@@ -192,56 +192,56 @@ if(isset($_POST['viewEvents'])){
 					//get number of 9th graders
 					$query="SELECT id FROM users WHERE grade='9'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Freshmen : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of 10th graders
 					$query="SELECT id FROM users WHERE grade='10'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Sophomores : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of 11th graders
 					$query="SELECT id FROM users WHERE grade='11'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Juniors : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of 12th graders
 					$query="SELECT id FROM users WHERE grade='12'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
-					$numUsers = mysql_num_rows($result);
+					$numUsers = mysqli_num_rows($result);
 
 					echo "<span><p class='bodyTextType1'>Seniors : <b>" . $numUsers . "</b></p></span>";
 
-					mysql_close();
+					mysqli_close($link);
 
 					?>
 
@@ -269,17 +269,17 @@ if(isset($_POST['viewEvents'])){
 				//get points
 				$query="SELECT id, fullname, grade, rank, eventpoints FROM users";
 
-				$result = mysql_query($query);
+				$result = mysqli_query($link, $query);
 
 				if (!$result){
-					die('Error: ' . mysql_error());
+					die('Error: ' . mysqli_error($link));
 				}
 
-				if(mysql_num_rows($result) == 0){
+				if(mysqli_num_rows($result) == 0){
 					echo "No Users Found!<br>";
 				}
 				else{
-					while(list($id, $fullname, $grade, $rank, $eventpoints) = mysql_fetch_array($result)){
+					while(list($id, $fullname, $grade, $rank, $eventpoints) = mysqli_fetch_array($result)){
 						?>
 
 						<tr class="userRow">
@@ -294,15 +294,15 @@ if(isset($_POST['viewEvents'])){
 							//get user's events
 							$eventsQuery="SELECT event FROM teams WHERE member1='$fullname' OR member2='$fullname' OR member3='$fullname' OR member4='$fullname' OR member5='$fullname' OR member6='$fullname'";
 
-							$eventsResult = mysql_query($eventsQuery);
+							$eventsResult = mysqli_query($link, $eventsQuery);
 
 							if (!$eventsResult){
-								die('Error: ' . mysql_error());
+								die('Error: ' . mysqli_error($link));
 							}
 
-							echo mysql_num_rows($eventsResult);
+							echo mysqli_num_rows($eventsResult);
 
-							mysql_close();
+							mysqli_close($link);
 
 						?></td>
 						<td style="width:140px; height:30px;"><?php echo "<b>".$eventpoints."</b>" ?></td>
@@ -338,14 +338,14 @@ if(isset($_POST['viewEvents'])){
 					//get user's events
 					$query="SELECT event FROM teams WHERE member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link, $query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
 					//check for users with no events
-					if(mysql_num_rows($result) == 0){
+					if(mysqli_num_rows($result) == 0){
 						echo "<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>User Is Not Registered For Any Events!</b></p>";
 					}
 
@@ -356,7 +356,7 @@ if(isset($_POST['viewEvents'])){
 					echo "<table>";
 					echo "<tr style='height: 225px; vertical-align: top;'>";
 
-					while(list($event) = mysql_fetch_array($result)){
+					while(list($event) = mysqli_fetch_array($result)){
 
 						$doEventNewline += 1;
 
@@ -378,19 +378,19 @@ if(isset($_POST['viewEvents'])){
 						//get user's tasks
 						$taskQuery="SELECT id, task, done FROM tasks WHERE user='$checkName' AND event='$checkEvent'";
 
-						$taskResult = mysql_query($taskQuery);
+						$taskResult = mysqli_query($link, $taskQuery);
 
 						if (!$taskResult){
-							die('Error: ' . mysql_error());
+							die('Error: ' . mysqli_error($link));
 						}
 
 						//check for users with no events
-						if(mysql_num_rows($taskResult) == 0){
+						if(mysqli_num_rows($taskResult) == 0){
 							echo "<p style='font-family:tahoma; font-size:12px; padding-left:20px; padding-top:15px;'>No Tasks!</p>";
 						}
 
 						//for each task
-						while(list($id, $task, $done) = mysql_fetch_array($taskResult)){
+						while(list($id, $task, $done) = mysqli_fetch_array($taskResult)){
 							echo "<br>";
 							echo "<form method='post'>";
 							echo "<input type='hidden' name='event' value='" . $event . "'>";

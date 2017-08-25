@@ -21,8 +21,8 @@ if(isset($_POST['verify'])){
 
 		$sql = "DELETE FROM users WHERE rank='$rankClear'";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Member Account Data Cleared Successfully!";
@@ -34,7 +34,7 @@ if(isset($_POST['verify'])){
 
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 }
 
@@ -50,8 +50,8 @@ if(isset($_POST['verify2'])){
 
 		$sql = "DELETE FROM minutes";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Minutes Data Cleared Successfully!";
@@ -63,7 +63,7 @@ if(isset($_POST['verify2'])){
 
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 }
 
@@ -79,8 +79,8 @@ if(isset($_POST['verify4'])){
 
 		$sql = "DELETE FROM announcements";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Announcements Data Cleared Successfully!";
@@ -92,7 +92,7 @@ if(isset($_POST['verify4'])){
 
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 }
 
@@ -110,35 +110,35 @@ if(isset($_POST['verify3'])){
 		//update the conference
 		$sql = "UPDATE settings SET value='$conference' WHERE name='conference'";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 
 		//clear TEAMS table
 		$sql = "DELETE FROM teams";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 
 		//reset TEAMS id
 		$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
 
-		if (!mysql_query($sql)){
-			die('Error: ' . mysql_error());
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
 		}
 
 		//get EVENTS data for the specified competition level
 		$query = "SELECT id, name, teams FROM events WHERE conference='$conference'";
 
-		$result = mysql_query($query);
+		$result = mysqli_query($link, $query);
 
 		if (!$result){
-			die('Error: ' . mysql_error());
+			die('Error: ' . mysqli_error($link));
 		}
 
 		//for each event at the current competition level
-		while(list($id, $name, $teams) = mysql_fetch_array($result)){
+		while(list($id, $name, $teams) = mysqli_fetch_array($result)){
 				
 			//for each team of each event
 			for($i = 1; $i <= $teams; $i++){
@@ -146,8 +146,8 @@ if(isset($_POST['verify3'])){
 				//add that event to the TEAMS table
 				$sql = "INSERT INTO teams (event, team) VALUES ('$name', '$i')";
 
-				if (!mysql_query($sql)){
-					die('Error: ' . mysql_error());
+				if (!mysqli_query($link, $sql)){
+					die('Error: ' . mysqli_error($link));
 				}
 
 			}
@@ -163,7 +163,7 @@ if(isset($_POST['verify3'])){
 
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 }
 
