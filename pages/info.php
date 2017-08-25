@@ -36,13 +36,13 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 
 	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster')";
 
-	$result = mysql_query($query);
+	$result = mysqli_query($link, $query);
 
 	if (!$result){
-		die('Error: ' . mysql_error());
+		die('Error: ' . mysqli_error($link));
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 	$fmsg =  "File ".$fileName." Uploaded Successfully!";
 
@@ -79,13 +79,13 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster, class) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster', '$class')";
 
-	$result = mysql_query($query);
+	$result = mysqli_query($link, $query);
 
 	if (!$result){
-		die('Error: ' . mysql_error());
+		die('Error: ' . mysqli_error($link));
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 	$fmsg =  "File ".$fileName." Uploaded Successfully!";
 
@@ -102,13 +102,13 @@ if(isset($_POST['body'])){
 
 	$query = "INSERT INTO announcements (title, body, poster, date) VALUES ('$articleTitle', '$articleBody', '$articlePoster', now())";
 
-	$result = mysql_query($query);
+	$result = mysqli_query($link, $query);
 
 	if (!$result){
-		die('Error: ' . mysql_error());
+		die('Error: ' . mysqli_error($link));
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 	$fmsg =  "Article '".$articleTitle."' Uploaded Successfully!";
 
@@ -215,15 +215,15 @@ if(isset($_POST['body'])){
 
 				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='file'";
 
-				$result = mysql_query($query);
+				$result = mysqli_query($link, $query);
 
 				if (!$result){
-					die('Error: ' . mysql_error());
+					die('Error: ' . mysqli_error($link));
 				}
 
 				$doMemberSkip = 0;
 
-				if(mysql_num_rows($result) == 0){
+				if(mysqli_num_rows($result) == 0){
 					echo "No Files Found!<br>";
 				}
 				else{
@@ -234,13 +234,13 @@ if(isset($_POST['body'])){
 
 						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel'";
 
-						$result2 = mysql_query($query2);
+						$result2 = mysqli_query($link, $query2);
 
 						if (!$result2){
-							die('Error: ' . mysql_error());
+							die('Error: ' . mysqli_error($link));
 						}
 
-						if(mysql_num_rows($result2) == 0){
+						if(mysqli_num_rows($result2) == 0){
 							$doMemberSkip = 1;
 						}
 
@@ -250,7 +250,7 @@ if(isset($_POST['body'])){
 							echo "No Files Found!<br>";
 					}
 					else{
-						while(list($id, $name, $date, $view, $poster) = mysql_fetch_array($result)){
+						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
 							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
 								?>
 							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
@@ -268,7 +268,7 @@ if(isset($_POST['body'])){
 					}
 				}
 						
-				mysql_close();
+				mysqli_close($link);
 
 				?>
 
@@ -308,15 +308,15 @@ if(isset($_POST['body'])){
 
 				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='minutes'";
 
-				$result = mysql_query($query);
+				$result = mysqli_query($link, $query);
 
 				if (!$result){
-					die('Error: ' . mysql_error());
+					die('Error: ' . mysqli_error($link));
 				}
 
 				$doMemberSkip = 0;
 
-				if(mysql_num_rows($result) == 0){
+				if(mysqli_num_rows($result) == 0){
 					echo "No Minutes Found!<br>";
 				}
 				else{
@@ -327,13 +327,13 @@ if(isset($_POST['body'])){
 
 						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel'";
 
-						$result2 = mysql_query($query2);
+						$result2 = mysqli_query($link, $query2);
 
 						if (!$result2){
-							die('Error: ' . mysql_error());
+							die('Error: ' . mysqli_error($link));
 						}
 
-						if(mysql_num_rows($result2) == 0){
+						if(mysqli_num_rows($result2) == 0){
 							$doMemberSkip = 1;
 						}
 
@@ -343,7 +343,7 @@ if(isset($_POST['body'])){
 							echo "No Minutes Found!<br>";
 					}
 					else{
-						while(list($id, $name, $date, $view, $poster) = mysql_fetch_array($result)){
+						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
 							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
 								?>
 							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
@@ -361,7 +361,7 @@ if(isset($_POST['body'])){
 					}
 				}
 						
-				mysql_close();
+				mysqli_close($link);
 
 				?>
 
@@ -386,17 +386,17 @@ if(isset($_POST['body'])){
 
 				$query="SELECT * FROM announcements ORDER BY id DESC";
 
-				$result = mysql_query($query);
+				$result = mysqli_query($link, $query);
 
 				if (!$result){
-					die('Error: ' . mysql_error());
+					die('Error: ' . mysqli_error($link));
 				}		
 
-				if(mysql_num_rows($result) == 0){
+				if(mysqli_num_rows($result) == 0){
 					echo "No Articles Found!<br>";
 				}
 				else{
-					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
+					while(list($id, $title, $body, $poster, $date) = mysqli_fetch_array($result)){
 						?>
 
 						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
@@ -413,7 +413,7 @@ if(isset($_POST['body'])){
 					}
 				}
 						
-				mysql_close();
+				mysqli_close($link);
 
 				?>
 				</div>
