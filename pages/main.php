@@ -18,13 +18,13 @@ if(isset($_POST['newTask'])){
 
 	$query = "INSERT INTO tasks (user, event, task) VALUES ('$taskUser', '$taskEvent', '$taskName')";
 
-	$result = mysql_query($query);
+	$result = mysqli_query($link,$query);
 
 	if (!$result){
-		die('Error: ' . mysql_error());
+		die('Error: ' . mysqli_error($link));
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 	$fmsg =  "Task '".$taskName."' Added Successfully!";
 
@@ -49,13 +49,13 @@ if(isset($_POST['done'])){
 
 	$query = "UPDATE tasks SET done='$done' WHERE user='$taskUser' AND event='$taskEvent' AND task='$taskName'";
 
-	$result = mysql_query($query);
+	$result = mysqli_query($link,$query);
 
 	if (!$result){
-		die('Error: ' . mysql_error());
+		die('Error: ' . mysqli_error($link));
 	}
 
-	mysql_close();
+	mysqli_close($link);
 
 }
 
@@ -172,14 +172,14 @@ if(isset($_POST['done'])){
 					//get user's events
 					$query="SELECT event FROM teams WHERE member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name'";
 
-					$result = mysql_query($query);
+					$result = mysqli_query($link,$query);
 
 					if (!$result){
-						die('Error: ' . mysql_error());
+						die('Error: ' . mysqli_error($link));
 					}
 
 					//check for users with no events
-					if(mysql_num_rows($result) == 0){
+					if(mysqli_num_rows($result) == 0){
 						echo "<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>You Are Not Registered For Any Events!</b></p>";
 					}
 
@@ -190,7 +190,7 @@ if(isset($_POST['done'])){
 					echo "<table>";
 					echo "<tr style='height: 225px; vertical-align: top;'>";
 
-					while(list($event) = mysql_fetch_array($result)){
+					while(list($event) = mysqli_fetch_array($result)){
 
 						$doEventNewline += 1;
 
@@ -228,19 +228,19 @@ if(isset($_POST['done'])){
 						//get user's tasks
 						$taskQuery="SELECT id, task, done FROM tasks WHERE user='$checkName' AND event='$checkEvent'";
 
-						$taskResult = mysql_query($taskQuery);
+						$taskResult = mysqli_query($link,$taskQuery);
 
 						if (!$taskResult){
-							die('Error: ' . mysql_error());
+							die('Error: ' . mysqli_error($link));
 						}
 
 						//check for users with no events
-						if(mysql_num_rows($taskResult) == 0){
+						if(mysqli_num_rows($taskResult) == 0){
 							echo "<p style='font-family:tahoma; font-size:12px; padding-left:20px; padding-top:15px;'>No Tasks!</p>";
 						}
 
 						//for each task
-						while(list($id, $task, $done) = mysql_fetch_array($taskResult)){
+						while(list($id, $task, $done) = mysqli_fetch_array($taskResult)){
 							echo "<br>";
 							echo "<form method='post'>";
 							echo "<input type='hidden' name='event' value='" . $event . "'>";
@@ -283,13 +283,13 @@ if(isset($_POST['done'])){
 						//get user's email
 						$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name'";
 
-						$emailresult = mysql_query($emailquery);
+						$emailresult = mysqli_query($link,$emailquery);
 
 						if (!$emailresult){
-							die('Error: ' . mysql_error());
+							die('Error: ' . mysqli_error($link));
 						}
 
-						list($email) = mysql_fetch_array($emailresult); 
+						list($email) = mysqli_fetch_array($emailresult); 
 
 						//$email = unserialize($email);
 						echo $email;
@@ -312,17 +312,17 @@ if(isset($_POST['done'])){
 
 				$query="SELECT * FROM announcements ORDER BY id DESC";
 
-				$result = mysql_query($query);
+				$result = mysqli_query($link,$query);
 
 				if (!$result){
-					die('Error: ' . mysql_error());
+					die('Error: ' . mysqli_error($link));
 				}		
 
-				if(mysql_num_rows($result) == 0){
+				if(mysqli_num_rows($result) == 0){
 					echo "No Articles Found!<br>";
 				}
 				else{
-					while(list($id, $title, $body, $poster, $date) = mysql_fetch_array($result)){
+					while(list($id, $title, $body, $poster, $date) = mysqli_fetch_array($result)){
 						?>
 
 						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
@@ -339,7 +339,7 @@ if(isset($_POST['done'])){
 					}
 				}
 						
-				mysql_close();
+				mysqli_close($link);
 
 				?>
 			</div>
