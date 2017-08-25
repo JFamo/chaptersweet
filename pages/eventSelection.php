@@ -15,13 +15,13 @@ if(isset($_POST['slot'])){
 	//get user's eventpoints
 	$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
 
-	$pointsresult = mysql_query($pointsquery);
+	$pointsresult = mysqli_query($link,$pointsquery);
 
 	if (!$pointsresult){
-		die('Error: ' . mysql_error());
+		die('Error: ' . mysqli_error($link));
 	}
 
-	list($eventpoints) = mysql_fetch_array($pointsresult);
+	list($eventpoints) = mysqli_fetch_array($pointsresult);
 
 	//if the user has event points
 	if($eventpoints > 0){
@@ -42,14 +42,14 @@ if(isset($_POST['slot'])){
 			//check if user is already in that event
 			$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name'";
 
-			$checkEventResult = mysql_query($checkEventSql);
+			$checkEventResult = mysqli_query($link,$checkEventSql);
 
 			if (!$checkEventResult){
-				die('Error: ' . mysql_error());
+				die('Error: ' . mysqli_error($link));
 			}
 
 			//for each team of the event the user is trying to enter
-			while(list($member1, $member2, $member3, $member4, $member5, $member6) = mysql_fetch_array($checkEventResult)){
+			while(list($member1, $member2, $member3, $member4, $member5, $member6) = mysqli_fetch_array($checkEventResult)){
 				if($member1 == $fullname || $member2 == $fullname || $member3 == $fullname || $member4 == $fullname || $member5 == $fullname || $member6 == $fullname){
 					$alreadyInEvent = "yes";
 				}
@@ -61,8 +61,8 @@ if(isset($_POST['slot'])){
 				//add the user to that team
 				$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
 
-				if (!mysql_query($sql)){
-					die('Error: ' . mysql_error());
+				if (!mysqli_query($link,$sql)){
+					die('Error: ' . mysqli_error($link));
 				}
 
 				//decrease event points
@@ -70,8 +70,8 @@ if(isset($_POST['slot'])){
 
 				$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname'";
 
-				if (!mysql_query($eventSql)){
-					die('Error: ' . mysql_error());
+				if (!mysqli_query($link,$eventSql)){
+					die('Error: ' . mysqli_error($link));
 				}
 
 			}else{
@@ -80,7 +80,7 @@ if(isset($_POST['slot'])){
 			}
 		}
 	}
-	mysql_close();
+	mysqli_close($link);
 }
 
 ?>

@@ -11,24 +11,24 @@ $sessionName = $_SESSION['fullname'];
 //get the conference
 $conferencequery="SELECT value FROM settings WHERE name='conference'";
 
-$conferenceresult = mysql_query($conferencequery);
+$conferenceresult = mysqli_query($link, $conferencequery);
 
 if (!$conferenceresult){
-	die('Error: ' . mysql_error());
+	die('Error: ' . mysqli_error($link));
 }
 
-list($conference) = mysql_fetch_array($conferenceresult);
+list($conference) = mysqli_fetch_array($conferenceresult);
 
 //actually update events
 $query="SELECT id, name, membermin, membermax, teams FROM events WHERE conference='$conference'";
 
-$result = mysql_query($query);
+$result = mysqli_query($link, $query);
 
 if (!$result){
-	die('Error: ' . mysql_error());
+	die('Error: ' . mysqli_error($link));
 }
 
-if(mysql_num_rows($result) == 0){
+if(mysqli_num_rows($result) == 0){
 	$outputVar = $outputVar . "No Events Found!<br>";
 }
 else{
@@ -36,7 +36,7 @@ else{
 	$outputVar = $outputVar . '<table class="eventTable">';
 
 	//for each database row
-	while(list($id, $name, $membermin, $membermax, $teams) = mysql_fetch_array($result)){
+	while(list($id, $name, $membermin, $membermax, $teams) = mysqli_fetch_array($result)){
 
 		$outputVar = $outputVar . ' <tr><td></td>';
 
@@ -69,13 +69,13 @@ else{
 
 				$eventquery="SELECT $memberCheck FROM teams WHERE event='$name' AND team='$i'";
 
-				$eventresult = mysql_query($eventquery);
+				$eventresult = mysqli_query($link, $eventquery);
 
 				if (!$eventresult){
-					die('Error: ' . mysql_error());
+					die('Error: ' . mysqli_error($link));
 				}
 
-				list($memberUse) = mysql_fetch_array($eventresult);
+				list($memberUse) = mysqli_fetch_array($eventresult);
 				//this will give value to the OPEN field, stating if an event slot is available
 					if(is_null($memberUse)){
 						$isOpen = "yes";
@@ -102,6 +102,6 @@ else{
 
 echo "" . $outputVar;
 		
-mysql_close();
+mysqli_close($link);
 
 ?>
