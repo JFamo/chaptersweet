@@ -78,6 +78,15 @@ for (i = 0; i < acc.length; i++) {
       });
     });
 
+//event confirmation email button
+$('.confirmEventsButton').click(function(){
+      var ajaxurl = '../php/confirmEventsEmail.php',
+      data =  { };
+      $.post(ajaxurl, data, function (response) {
+          alert("Confirmation Emails Sent Successfully!");
+      });
+  });
+
 //get info page tab variables
 var filesDiv = document.getElementById("filesDiv");
 var minutesDiv = document.getElementById("minutesDiv");

@@ -127,6 +127,13 @@ if(isset($_POST['slot'])){
 					<?php
 					}
 					?>
+					<?php
+					if($rank == "admin" || $rank == "officer"){
+					?>
+						<button id="confirmEventsButton" name="confirmEventsButton" class="utilityButton">Email Event Confirmation</button>
+					<?php
+					}
+					?>
 					<p class = "bodyTextType1">
 
 						<?php
