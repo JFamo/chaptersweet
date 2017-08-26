@@ -146,7 +146,7 @@ if(isset($_POST['done'])){
 			<table class="columnsTable">
 			<tr class="columnsRow">
 			<td class="columns">
-			<div class="userDashSection" style="height:550px; overflow:visible;">
+			<div class="userDashSection" style="height:550px; overflow:auto;">
 			<div style="padding-left: 20px;">
 				<p class="userDashSectionHeader">
 					My Events
@@ -205,13 +205,13 @@ if(isset($_POST['done'])){
 							<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
 							<a id="newTaskLink" href='#'>New Task+</a>
 							<div id="newTaskDiv">
-								<form method="post">
+								<form method="post" style="font-family:tahoma;">
 									<b>New Task</b>
 									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
 									<br><br>
-									Name:<input type="text" id="name" name="name" style="width:125px"/>
+									Name:<input type="text" id="name" name="name" style="width:125px" required />
 									<br><br>
-									<input type="submit" value="Create" name="newTask" id="newTask"/>
+									<input type="submit" value="Create" name="newTask" style="font-family:tahoma;" id="newTask"/>
 								</form>
 							</div>
 						<?php 

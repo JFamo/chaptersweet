@@ -60,6 +60,26 @@ if(isset($_POST['viewEvents'])){
 
 }
 
+//function to change user rank
+if(isset($_POST['promoteUser'])){
+
+	$user = $_POST['thisUser'];
+	$newRank = $_POST['newRank'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET rank='$newRank' WHERE fullname='$user'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Changed " . $user . " to Rank " . ucfirst($newRank) . " Successfully!";
+
+	mysqli_close($link);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -259,7 +279,7 @@ if(isset($_POST['viewEvents'])){
 						<td style="width:120px; height:30px;"><b>Rank</b></td>
 						<td style="width:140px; height:30px;"><b>Events</b></td>
 						<td style="width:140px; height:30px;"><b>Event Points</b></td>
-						<td style="width:180px; height:30px;"><b>Options</b></td>
+						<td style="width:300px; height:30px;"><b>Options</b></td>
 						
 					</tr>
 				<?php
@@ -306,11 +326,24 @@ if(isset($_POST['viewEvents'])){
 
 						?></td>
 						<td style="width:140px; height:30px;"><?php echo "<b>".$eventpoints."</b>" ?></td>
-						<td style="width:180px; height:30px;">	
-							<form method="post">
+						<td style="width:300px; height:30px;">	
+							<form method="post" style="float:left; padding-right:20px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="submit" name="viewEvents" value="View Events" />
 							</form>
+							<?php if($rank != "admin"){ ?>
+							<form method="post" style="float:left;">
+								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+								<input type="hidden" name="newRank" value="<?php 
+									if($rank=='member'){ echo 'officer'; }
+									if($rank=='officer'){ echo 'member'; } 
+								?>" />
+								<input type="submit" name="promoteUser" value="Make <?php 
+									if($rank=='member'){ echo 'Officer'; }
+									if($rank=='officer'){ echo 'Member'; } 
+								?>" />
+							</form>
+							<?php } ?>
 						</td>
 						
 						</tr>
@@ -372,7 +405,7 @@ if(isset($_POST['viewEvents'])){
 
 						echo "<br>";
 
-						$checkName = addslashes($_SESSION['fullname']);
+						$checkName = addslashes($eventsUser);
 						$checkEvent = addslashes($event);
 
 						//get user's tasks
