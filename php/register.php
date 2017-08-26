@@ -29,6 +29,28 @@ if (!mysqli_query($link, $sql)){
 	die('Error: ' . mysql_error($link));
 }
 
+$mailMessage = "
+<html>
+<h1>Chaptersweet Account Registration</h1>
+<p>Your account has been successfully registered with Chaptersweet.</p>
+<p>To get started, visit <a href='http://chaptersweet.x10host.com'>http://chaptersweet.x10host.com</a>.</p>
+<p>Your account <b>Name</b> is : </html> $value1 <html></p>
+<p>Your account <b>Username</b> is : </html> $value2 <html></p>
+<p>Your account <b>Grade</b> is : </html> $value5 <html></p>
+<p>If you have any questions or concerns, contact your advisor.</p>
+<p>This email is automated, do not attempt to respond.</p>
+</html>
+";
+
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+// More headers
+$headers .= 'From: Auto-Mail <chapters@xo7.x10hosting.com>' . "\r\n";
+
+
+mail($value4,"Chaptersweet Registration",$mailMessage,$headers);
+
 mysql_close($link);
 
 ?>
