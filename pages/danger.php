@@ -54,12 +54,12 @@ if(isset($_POST['verify2'])){
 			die('Error: ' . mysqli_error($link));
 		}
 		
-		$fmsg =  "Minutes Data Cleared Successfully!";
+		$fmsg =  "Minutes and Files Data Cleared Successfully!";
 
 	}
 	else{
 
-		$fmsg =  "Minutes Data Failed to Clear!";
+		$fmsg =  "Minutes and Files Data Failed to Clear!";
 
 	}
 
@@ -248,7 +248,7 @@ if(isset($_POST['verify3'])){
 				<br>
 				<br>
 
-				<button class="accordion">Clear Minutes Data</button>
+				<button class="accordion">Clear Minutes and Files Data</button>
 				<div class="panel" id="clearMinutesDiv">
 					<!--clear member account data tab-->
 					<form method="post" id="clearMinutesForm">
