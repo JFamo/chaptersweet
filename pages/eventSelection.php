@@ -130,7 +130,9 @@ if(isset($_POST['slot'])){
 					<?php
 					if($rank == "admin" || $rank == "officer"){
 					?>
-						<button id="confirmEventsButton" name="confirmEventsButton" class="utilityButton">Email Event Confirmation</button>
+						<form method="post" action="../php/confirmEventsEmail.php">
+							<input type="submit" id="confirmEventsButton" name="confirmEventsButton" value="Email Event Confirmation" class="utilityButton" />
+						</form>
 					<?php
 					}
 					?>
