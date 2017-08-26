@@ -419,13 +419,7 @@ if(isset($_POST['body'])){
 				</div>
 
 				</div>
-
-				<?php
-
-				if($rank == "officer" || $rank == "admin"){
-
-				?>
-
+				
 				<!--ANNOUNCE-->
 				<div id="postDiv" style="display:none;" class="infoTab">
 
@@ -452,12 +446,6 @@ if(isset($_POST['body'])){
 				</form>
 
 				</div>
-
-				<?php
-
-				}
-
-				?>
 
 			</center>
 			</div>
