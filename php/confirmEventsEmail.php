@@ -57,10 +57,7 @@ while(list($fullname, $email) = mysqli_fetch_array($result)){
 	// More headers
 	$headers .= 'From: Auto-Mail <chapters@xo7.x10hosting.com>' . "\r\n";
 
-	//temportary thingy
-	if($email == "joshua.famous@gmail.com"){
-		mail($email,"TSA Regional Events",$mailMessage,$headers);
-	}
+	mail($email,"TSA Regional Events",$mailMessage,$headers);
 
 }
 
