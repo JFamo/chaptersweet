@@ -7,6 +7,21 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
+//EMAIL PERMISSION
+require('../php/connect.php');
+
+$query="SELECT value FROM settings WHERE name='officerEmailPermission'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$emailPerm = $perm;
+
 //functions for event signup
 if(isset($_POST['slot'])){
 
@@ -128,7 +143,7 @@ if(isset($_POST['slot'])){
 					}
 					?>
 					<?php
-					if($rank == "admin" || $rank == "officer"){
+					if($rank == "admin" || ($rank == "officer" && $emailPerm == "yes")){
 					?>
 						<form method="post" action="../php/confirmEventsEmail.php">
 							<input type="submit" id="confirmEventsButton" name="confirmEventsButton" value="Email Event Confirmation" class="utilityButton" />

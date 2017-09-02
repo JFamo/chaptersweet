@@ -9,6 +9,7 @@ $fullname = $_SESSION['fullname'];
 //get permission settings
 require('../php/connect.php');
 
+//INFO POSTING
 $query="SELECT value FROM settings WHERE name='officerInfoPermission'";
 
 $result = mysqli_query($link, $query);
@@ -20,6 +21,19 @@ if (!$result){
 //save the result
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
+
+//EMAIL
+$query="SELECT value FROM settings WHERE name='officerEmailPermission'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$emailPerm = $perm;
 
 //file uploading
 if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
@@ -501,11 +515,14 @@ $articleBody
 					<br>
 					<textarea form="articleWriteForm" cols="110" rows="15" name="body" id="body"></textarea>
 					<br><br>
+					<?php 
+					if(($rank == "officer" && $emailPerm == "yes") || $rank == "admin"){ ?>
 					<select id="mail" name="mail">
 							<option value="no">Do Not Email</option>
 							<option value="yes">Send As Email</option>
 					</select>
 					<br><br>
+					<?php } ?>
 					<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Post">
 				</form>
 

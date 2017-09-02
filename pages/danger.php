@@ -194,6 +194,26 @@ if(isset($_POST['officerInfoPerm'])){
 
 }
 
+//function for updating Officer Info Permission Setting
+if(isset($_POST['officerEmailPerm'])){
+
+	//file viewability
+	$level = $_POST['officerEmailPerm'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$level' WHERE name='officerEmailPermission'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Officer Permissions Updated!";
+
+	mysqli_close($link);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -292,6 +312,41 @@ if(isset($_POST['officerInfoPerm'])){
 						//save the result
 						list($perm) = mysqli_fetch_array($result);
 						$officerPerm = $perm;
+					?>
+					<br>
+
+					<!--officer email permission setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permission to Send Emails</b>
+						</span>
+						<span>
+							Permission:
+							<select id="officerEmailPerm" name="officerEmailPerm">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Set Permission">
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='officerEmailPermission'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$emailPerm = $perm;
 					?>
 					<br>
 
@@ -398,7 +453,7 @@ if(isset($_POST['officerInfoPerm'])){
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
-	updateSettings( <?php echo(json_encode($officerPerm)); ?> );
+	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm)); ?> );
 </script>
 
 </html>
