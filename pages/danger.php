@@ -214,6 +214,26 @@ if(isset($_POST['officerEmailPerm'])){
 
 }
 
+//function for blocking pages
+if(isset($_POST['blockedPages'])){
+
+	//file viewability
+	$level = $_POST['blockedPages'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$level' WHERE name='blockPages'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Blocked Pages Updated!";
+
+	mysqli_close($link);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -350,6 +370,43 @@ if(isset($_POST['officerEmailPerm'])){
 					?>
 					<br>
 
+					<!--blocked pages setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Pages Blocked to Members</b>
+						</span>
+						<span>
+							Pages:
+							<select id="blockedPages" name="blockedPages">
+								<option value="none">None</option>
+								<option value="events">Event Selection</option>
+								<option value="info">Information</option>
+								<option value="all">All</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Update">
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='blockPages'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$blockPages = $perm;
+					?>
+					<br>
+
 				<br></div>
 				<!--Data Management-->
 				<div class="adminDataSection">
@@ -453,7 +510,7 @@ if(isset($_POST['officerEmailPerm'])){
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
-	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm)); ?> );
+	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages)); ?> );
 </script>
 
 </html>

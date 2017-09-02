@@ -59,6 +59,22 @@ if(isset($_POST['done'])){
 
 }
 
+//get permission settings
+require('../php/connect.php');
+
+//BLOCKED PAGES
+$query="SELECT value FROM settings WHERE name='blockPages'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$blockedPages = $perm;
+
 ?>
 
 <!DOCTYPE html>
@@ -112,9 +128,21 @@ if(isset($_POST['done'])){
 		<div class="iconLinks">
 
 		<!--Events-->
+				<?php
+				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin"){
+				?>
 			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="64" width="64"><p class="bodyTextType1">Event Selection</p></a></span>
+				<?php
+				}
+				?>
 		<!--Minutes-->
+				<?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin"){
+				?>
 			<span><a href="info.php"><img src="../imgs/icon_info.png" height="64" width="64"><p class="bodyTextType1">Information</p></a></span>
+				<?php
+				}
+				?>
 		<!--Users-->
 				<?php
 				if($rank == "admin"){
