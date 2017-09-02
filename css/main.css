@@ -418,3 +418,23 @@ div.panel {
 .userRow:hover{
 	transform: scale(1.1);
 }
+
+.hoverForm:hover{
+	background-color: grey;
+}
+
+.basicSpanForm{
+	display:table;
+	table-layout: fixed;
+	padding-top:8px;
+	min-height: 40px;
+}
+
+.basicSpanForm span{
+	display: table-cell;
+	text-align: center;
+}
+
+.basicSpanForm:hover{
+	background-color: #ff5b5b;
+}

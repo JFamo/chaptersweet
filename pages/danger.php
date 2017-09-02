@@ -229,86 +229,101 @@ if(isset($_POST['verify3'])){
 						These settings are for ADMINS ONLY. They are <b> DANGEROUS </b> and have a risk of <b> OVERRIDING IMPORTANT DATA! </b> Proceed with caution, and verify that any function here is used intentionally.
 					</p>
 
-				<button class="accordion">Clear Member Account Data</button>
-				<div class="panel" id="clearMemberDiv">
+				<!--SETTINGS PANES-->
+				<center>
+				<!--General Settings-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Settings</p><br>
+
+				<br></div>
+				<!--Data Management-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Data Management</p><br>
+
 					<!--clear member account data tab-->
-					<form method="post" id="clearMemberForm">
-						<br>
-						Are You Sure? :
-						<select id="verify" name="verify">
-							<option value="no">No</option>
-							<option value="yes">Yes</option>
-						</select>
-						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Clear Data">
+					<form class="basicSpanForm" style="width:100%;" method="post" id="clearMemberForm">
+						<span>
+							<b>Clear Member Account Data</b>
+						</span>
+						<span>
+						</span>
+						<span>
+							Are You Sure? :
+							<select id="verify" name="verify">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Clear Data">
+						</span>
+					</form>
+					<br>
+					<!--clear minutes and files tab-->
+					<form class="basicSpanForm" style="width:100%;" method="post" id="clearMinutesForm">
+						<span>
+							<b>Clear Minutes and Files</b>
+						</span>
+						<span>
+						</span>
+						<span>
+							Are You Sure? :
+							<select id="verify2" name="verify2">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Clear Data">
+						</span>
+					</form>
+					<br>
+					<!--reset event selection tab-->
+					<form class="basicSpanForm" style="width:100%;" method="post" id="clearTeamsForm">
+						<span>
+							<b>Reset Event Selection and Teams</b>
+						</span>
+						<span>
+							Competition Level :
+							<select id="conference" name="conference">
+								<option value="regional">Regional</option>
+								<option value="state">State</option>
+								<option value="national">National</option>
+							</select>
+						</span>
+						<span>
+							Are You Sure? :
+							<select id="verify3" name="verify3">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Reset Data">
+						</span>
+					</form>
+					<br>
+					<!--clear announcements tab-->
+					<form class="basicSpanForm" style="width:100%;" method="post" id="clearAnnouncementsForm">
+						<span>
+							<b>Clear Announcements</b>
+						</span>
+						<span>
+						</span>
+						<span>
+							Are You Sure? :
+							<select id="verify4" name="verify4">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Clear Data">
+						</span>
 					</form>
 
-				</div>
-
-				<br>
-				<br>
-
-				<button class="accordion">Clear Minutes and Files Data</button>
-				<div class="panel" id="clearMinutesDiv">
-					<!--clear member account data tab-->
-					<form method="post" id="clearMinutesForm">
-						<br>
-						Are You Sure? :
-						<select id="verify2" name="verify2">
-							<option value="no">No</option>
-							<option value="yes">Yes</option>
-						</select>
-						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Clear Data">
-					</form>
-
-				</div>
-
-				<br>
-				<br>
-
-				<button class="accordion">Reset Event Selection</button>
-				<div class="panel" id="updateTeamsDiv">
-					<!--clear member account data tab-->
-					<form method="post" id="clearMinutesForm">
-						<br>
-						Competition Level :
-						<select id="conference" name="conference">
-							<option value="regional">Regional</option>
-							<option value="state">State</option>
-							<option value="national">National</option>
-						</select>
-						<br><br>
-						Are You Sure? :
-						<select id="verify3" name="verify3">
-							<option value="no">No</option>
-							<option value="yes">Yes</option>
-						</select>
-						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Reset">
-					</form>
-
-				</div>
-
-				<br>
-				<br>
-
-				<button class="accordion">Clear Announcements Data</button>
-				<div class="panel" id="clearAnnouncementsDiv">
-					<!--clear announcements data tab-->
-					<form method="post" id="clearMinutesForm">
-						<br>
-						Are You Sure? :
-						<select id="verify4" name="verify4">
-							<option value="no">No</option>
-							<option value="yes">Yes</option>
-						</select>
-						<br><br>
-						<input class="submitButton" type="submit" class="box" style="background-color:#B60000;" value="Clear Data">
-					</form>
-
-				</div>
-
+				<br></div>
+				
 			</div>
 
 <!--Spooky stuff at the bottom-->
