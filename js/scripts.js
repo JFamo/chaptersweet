@@ -234,3 +234,11 @@ $('input[class="noCheckBox"]').click(function(event) {
     event.preventDefault();
     event.stopPropagation();
 });
+
+//function to update Settings on Admin Page
+function updateSettings(permission){
+
+  var officerInfoPerm = document.getElementById('officerInfoPerm');
+  officerInfoPerm.value = permission;
+
+}

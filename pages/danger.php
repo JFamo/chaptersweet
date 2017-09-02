@@ -174,6 +174,26 @@ if(isset($_POST['verify3'])){
 
 }
 
+//function for updating Officer Info Permission Setting
+if(isset($_POST['officerInfoPerm'])){
+
+	//file viewability
+	$level = $_POST['officerInfoPerm'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$level' WHERE name='officerInfoPermission'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Officer Permissions Updated!";
+
+	mysqli_close($link);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -234,6 +254,46 @@ if(isset($_POST['verify3'])){
 				<!--General Settings-->
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Settings</p><br>
+
+					<!--officer info permission setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permissions for Info Posting</b>
+						</span>
+						<span>
+							Permission:
+							<select id="officerInfoPerm" name="officerInfoPerm">
+								<option value="all">All</option>
+								<option value="minutesFiles">Minutes and Files</option>
+								<option value="minutesAnnouncements">Minutes and Announcements</option>
+								<option value="filesAnnouncements">Files and Announcements</option>
+								<option value="minutes">Minutes Only</option>
+								<option value="files">Files Only</option>
+								<option value="announcements">Announcements Only</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Set Permission">
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$officerPerm = $perm;
+					?>
+					<br>
 
 				<br></div>
 				<!--Data Management-->
@@ -323,7 +383,7 @@ if(isset($_POST['verify3'])){
 					</form>
 
 				<br></div>
-				
+
 			</div>
 
 <!--Spooky stuff at the bottom-->
@@ -337,6 +397,9 @@ if(isset($_POST['verify3'])){
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
+<script type="text/javascript">
+	updateSettings( <?php echo(json_encode($officerPerm)); ?> );
+</script>
 
 </html>
 

@@ -6,6 +6,22 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
+//get permission settings
+require('../php/connect.php');
+
+$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$officerPerm = $perm;
+
+//file uploading
 if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 
 	//file details
@@ -218,7 +234,7 @@ $articleBody
 				<!--Announcements-->
 					<span onclick="showAnnouncements();"><a href="#"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
 				<!--Announce-->
-				<?php if($rank == "officer" || $rank == "admin"){ ?>
+				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin"){ ?>
 					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Post Announcement</p></a></span>
 				<?php } ?>
 
@@ -236,7 +252,7 @@ $articleBody
 					Here you can view all of your chapter's important files. Officers and Admins can upload new files.
 				</p>
 
-				<?php if($rank == "officer" || $rank == "admin"){ ?>
+				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "filesAnnouncements" || $officerPerm == "files")) || $rank == "admin"){ ?>
 					<form method="post" enctype="multipart/form-data" class="fileForm">
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
@@ -329,7 +345,7 @@ $articleBody
 					Here you can view the minutes of chapter meetings. The secretary can upload minutes here.
 				</p>
 
-				<?php if($rank == "officer" || $rank == "admin"){ ?>
+				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "minutesAnnouncements" || $officerPerm == "minutes")) || $rank == "admin"){ ?>
 					<form method="post" enctype="multipart/form-data" class="fileForm">
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
