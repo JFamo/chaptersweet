@@ -30,7 +30,7 @@ if(isset($_POST['grade'])){
 
 }
 
-//function to update points by grade
+//function to update points by rank
 if(isset($_POST['rank'])){
 
 	//file viewability
@@ -46,6 +46,35 @@ if(isset($_POST['rank'])){
 		}
 		
 		$fmsg =  "Added " . $points . " Event Points to Users of Rank " . $rank . " Successfully!";
+
+	mysqli_close($link);
+
+}
+
+//function to update points by group
+if(isset($_POST['group'])){
+
+	//file viewability
+	$group = $_POST['group'];
+	$points = $_POST['points'];
+
+	require('../php/connect.php');
+
+		if($group == "all"){
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points'";
+		}
+		if($group == "upper"){
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='11' OR grade='12'";
+		}
+		if($group == "lower"){
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='9' OR grade='10'";
+		}
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Added " . $points . " Event Points to Users of Group " . ucfirst($group) . " Successfully!";
 
 	mysqli_close($link);
 
@@ -140,6 +169,77 @@ if(isset($_POST['promoteUser'])){
 
 				<!--Users Table-->
 				<center>
+				<!--Points-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Assign Event Points</p><br>
+
+						<form class="basicSpanDiv" method="post" id="pointsGradeForm" style="width:100%;">
+							<span>
+							By Grade
+							</span>
+							<span>
+							Grade : 
+							<select id="grade" name="grade">
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
+							</span>
+							<span>
+							How Many Points :
+							<input type="number" id="points" name="points">
+							</span>
+							<span>
+							<input type="submit" class="box" value="Assign Points">
+							</span>
+						</form>
+						<br>
+						<form class="basicSpanDiv" method="post" id="pointsRankForm" style="width:100%;">
+							<span>
+							By Rank
+							</span>
+							<span>
+							Rank :
+							<select id="rank" name="rank">
+								<option value="member">Members</option>
+								<option value="officer">Officers</option>
+								<option value="admin">Admins</option>
+							</select>
+							</span>
+							<span>
+							How Many Points :
+							<input type="number" id="points" name="points">
+							</span>
+							<span>
+							<input type="submit" class="box" value="Assign Points">
+							</span>
+						</form>
+						<br>
+						<form class="basicSpanDiv" method="post" id="pointsAllForm" style="width:100%;">
+							<span>
+							By Group
+							</span>
+							<span>
+							Group :
+							<select id="group" name="group">
+								<option value="all">All</option>
+								<option value="upper">Upperclassmen</option>
+								<option value="lower">Lowerclassmen</option>
+							</select>
+							</span>
+							<span>
+							How Many Points :
+							<input type="number" id="points" name="points">
+							</span>
+							<span>
+							<input type="submit" class="box" value="Assign Points">
+							</span>
+						</form>
+
+				<br>
+				</div>
+				<!--Summary-->
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Summary</p>
 				<div class="basicSpanDiv">
@@ -450,51 +550,6 @@ if(isset($_POST['promoteUser'])){
 
 				</div>
 				</center>
-
-				<!--
-				<button class="accordion">Assign Points</button>
-				<div class="panel">
-					<br>
-
-					<button class="accordion" style="width:60%; font-size:20px; padding:12px, 36px; border-radius:2px;">By Grade</button>
-					<div class="panel">
-						<form method="post" id="pointsGradeForm">
-							<br>
-							Grade :
-							<select id="grade" name="grade">
-								<option value="9">9</option>
-								<option value="10">10</option>
-								<option value="11">11</option>
-								<option value="12">12</option>
-							</select>
-							<br><br>
-							How Many Points :
-							<input type="number" id="points" name="points">
-							<br><br>
-							<input class="submitButton" type="submit" class="box" value="Assign Points">
-						</form>
-					</div>
-					<br><br>
-
-					<button class="accordion" style="width:60%; font-size:20px; padding:12px, 36px; border-radius:2px;">By Rank</button>
-					<div class="panel">
-						<form method="post" id="pointsRankForm">
-							<br>
-							Rank :
-							<select id="rank" name="rank">
-								<option value="member">Members</option>
-								<option value="officer">Officers</option>
-								<option value="admin">Admins</option>
-							</select>
-							<br><br>
-							How Many Points :
-							<input type="number" id="points" name="points">
-							<br><br>
-							<input class="submitButton" type="submit" class="box" value="Assign Points">
-						</form>
-					</div>
-				</div>
-				-->
 
 			</div>
 
