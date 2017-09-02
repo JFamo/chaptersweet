@@ -72,6 +72,11 @@ if(isset($_SESSION['username'])){
 					Chapter Sweet
 				</p>
 		</header>
+		<form method="post" style="padding-top:5px; padding-left:5px;">
+			<input type="submit" value="Red" name="colorRed">
+			<input type="submit" value="Blue" name="colorBlue">
+			<input type="submit" value="Green" name="colorGreen">
+		</form>
 <!--Spooky stuff in the middle-->
 		<div id="contentPane" style="text-align:left;">
 		<table class="columnsTable">

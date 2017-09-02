@@ -373,10 +373,10 @@ if(isset($_POST['blockedPages'])){
 					<!--blocked pages setting-->
 					<form class="basicSpanForm" style="width:100%;" method="post">
 						<span>
-							<b>Pages Blocked to Members</b>
+							<b>Pages Blocked to Non-Admins</b>
 						</span>
 						<span>
-							Pages:
+							Blocked Pages:
 							<select id="blockedPages" name="blockedPages">
 								<option value="none">None</option>
 								<option value="events">Event Selection</option>
