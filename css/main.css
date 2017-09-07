@@ -285,6 +285,16 @@ div.panel {
 	table-layout: fixed;
 }
 
+.iconLinksMain{
+	height: 100px;
+}
+
+.iconLinksHeader{
+	width:50%;
+	padding-top:10px;
+	padding-left:25%;
+}
+
 .iconLinks span {
 	display: table-cell;
 	text-align: center;
@@ -382,6 +392,7 @@ div.panel {
 	top: 20px;
 	left: 80%;
 	background-color: transparent;
+	padding-top:5px;
 	border-radius: 0px;
 	height: auto;
 	width: auto;
@@ -414,7 +425,7 @@ div.panel {
 }
 
 .userRow:hover{
-	transform: scale(1.1);
+	background-color: #ff5b5b;
 }
 
 .hoverForm:hover{
@@ -435,4 +446,17 @@ div.panel {
 
 .basicSpanForm:hover{
 	background-color: #ff5b5b;
+}
+
+.basicSpanDiv:hover{
+	background-color: #ff5b5b;
+}
+
+.description{
+	font-size: 10px;
+	font-family: tahoma;
+	font-style: italic;
+}
+
+.usersTable{
 }

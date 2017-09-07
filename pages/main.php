@@ -97,10 +97,48 @@ $blockedPages = $perm;
 				<p class="titleText">
 					Chapter Sweet
 				</p>
+				<!--ICON LINKS DIV-->
 		</header>
 <!--Spooky stuff in the middle-->
 		<div id="contentPane">
 		<center>
+
+		<div class="iconLinksMain iconLinks">
+		<!--Events-->
+				<?php
+				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin"){
+				?>
+			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="32" width="32"><p class="bodyTextType1">Event Selection</p></a></span>
+				<?php
+				}
+				?>
+		<!--Minutes-->
+				<?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin"){
+				?>
+			<span><a href="info.php"><img src="../imgs/icon_info.png" height="32" width="32"><p class="bodyTextType1">Information</p></a></span>
+				<?php
+				}
+				?>
+		<!--Users-->
+				<?php
+				if($rank == "admin"){
+				?>
+			<span><a href="users.php"><img src="../imgs/icon_users.png" height="32" width="32"><p class="bodyTextType1">Users</p></a></span>
+				<?php
+				}
+				?>
+		<!--Logout-->
+			<span><a href="../php/logout.php"><img src="../imgs/icon_logout.png" height="32" width="32"><p class="bodyTextType1">Logout</p></a></span>
+		<!--Admin Settings-->
+				<?php
+				if($rank == "admin"){
+				?>
+			<span><a href="danger.php"><img src="../imgs/icon_settings.png" height="32" width="32"><p class="bodyTextType1">Admin Settings</p></a></span>
+				<?php
+				}
+				?>
+		</div>
 
 		<!--
 		<?php
@@ -123,46 +161,6 @@ $blockedPages = $perm;
 			}
 			?>
 		-->
-
-		<!--ICON LINKS DIV-->
-		<div class="iconLinks">
-
-		<!--Events-->
-				<?php
-				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin"){
-				?>
-			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="64" width="64"><p class="bodyTextType1">Event Selection</p></a></span>
-				<?php
-				}
-				?>
-		<!--Minutes-->
-				<?php
-				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin"){
-				?>
-			<span><a href="info.php"><img src="../imgs/icon_info.png" height="64" width="64"><p class="bodyTextType1">Information</p></a></span>
-				<?php
-				}
-				?>
-		<!--Users-->
-				<?php
-				if($rank == "admin"){
-				?>
-			<span><a href="users.php"><img src="../imgs/icon_users.png" height="64" width="64"><p class="bodyTextType1">Users</p></a></span>
-				<?php
-				}
-				?>
-		<!--Logout-->
-			<span><a href="../php/logout.php"><img src="../imgs/icon_logout.png" height="64" width="64"><p class="bodyTextType1">Logout</p></a></span>
-		<!--Admin Settings-->
-				<?php
-				if($rank == "admin"){
-				?>
-			<span><a href="danger.php"><img src="../imgs/icon_settings.png" height="64" width="64"><p class="bodyTextType1">Admin Settings</p></a></span>
-				<?php
-				}
-				?>
-
-		</div>
 
 		<!--USER DASH DIV-->
 		<div class="userDash">

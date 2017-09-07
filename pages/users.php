@@ -147,13 +147,13 @@ if(isset($_POST['promoteUser'])){
 				if(isset($fmsg)){
 				?>
 
-					<p class = "bodyTextType1">
+					<p class = "bodyTextType1"><b>
 
 					<?php
 					echo $fmsg;
 					?>
 
-					</p><br>
+					</b></p><br>
 
 				<?php
 				}
@@ -173,7 +173,7 @@ if(isset($_POST['promoteUser'])){
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Assign Event Points</p><br>
 
-						<form class="basicSpanDiv" method="post" id="pointsGradeForm" style="width:100%;">
+						<form class="basicSpanDiv" method="post" id="pointsGradeForm" style="width:100%; height:40px; padding-top:15px;">
 							<span>
 							By Grade
 							</span>
@@ -195,7 +195,7 @@ if(isset($_POST['promoteUser'])){
 							</span>
 						</form>
 						<br>
-						<form class="basicSpanDiv" method="post" id="pointsRankForm" style="width:100%;">
+						<form class="basicSpanDiv" method="post" id="pointsRankForm" style="width:100%; height:40px; padding-top:15px;">
 							<span>
 							By Rank
 							</span>
@@ -216,7 +216,7 @@ if(isset($_POST['promoteUser'])){
 							</span>
 						</form>
 						<br>
-						<form class="basicSpanDiv" method="post" id="pointsAllForm" style="width:100%;">
+						<form class="basicSpanDiv" method="post" id="pointsAllForm" style="width:100%; height:40px; padding-top:15px;">
 							<span>
 							By Group
 							</span>
@@ -371,7 +371,7 @@ if(isset($_POST['promoteUser'])){
 				<br>
 				<p class="userDashSectionHeader" style="padding-left:0px;">User Info</p>
 				<br>
-				<table>
+				<table class="usersTable" cellspacing="0" cellpadding="0">
 					<tr>
 
 						<td style="width:250px; height:30px;"><b>Name</b></td>

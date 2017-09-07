@@ -272,13 +272,13 @@ if(isset($_POST['blockedPages'])){
 				if(isset($fmsg)){
 				?>
 
-					<p class = "bodyTextType1">
+					<p class = "bodyTextType1"><b>
 
 					<?php
 					echo $fmsg;
 					?>
 
-					</p><br>
+					</b></p><br>
 
 				<?php
 				}
@@ -299,10 +299,12 @@ if(isset($_POST['blockedPages'])){
 					<form class="basicSpanForm" style="width:100%;" method="post">
 						<span>
 							<b>Officer Permissions for Info Posting</b>
+							<br>
+							<p class="description">Which types of information can officers add/post?</p>
 						</span>
 						<span>
 							Permission:
-							<select id="officerInfoPerm" name="officerInfoPerm">
+							<select id="officerInfoPerm" name="officerInfoPerm" onchange="this.form.submit()">
 								<option value="all">All</option>
 								<option value="minutesFiles">Minutes and Files</option>
 								<option value="minutesAnnouncements">Minutes and Announcements</option>
@@ -311,9 +313,6 @@ if(isset($_POST['blockedPages'])){
 								<option value="files">Files Only</option>
 								<option value="announcements">Announcements Only</option>
 							</select>
-						</span>
-						<span>
-							<input type="submit" class="box" value="Set Permission">
 						</span>
 					</form>
 					<?php
@@ -339,16 +338,15 @@ if(isset($_POST['blockedPages'])){
 					<form class="basicSpanForm" style="width:100%;" method="post">
 						<span>
 							<b>Officer Permission to Send Emails</b>
+							<br>
+							<p class="description">Can officers send emails to all members?</p>
 						</span>
 						<span>
 							Permission:
-							<select id="officerEmailPerm" name="officerEmailPerm">
+							<select id="officerEmailPerm" name="officerEmailPerm" onchange="this.form.submit()">
 								<option value="no">No</option>
 								<option value="yes">Yes</option>
 							</select>
-						</span>
-						<span>
-							<input type="submit" class="box" value="Set Permission">
 						</span>
 					</form>
 					<?php
@@ -374,18 +372,17 @@ if(isset($_POST['blockedPages'])){
 					<form class="basicSpanForm" style="width:100%;" method="post">
 						<span>
 							<b>Pages Blocked to Non-Admins</b>
+							<br>
+							<p class="description">Users Page and Admin Settings Page are blocked by default.</p>
 						</span>
 						<span>
 							Blocked Pages:
-							<select id="blockedPages" name="blockedPages">
+							<select id="blockedPages" name="blockedPages" onchange="this.form.submit()">
 								<option value="none">None</option>
 								<option value="events">Event Selection</option>
 								<option value="info">Information</option>
 								<option value="all">All</option>
 							</select>
-						</span>
-						<span>
-							<input type="submit" class="box" value="Update">
 						</span>
 					</form>
 					<?php
