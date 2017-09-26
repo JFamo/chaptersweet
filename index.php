@@ -46,6 +46,28 @@ if(isset($_POST['username']) and isset($_POST['password'])){
 
 }
 
+if(isset($_POST['code'])){
+
+	//Check Chapter Code
+	$codeSQL = "SELECT value FROM settings WHERE name='code'";
+
+	$codeResult = mysqli_query($link, $codeSQL);
+
+	if (!$codeResult){
+		die('Error: ' . mysql_error($link));
+	}
+
+	list($chapterCode) = mysqli_fetch_array($codeResult);
+
+	//if my code is correct
+	if(!($chapterCode == $valuec)){
+
+		$fmsg = "Invalid Chapter Code!";
+
+	}
+
+}
+
 if(isset($_SESSION['username'])){
 
 	header('Location: pages/main.php');
@@ -72,11 +94,11 @@ if(isset($_SESSION['username'])){
 					Chapter Sweet
 				</p>
 		</header>
-		<form method="post" style="padding-top:5px; padding-left:5px;">
+		<!--<form method="post" style="padding-top:5px; padding-left:5px;">
 			<input type="submit" value="Red" name="colorRed">
 			<input type="submit" value="Blue" name="colorBlue">
 			<input type="submit" value="Green" name="colorGreen">
-		</form>
+		</form>-->
 <!--Spooky stuff in the middle-->
 		<div id="contentPane" style="text-align:left;">
 		<table class="columnsTable">
@@ -169,7 +191,9 @@ if(isset($_SESSION['username'])){
 							<option value="10">10</option>
 							<option value="11">11</option>
 							<option value="12">12</option>
-						</select> <br><br>
+						</select> <br>
+					Enter your chapter code: <br>
+			  			<input class="input1" type="text" id="code" required/> <br><br>
     				<input class="inputButton1" type="submit" value="Register"/>
 
 				</form>

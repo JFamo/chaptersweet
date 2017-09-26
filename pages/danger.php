@@ -293,6 +293,29 @@ if(isset($_POST['blockedPages'])){
 				<center>
 				<!--General Settings-->
 				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Code</p><br>
+
+					<?php
+
+					require('../php/connect.php');
+
+					//get chapter code
+					$codeSQL = "SELECT value FROM settings WHERE name='code'";
+
+					$codeResult = mysqli_query($link, $codeSQL);
+
+					if (!$codeResult){
+						die('Error: ' . mysql_error($link));
+					}
+
+					list($chapterCode) = mysqli_fetch_array($codeResult);
+
+					echo "<p class='bodyTextType1'>".$chapterCode."</p>";
+
+					?>
+
+				<br></div>
+				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Settings</p><br>
 
 					<!--officer info permission setting-->

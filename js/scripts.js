@@ -70,7 +70,7 @@ for (i = 0; i < acc.length; i++) {
           url = $form.attr( 'action' );
 
       /* Send the data using post with element id name and name2*/
-      var posting = $.post( url, { fullname: $('#fullname').val(), username: $('#username').val(), password: $('#password').val(), email: $('#email').val(), grade: $('#grade').val() } );
+      var posting = $.post( url, { fullname: $('#fullname').val(), username: $('#username').val(), password: $('#password').val(), email: $('#email').val(), grade: $('#grade').val(), code: $('#code').val() } );
 
       /* Alerts the results */
       posting.done(function( data ) {
