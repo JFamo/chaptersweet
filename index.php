@@ -46,28 +46,6 @@ if(isset($_POST['username']) and isset($_POST['password'])){
 
 }
 
-if(isset($_POST['code'])){
-
-	//Check Chapter Code
-	$codeSQL = "SELECT value FROM settings WHERE name='code'";
-
-	$codeResult = mysqli_query($link, $codeSQL);
-
-	if (!$codeResult){
-		die('Error: ' . mysql_error($link));
-	}
-
-	list($chapterCode) = mysqli_fetch_array($codeResult);
-
-	//if my code is correct
-	if(!($chapterCode == $valuec)){
-
-		$fmsg = "Invalid Chapter Code!";
-
-	}
-
-}
-
 if(isset($_SESSION['username'])){
 
 	header('Location: pages/main.php');
