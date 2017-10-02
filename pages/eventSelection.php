@@ -7,6 +7,9 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
+//event deletion toggle
+$delevent = 0;
+
 //EMAIL PERMISSION
 require('../php/connect.php');
 
@@ -21,6 +24,16 @@ if (!$result){
 //save the result
 list($perm) = mysqli_fetch_array($result);
 $emailPerm = $perm;
+
+//function for deleting events
+if(isset($_POST['deleventOn'])){
+
+	if($delevent == 0){
+		$delevent == 1;
+		break;
+	}
+
+}
 
 //functions for event signup
 if(isset($_POST['slot'])){
@@ -133,7 +146,7 @@ if(isset($_POST['slot'])){
 
 <!--Description-->
 					<p class="bodyTextType1">
-						Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team.
+						Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team. Each red cell represents the minimum required members for a team.
 					</p>
 					<?php
 					if($rank == "admin" || $rank == "officer"){
@@ -147,6 +160,25 @@ if(isset($_POST['slot'])){
 					?>
 						<form method="post" action="../php/confirmEventsEmail.php">
 							<input type="submit" id="confirmEventsButton" name="confirmEventsButton" value="Email Event Confirmation" class="utilityButton" />
+						</form>
+					<?php
+					}
+					?>
+					<?php
+					if($rank == "admin" || ($rank == "officer" && $deleventPerm == "yes")){
+					?>
+						<form method="post" target="hideFrame">
+							<input type="hidden" id="deleventOn" name="deleventOn" value="blank" />
+							<input type="submit" value="
+<?php
+if($delevent == 1){
+	echo 'Clear Slot Mode Off';
+}
+else{
+	echo 'Clear Slot Mode On';
+}
+?>
+" class="utilityButton" />
 						</form>
 					<?php
 					}
