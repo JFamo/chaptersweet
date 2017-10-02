@@ -64,7 +64,7 @@ else{
 
 				$outputVar = $outputVar . ' <td style="background-color: ' . $cellColor . '; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';
 
-					//this is what shows up in each event slot
+				//this is what shows up in each event slot
 				$memberCheck = "member".$q;
 
 				$eventquery="SELECT $memberCheck FROM teams WHERE event='$name' AND team='$i'";

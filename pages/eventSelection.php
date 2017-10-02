@@ -28,10 +28,7 @@ $emailPerm = $perm;
 //function for deleting events
 if(isset($_POST['deleventOn'])){
 
-	if($delevent == 0){
-		$delevent == 1;
-		break;
-	}
+	$delevent = 1;
 
 }
 
@@ -40,74 +37,102 @@ if(isset($_POST['slot'])){
 
 	require('../php/connect.php');
 
-	//get user's eventpoints
-	$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
+	//check if this is a deletion or signup
+	if($delevent == 0){
 
-	$pointsresult = mysqli_query($link,$pointsquery);
+		//get user's eventpoints
+		$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
 
-	if (!$pointsresult){
-		die('Error: ' . mysqli_error($link));
+		$pointsresult = mysqli_query($link,$pointsquery);
+
+		if (!$pointsresult){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		list($eventpoints) = mysqli_fetch_array($pointsresult);
+
+		//if the user has event points
+		if($eventpoints > 0){
+
+			//method variables, save locally
+			$name = $_POST['name'];
+			$team = $_POST['team'];
+			$slot = $_POST['slot'];
+			$open = $_POST['open'];
+
+			//if this slot is open
+			if($open == "yes"){
+
+				//default variable values
+				$memberColumn = "member" . $slot;
+				$alreadyInEvent = "no";
+
+				//check if user is already in that event
+				$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name'";
+
+				$checkEventResult = mysqli_query($link,$checkEventSql);
+
+				if (!$checkEventResult){
+					die('Error: ' . mysqli_error($link));
+				}
+
+				//for each team of the event the user is trying to enter
+				while(list($member1, $member2, $member3, $member4, $member5, $member6) = mysqli_fetch_array($checkEventResult)){
+					if($member1 == $fullname || $member2 == $fullname || $member3 == $fullname || $member4 == $fullname || $member5 == $fullname || $member6 == $fullname){
+						$alreadyInEvent = "yes";
+					}
+				}
+
+				//only enter event if not already in it
+				if($alreadyInEvent == "no"){
+
+					//add the user to that team
+					$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
+
+					if (!mysqli_query($link,$sql)){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					//decrease event points
+					$newPoints = $eventpoints - 1;
+
+					$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname'";
+
+					if (!mysqli_query($link,$eventSql)){
+						die('Error: ' . mysqli_error($link));
+					}
+
+				}else{
+					//this occurs when user tries to double-register
+					$fmsg = "Already In Event!";
+				}
+			}
+		}
 	}
-
-	list($eventpoints) = mysqli_fetch_array($pointsresult);
-
-	//if the user has event points
-	if($eventpoints > 0){
-
-		//file viewability
+	else{
+		//this is a deletion
+		//method variables, save locally
 		$name = $_POST['name'];
 		$team = $_POST['team'];
 		$slot = $_POST['slot'];
 		$open = $_POST['open'];
 
-		//if this slot is open
-		if($open == "yes"){
+		//if this slot is occupied
+		if($open == "no"){
 
 			//default variable values
 			$memberColumn = "member" . $slot;
-			$alreadyInEvent = "no";
 
-			//check if user is already in that event
-			$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name'";
+			//add the user to that team
+			$sql = "UPDATE teams SET $memberColumn=NULL WHERE event='$name' AND team='$team' AND $memberColumn='$fullname'";
 
-			$checkEventResult = mysqli_query($link,$checkEventSql);
-
-			if (!$checkEventResult){
+			if (!mysqli_query($link,$sql)){
 				die('Error: ' . mysqli_error($link));
 			}
 
-			//for each team of the event the user is trying to enter
-			while(list($member1, $member2, $member3, $member4, $member5, $member6) = mysqli_fetch_array($checkEventResult)){
-				if($member1 == $fullname || $member2 == $fullname || $member3 == $fullname || $member4 == $fullname || $member5 == $fullname || $member6 == $fullname){
-					$alreadyInEvent = "yes";
-				}
-			}
-
-			//only enter event if not already in it
-			if($alreadyInEvent == "no"){
-
-				//add the user to that team
-				$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
-
-				if (!mysqli_query($link,$sql)){
-					die('Error: ' . mysqli_error($link));
-				}
-
-				//decrease event points
-				$newPoints = $eventpoints - 1;
-
-				$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname'";
-
-				if (!mysqli_query($link,$eventSql)){
-					die('Error: ' . mysqli_error($link));
-				}
-
-			}else{
-				//this occurs when user tries to double-register
-				$fmsg = "Already In Event!";
-			}
 		}
 	}
+
 	mysqli_close($link);
 }
 
@@ -169,16 +194,7 @@ if(isset($_POST['slot'])){
 					?>
 						<form method="post" target="hideFrame">
 							<input type="hidden" id="deleventOn" name="deleventOn" value="blank" />
-							<input type="submit" value="
-<?php
-if($delevent == 1){
-	echo 'Clear Slot Mode Off';
-}
-else{
-	echo 'Clear Slot Mode On';
-}
-?>
-" class="utilityButton" />
+							<input type="submit" value="Remove User From Slot" class="utilityButton" />
 						</form>
 					<?php
 					}
