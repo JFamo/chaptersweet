@@ -251,6 +251,10 @@ $articleBody
 				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin"){ ?>
 					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Post Announcement</p></a></span>
 				<?php } ?>
+				<!--Audit-->
+				<?php if($rank == "officer" || $rank == "admin"){ ?>
+					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Post Announcement</p></a></span>
+				<?php } ?>
 
 				</div>
 
