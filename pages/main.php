@@ -299,7 +299,24 @@ $blockedPages = $perm;
 				<p class="bodyTextType1">
 					<b>Full Name:</b> <?php echo $name ?>
 					<br><br>
-					<b>User Name:</b> <?php echo $username ?>
+					<b>Balance:</b> <?php 
+						require('../php/connect.php');
+
+						//get user's balance
+						//I copied this from email so variable names are weird
+						$emailquery="SELECT balance FROM users WHERE username='$username' AND fullname='$name'";
+
+						$emailresult = mysqli_query($link,$emailquery);
+
+						if (!$emailresult){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						list($email) = mysqli_fetch_array($emailresult); 
+
+						echo $email;
+
+						?>
 					<br><br>
 					<b>Grade:</b> <?php echo $grade ?>
 					<br><br>
