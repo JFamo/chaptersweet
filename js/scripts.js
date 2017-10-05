@@ -92,6 +92,7 @@ var filesDiv = document.getElementById("filesDiv");
 var minutesDiv = document.getElementById("minutesDiv");
 var announcementsDiv = document.getElementById('announcementsDiv');
 var announceDiv = document.getElementById('postDiv');
+var auditDiv = document.getElementById('auditDiv');
 var currentDiv = filesDiv;
 var inTransition = false;
 
@@ -149,6 +150,9 @@ function getDirection(goDiv){
   if(currentDiv == postDiv){
     myval = 4;
   }
+  if(currentDiv == auditDiv){
+    myval = 5;
+  }
   //get the target tab value
   if(goDiv == filesDiv){
     goval = 1;
@@ -161,6 +165,9 @@ function getDirection(goDiv){
   }
   if(goDiv == postDiv){
     goval = 4;
+  }
+  if(goDiv == auditDiv){
+    goval = 5;
   }
   //get the direction
   if(myval < goval){
@@ -196,6 +203,13 @@ function showAnnouncements(){
 function showPost(){
   if(!inTransition){
     changeInfoTab(postDiv, getDirection(postDiv));
+  }
+}
+
+//function for Information Page audit tab
+function showAudit(){
+  if(!inTransition){
+    changeInfoTab(auditDiv, getDirection(auditDiv));
   }
 }
 
