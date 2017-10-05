@@ -253,7 +253,7 @@ $articleBody
 				<?php } ?>
 				<!--Audit-->
 				<?php if($rank == "officer" || $rank == "admin"){ ?>
-					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Post Announcement</p></a></span>
+					<span onclick="showAudit();"><a href="#"><img src="../imgs/icon_audit.png" height="64" width="64"><p class="bodyTextType1">Audit</p></a></span>
 				<?php } ?>
 
 				</div>
@@ -529,6 +529,20 @@ $articleBody
 					<?php } ?>
 					<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Post">
 				</form>
+
+				</div>
+
+				<!--AUDIT-->
+				<div id="auditDiv" style="display:none;" class="infoTab">
+
+				<div class="userDashHeader" style="width:80%;">
+					<p class="subTitleText" style="padding-top:15px">Audit</p>
+				</div>
+
+				<!--Description-->
+				<p class="bodyTextType1">
+					Officers and Admins can view the audit, and make withdrawals and deposits here.
+				</p>
 
 				</div>
 
