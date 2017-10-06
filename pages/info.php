@@ -544,12 +544,70 @@ $articleBody
 					Officers and Admins can view the audit, and make withdrawals and deposits here.
 				</p>
 
-				<div class="basicSpanDiv" style="width:100%;"><b>
-					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Person From</p></span>
-					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Person To</p></span>
-					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Dollar Amount</p></span>
-					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Date</p></span>
-				</b></div>
+				<form method="post" class="fileForm">
+					<span>$Amount : <input style="font-size:16px; border:1px solid #B60000;" name="amount" type="number" id="amount"></span>
+					<span>From :
+					<!--Give each user as an option-->
+					<select id="personfrom" name="personfrom">
+						<option value="income">Income</option>
+						<?php
+
+						require('../php/connect.php');
+
+						$query="SELECT fullname FROM users";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}	
+
+						while(list($personname) = mysqli_fetch_array($result)){
+							?>
+
+							<option value="<?php echo $personname ?>"><?php echo $personname ?></option>
+							
+							<?php
+						}
+								
+						mysqli_close($link);
+
+						?>
+					</select></span>
+					<span>To :
+					<!--Give each user as an option-->
+					<select id="personfrom" name="personfrom">
+						<option value="donation">Donation</option>
+						<?php
+
+						require('../php/connect.php');
+
+						$query="SELECT fullname FROM users";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}	
+
+						while(list($personname) = mysqli_fetch_array($result)){
+							?>
+
+							<option value="<?php echo $personname ?>"><?php echo $personname ?></option>
+							
+							<?php
+						}
+								
+						mysqli_close($link);
+
+						?>
+					</select></span>
+					<span>Description : 
+					<input style="font-size:14px; border:1px solid #B60000;" name="description" type="text" id="description"></span>
+					<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="transact" type="submit" class="box" id="transact" value="Transact"></span>
+				</form>
+
+				<br><br>
 
 				<?php
 
