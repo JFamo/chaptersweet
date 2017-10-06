@@ -7,7 +7,7 @@ $rank = $_SESSION['rank'];
 $eventsUser = $_SESSION['fullname'];
 
 //encase the whole page - KEEP NON-ADMINS OUT
-if($rank == "admin"){
+if($rank == "admin" || $rank == "officer"){
 
 //function to update points by grade
 if(isset($_POST['grade'])){
@@ -167,8 +167,9 @@ if(isset($_POST['promoteUser'])){
 					The events box allows for a more detailed review of user event progress.<br>
 				</p>
 
-				<!--Users Table-->
+				<!--User Table-->
 				<center>
+				<?php if($rank == "admin"){ ?>
 				<!--Points-->
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Assign Event Points</p><br>
@@ -239,6 +240,7 @@ if(isset($_POST['promoteUser'])){
 
 				<br>
 				</div>
+				<?php } ?>
 				<!--Summary-->
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Summary</p>
@@ -376,9 +378,9 @@ if(isset($_POST['promoteUser'])){
 
 						<td style="width:250px; height:30px;"><b>Name</b></td>
 						<td style="width:80px; height:30px;"><b>Grade</b></td>
-						<td style="width:120px; height:30px;"><b>Rank</b></td>
-						<td style="width:140px; height:30px;"><b>Events</b></td>
-						<td style="width:140px; height:30px;"><b>Event Points</b></td>
+						<td style="width:100px; height:30px;"><b>Rank</b></td>
+						<td style="width:80px; height:30px;"><b>Events</b></td>
+						<td style="width:80px; height:30px;"><b>Event Points</b></td>
 						<td style="width:300px; height:30px;"><b>Options</b></td>
 						
 					</tr>
@@ -387,7 +389,7 @@ if(isset($_POST['promoteUser'])){
 				require('../php/connect.php');
 
 				//get points
-				$query="SELECT id, fullname, grade, rank, eventpoints FROM users";
+				$query="SELECT id, fullname, grade, rank, eventpoints FROM users ORDER BY fullname";
 
 				$result = mysqli_query($link, $query);
 
@@ -399,15 +401,15 @@ if(isset($_POST['promoteUser'])){
 					echo "No Users Found!<br>";
 				}
 				else{
-					while(list($id, $fullname, $grade, $rank, $eventpoints) = mysqli_fetch_array($result)){
+					while(list($id, $fullname, $grade, $thisrank, $eventpoints) = mysqli_fetch_array($result)){
 						?>
 
 						<tr class="userRow">
 
 						<td style="width:250px; height:30px;"><?php echo "".$fullname ?></td>
 						<td style="width:60px; height:30px;"><?php echo "".$grade ?></td>
-						<td style="width:120px; height:30px;"><?php echo "".$rank ?></td>
-						<td style="width:140px; height:30px;"><?php
+						<td style="width:100px; height:30px;"><?php echo "".$thisrank ?></td>
+						<td style="width:80px; height:30px;"><?php
 
 							require('../php/connect.php');
 
@@ -425,22 +427,22 @@ if(isset($_POST['promoteUser'])){
 							mysqli_close($link);
 
 						?></td>
-						<td style="width:140px; height:30px;"><?php echo "<b>".$eventpoints."</b>" ?></td>
+						<td style="width:80px; height:30px;"><?php echo "<b>".$eventpoints."</b>" ?></td>
 						<td style="width:300px; height:30px;">	
 							<form method="post" style="float:left; padding-right:20px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="submit" name="viewEvents" value="View Events" />
 							</form>
-							<?php if($rank != "admin"){ ?>
+							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
 							<form method="post" style="float:left;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="hidden" name="newRank" value="<?php 
-									if($rank=='member'){ echo 'officer'; }
-									if($rank=='officer'){ echo 'member'; } 
+									if($thisrank=='member'){ echo 'officer'; }
+									if($thisrank=='officer'){ echo 'member'; } 
 								?>" />
 								<input type="submit" name="promoteUser" value="Make <?php 
-									if($rank=='member'){ echo 'Officer'; }
-									if($rank=='officer'){ echo 'Member'; } 
+									if($thisrank=='member'){ echo 'Officer'; }
+									if($thisrank=='officer'){ echo 'Member'; } 
 								?>" />
 							</form>
 							<?php } ?>

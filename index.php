@@ -2,13 +2,15 @@
 
 session_start();
 
-require('php/connect.php');
-
 if(isset($_POST['username']) and isset($_POST['password'])){
 
 	$sessionUsername = $_POST['username'];
-
 	$sessionPassword = $_POST['password'];
+	$chapter = $_POST['chapter'];
+	
+	$_SESSION['chapter'] = $chapter;
+	
+	require('php/connect.php');
 
 	$query = "SELECT * FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
 
@@ -190,6 +192,12 @@ if(isset($_SESSION['username'])){
 			  			<input class="input1" type="text" name="username" required/> <br>
 			  		Enter your password: <br>
 			  			<input class="input1" type="password" name="password" required/> <br>
+			  		Chapter : <br>
+			  			<select class="input1" name="chapter">
+			  				<option value="senior">High School</option>
+			  				<option value="freshman">Freshmen Academy</option>
+			  			</select><br><br>
+			  			
     				<input class="inputButton1" type="submit" value="Login"/>
 
 				</form>
