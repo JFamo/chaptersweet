@@ -130,7 +130,11 @@ if(isset($_POST['slot'])){
 				die('Error: ' . mysqli_error($link));
 			}
 
+			//reset deletion toggle
+			$delevent = 0;
+
 		}
+
 	}
 
 	mysqli_close($link);
