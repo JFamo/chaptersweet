@@ -198,12 +198,77 @@ if(isset($_POST['amount'])){
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO transactions (personto, personfrom, description, amount, date) VALUES ('$personto', '$personfrom', '$description', '$amount', now())";
+	//get real name of person to
+	if($personto != "donation"){
+
+		$nameQuery = "SELECT fullname FROM users WHERE id='$personto'";
+
+		$nameResult = mysqli_query($link, $nameQuery);
+
+		if (!$nameResult){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		list($realNameTo) = mysqli_fetch_array($nameResult);
+
+	}
+	else{
+
+		$realNameTo = "Donation";
+
+	}
+
+	//get real name of person from
+	if($personfrom != "income"){
+
+		$nameQuery = "SELECT fullname FROM users WHERE id='$personfrom'";
+
+		$nameResult = mysqli_query($link, $nameQuery);
+
+		if (!$nameResult){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		list($realNameFrom) = mysqli_fetch_array($nameResult);
+
+	}
+	else{
+
+		$realNameFrom = "Income";
+
+	}
+
+	//make the transaction
+	$query = "INSERT INTO transactions (personto, personfrom, description, amount, date) VALUES ('$realNameTo', '$realNameFrom', '$description', '$amount', now())";
 
 	$result = mysqli_query($link, $query);
 
 	if (!$result){
 		die('Error: ' . mysqli_error($link));
+	}
+
+	//update balances
+	if($personto != "donation"){
+
+		$query2 = "UPDATE users SET balance=balance+'$amount' WHERE id='$personto'";
+
+		$result2 = mysqli_query($link, $query2);
+
+		if (!$result2){
+			die('Error: ' . mysqli_error($link));
+		}
+
+	}
+	if($personfrom != "income"){
+
+		$query3 = "UPDATE users SET balance=balance-'$amount' WHERE id='$personfrom'";
+
+		$result3 = mysqli_query($link, $query3);
+
+		if (!$result3){
+			die('Error: ' . mysqli_error($link));
+		}
+
 	}
 
 	mysqli_close($link);
@@ -579,7 +644,7 @@ if(isset($_POST['amount'])){
 
 						require('../php/connect.php');
 
-						$query="SELECT fullname FROM users";
+						$query="SELECT id, fullname FROM users";
 
 						$result = mysqli_query($link, $query);
 
@@ -587,10 +652,10 @@ if(isset($_POST['amount'])){
 							die('Error: ' . mysqli_error($link));
 						}	
 
-						while(list($personname) = mysqli_fetch_array($result)){
+						while(list($id, $personname) = mysqli_fetch_array($result)){
 							?>
 
-							<option value="<?php echo $personname ?>"><?php echo $personname ?></option>
+							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
 							
 							<?php
 						}
@@ -607,7 +672,7 @@ if(isset($_POST['amount'])){
 
 						require('../php/connect.php');
 
-						$query="SELECT fullname FROM users";
+						$query="SELECT id, fullname FROM users";
 
 						$result = mysqli_query($link, $query);
 
@@ -615,10 +680,10 @@ if(isset($_POST['amount'])){
 							die('Error: ' . mysqli_error($link));
 						}	
 
-						while(list($personname) = mysqli_fetch_array($result)){
+						while(list($id, $personname) = mysqli_fetch_array($result)){
 							?>
 
-							<option value="<?php echo $personname ?>"><?php echo $personname ?></option>
+							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
 							
 							<?php
 						}
