@@ -187,6 +187,31 @@ $articleBody
 
 }
 
+//handling transactions
+if(isset($_POST['amount'])){
+
+	//variables assignment
+	$personfrom = $_POST['personfrom'];
+	$personto = $_POST['personto'];
+	$amount = $_POST['amount'];
+	$description = addslashes($_POST['description']);
+
+	require('../php/connect.php');
+
+	$query = "INSERT INTO transactions (personto, personfrom, description, amount, date) VALUES ('$personto', '$personfrom', '$description', '$amount', now())";
+
+	$result = mysqli_query($link, $query);
+
+	if (!$result){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	mysqli_close($link);
+
+	$fmsg =  "Transaction of ".$amount." Completed Successfully!";
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -576,7 +601,7 @@ $articleBody
 					</select></span>
 					<span>To :
 					<!--Give each user as an option-->
-					<select id="personfrom" name="personfrom">
+					<select id="personto" name="personto">
 						<option value="donation">Donation</option>
 						<?php
 
