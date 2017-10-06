@@ -570,7 +570,7 @@ if(isset($_POST['amount'])){
 				</p>
 
 				<form method="post" class="fileForm">
-					<span>$Amount : <input style="font-size:16px; border:1px solid #B60000;" name="amount" type="number" id="amount"></span>
+					<span>$Amount : <input style="font-size:16px; border:1px solid #B60000;" name="amount" type="number" id="amount" value="<?php echo isset($_POST['amount']) ? $_POST['amount'] : '' ?>"></span>
 					<span>From :
 					<!--Give each user as an option-->
 					<select id="personfrom" name="personfrom">
@@ -628,7 +628,7 @@ if(isset($_POST['amount'])){
 						?>
 					</select></span>
 					<span>Description : 
-					<input style="font-size:14px; border:1px solid #B60000;" name="description" type="text" id="description"></span>
+					<input style="font-size:14px; border:1px solid #B60000;" name="description" type="text" id="description" value="<?php echo isset($_POST['description']) ? $_POST['description'] : '' ?>"></span>
 					<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="transact" type="submit" class="box" id="transact" value="Transact"></span>
 				</form>
 
@@ -636,7 +636,30 @@ if(isset($_POST['amount'])){
 
 				<?php
 
+				//FIRST THING - CHAPTER BALANCES
+
 				require('../php/connect.php');
+
+				$query="SELECT balance FROM users WHERE id='53'";
+
+				$result = mysqli_query($link, $query);
+
+				if (!$result){
+					die('Error: ' . mysqli_error($link));
+				}		
+
+				if(mysqli_num_rows($result) == 0){
+					echo "No Chapter Balance Found!<br>";
+				}
+				else{
+					while(list($balance) = mysqli_fetch_array($result)){
+						?>
+							<b><p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo "Chapter Balance : $".$balance ?></p></b>
+						<?php
+					}
+				}
+
+				//SECOND THING - TRANSACTIONS
 
 				$query="SELECT * FROM transactions ORDER BY id DESC";
 
@@ -660,8 +683,6 @@ if(isset($_POST['amount'])){
 							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "On : ".$date ?></p></span>
 						</div>
 						<p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo $description ?></p>
-						
-						
 						
 						<?php
 					}
