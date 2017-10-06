@@ -544,6 +544,50 @@ $articleBody
 					Officers and Admins can view the audit, and make withdrawals and deposits here.
 				</p>
 
+				<div class="basicSpanDiv" style="width:100%;"><b>
+					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Person From</p></span>
+					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Person To</p></span>
+					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Dollar Amount</p></span>
+					<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;">Date</p></span>
+				</b></div>
+
+				<?php
+
+				require('../php/connect.php');
+
+				$query="SELECT * FROM transactions ORDER BY id DESC";
+
+				$result = mysqli_query($link, $query);
+
+				if (!$result){
+					die('Error: ' . mysqli_error($link));
+				}		
+
+				if(mysqli_num_rows($result) == 0){
+					echo "No Transactions Found!<br>";
+				}
+				else{
+					while(list($id, $personto, $personfrom, $description, $amount, $date) = mysqli_fetch_array($result)){
+						?>
+
+						<div class="basicSpanDiv" style="width:100%;">
+							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "From : ".$personfrom ?></p></span>
+							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "To : ".$personto ?></p></span>
+							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "$".$amount ?></p></span>
+							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "On : ".$date ?></p></span>
+						</div>
+						<p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo $description ?></p>
+						
+						
+						
+						<?php
+					}
+				}
+						
+				mysqli_close($link);
+
+				?>
+
 				</div>
 
 			</center>

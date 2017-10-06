@@ -444,7 +444,7 @@ div.panel {
 	text-align: center;
 }
 
-.basicSpanForm:hover{
+.basicSpanForm:not(.nohover):hover{
 	background-color: #ff5b5b;
 }
 
