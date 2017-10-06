@@ -28,6 +28,7 @@ $emailPerm = $perm;
 //function for deleting events
 if(isset($_POST['deleventOn'])){
 
+	$randomVariableToReadPost = $_POST['deleventOn'];
 	$delevent = 1;
 
 }
@@ -194,7 +195,7 @@ if(isset($_POST['slot'])){
 					}
 					?>
 					<?php
-					if($rank == "admin" || ($rank == "officer" && $deleventPerm == "yes")){
+					if($rank == "admin"){
 					?>
 						<form method="post" target="hideFrame">
 							<input type="hidden" id="deleventOn" name="deleventOn" value="blank" />
