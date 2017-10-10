@@ -8,7 +8,7 @@ $sessionUser = $_SESSION['username'];
 $sessionName = $_SESSION['fullname'];
 
 //get user's eventpoints
-$pointsquery="SELECT eventpoints FROM users WHERE username='$sessionUser' AND fullname='$sessionName'";
+$pointsquery="SELECT eventpoints FROM users WHERE username='$sessionUser'";
 
 $pointsresult = mysqli_query($link, $pointsquery);
 

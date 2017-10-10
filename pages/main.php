@@ -122,7 +122,7 @@ $blockedPages = $perm;
 				?>
 		<!--Users-->
 				<?php
-				if($rank == "admin"){
+				if($rank == "admin" || $rank == "officer"){
 				?>
 			<span><a href="users.php"><img src="../imgs/icon_users.png" height="32" width="32"><p class="bodyTextType1">Users</p></a></span>
 				<?php

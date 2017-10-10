@@ -93,6 +93,13 @@ if(isset($_POST['slot'])){
 					if (!mysqli_query($link,$sql)){
 						die('Error: ' . mysqli_error($link));
 					}
+					
+					//add the team to the changes table
+					$sql = "INSERT INTO changes (event, team, slot, name, date) VALUES ('$name', '$team', '$slot', '$fullname', now())";
+
+					if (!mysqli_query($link,$sql)){
+						die('Error: ' . mysqli_error($link));
+					}
 
 					//decrease event points
 					$newPoints = $eventpoints - 1;
@@ -231,7 +238,11 @@ if(isset($_POST['slot'])){
 					<?php
 						//require('../php/getTeams.php');
 					?>
+					<div id="changed" style="display:none;"></div>
 					<div id="events"><center>Loading Teams...</center></div>
+					<script>
+					//$("#events").load('../php/getTeams.php');
+					</script>
 			</div>
 
 <!--Spooky stuff at the bottom-->

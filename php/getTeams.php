@@ -7,20 +7,10 @@ require('../php/connect.php');
 
 $sessionUser = $_SESSION['username'];
 $sessionName = $_SESSION['fullname'];
-
-//get the conference
-$conferencequery="SELECT value FROM settings WHERE name='conference'";
-
-$conferenceresult = mysqli_query($link, $conferencequery);
-
-if (!$conferenceresult){
-	die('Error: ' . mysqli_error($link));
-}
-
-list($conference) = mysqli_fetch_array($conferenceresult);
+$conference = $_SESSION['conference'];
 
 //actually update events
-$query="SELECT id, name, membermin, membermax, teams FROM events WHERE conference='$conference'";
+$query="SELECT name, membermin, membermax, teams FROM events WHERE conference='$conference'";
 
 $result = mysqli_query($link, $query);
 
@@ -36,7 +26,7 @@ else{
 	$outputVar = $outputVar . '<table class="eventTable">';
 
 	//for each database row
-	while(list($id, $name, $membermin, $membermax, $teams) = mysqli_fetch_array($result)){
+	while(list($name, $membermin, $membermax, $teams) = mysqli_fetch_array($result)){
 
 		$outputVar = $outputVar . ' <tr><td></td>';
 

@@ -343,7 +343,7 @@ if(isset($_POST['amount'])){
 				<?php } ?>
 				<!--Audit-->
 				<?php if($rank == "officer" || $rank == "admin"){ ?>
-					<span onclick="showAudit();"><a href="#"><img src="../imgs/icon_audit.png" height="64" width="64"><p class="bodyTextType1">Audit</p></a></span>
+					<span onclick="showAudit();"><a href="#"><img src="../imgs/wallet.png" height="64" width="64"><p class="bodyTextType1">Audit</p></a></span>
 				<?php } ?>
 
 				</div>

@@ -96,6 +96,64 @@ if(isset($_POST['verify4'])){
 
 }
 
+//functions for clearing transactions
+if(isset($_POST['verify5'])){
+
+	//verification
+	$verify = $_POST['verify5'];
+
+	require('../php/connect.php');
+
+	if($verify == "yes"){
+
+		$sql = "DELETE FROM transactions";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Transactions Data Cleared Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Transactions Data Failed to Clear!";
+
+	}
+
+	mysqli_close($link);
+
+}
+
+//functions for clearing event points
+if(isset($_POST['verify6'])){
+
+	//verification
+	$verify = $_POST['verify6'];
+
+	require('../php/connect.php');
+
+	if($verify == "yes"){
+
+		$sql = "UPDATE users SET eventpoints=0";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Event Points Data Cleared Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Event Points Data Failed to Clear!";
+
+	}
+
+	mysqli_close($link);
+
+}
+
 //functions for updating TEAMS table with info from EVENTS table
 if(isset($_POST['verify3'])){
 
@@ -505,6 +563,42 @@ if(isset($_POST['blockedPages'])){
 						<span>
 							Are You Sure? :
 							<select id="verify4" name="verify4">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Clear Data">
+						</span>
+					</form>
+					<!--clear transactions tab-->
+					<form class="basicSpanForm" style="width:100%;" method="post" id="clearTransactionsForm">
+						<span>
+							<b>Clear Transactions</b>
+						</span>
+						<span>
+						</span>
+						<span>
+							Are You Sure? :
+							<select id="verify5" name="verify5">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="box" value="Clear Data">
+						</span>
+					</form>
+					<!--clear event points tab-->
+					<form class="basicSpanForm" style="width:100%;" method="post" id="clearEventpointsForm">
+						<span>
+							<b>Clear Event Points</b>
+						</span>
+						<span>
+						</span>
+						<span>
+							Are You Sure? :
+							<select id="verify6" name="verify6">
 								<option value="no">No</option>
 								<option value="yes">Yes</option>
 							</select>
