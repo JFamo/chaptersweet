@@ -422,7 +422,7 @@ if(isset($_POST['obligationName'])){
 						
 						while($row = mysqli_fetch_array($result)) {
 							if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
-						   		echo "<td style='width:200px; height:30px;'><b>" . ucfirst($row['Field']) . "</b></td>";
+						   		echo "<td style='width:80px; height:30px;'><b>" . ucfirst($row['Field']) . "</b></td>";
 						   	}
 						}
 						
@@ -433,17 +433,41 @@ if(isset($_POST['obligationName'])){
 
 				require('../php/connect.php');
 
-				//get points
-				$query="SELECT fullname, grade, rank, eventpoints, email, balance FROM users ORDER BY fullname";
+				//get user details
+				$query="SELECT * FROM users ORDER BY fullname";
 				$result = mysqli_query($link, $query);
 				if (!$result){
 					die('Error: ' . mysqli_error($link));
 				}
+
+				//figure out which fields are obligations
+				$obligationsArray = array();
+				$num_fields = mysqli_num_fields($result);
+				$fields = mysqli_fetch_fields($result);
+				//for each field
+				while($thisField = mysqli_fetch_field($result)){
+					$thisFieldName = $thisField->name;
+					//if the field is not one of the standard user columns
+					if(!($thisFieldName == 'id' || $thisFieldName == 'fullname' || $thisFieldName == 'username' || $thisFieldName == 'password' || $thisFieldName == 'email' || $thisFieldName == 'grade' || $thisFieldName == 'rank' || $thisFieldName == 'eventpoints' || $thisFieldName == 'balance')){
+
+						array_push($obligationsArray, $thisFieldName);
+
+					}
+				}
+
 				if(mysqli_num_rows($result) == 0){
 					echo "No Users Found!<br>";
 				}
 				else{
-					while(list($fullname, $grade, $thisrank, $eventpoints, $thisemail, $thisbalance) = mysqli_fetch_array($result)){
+					while($resultArray = mysqli_fetch_array($result)){
+
+						$fullname = $resultArray['fullname'];
+						$grade = $resultArray['grade'];
+						$thisrank = $resultArray['rank'];
+						$eventpoints = $resultArray['eventpoints'];
+						$thisemail = $resultArray['email'];
+						$thisbalance = $resultArray['balance'];
+
 						?>
 
 						<tr class="userRow">
@@ -484,7 +508,16 @@ if(isset($_POST['obligationName'])){
 							</form>
 							<?php } ?>
 						</td>
-						
+
+						<?php
+
+						foreach($obligationsArray as $obligation){ ?>
+							<td style="width:80px; height:30px;"><?php echo $resultArray[$obligation]; ?></td>
+							<?php
+						}
+
+						?>
+
 						</tr>
 
 						<?php
