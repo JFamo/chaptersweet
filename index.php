@@ -111,8 +111,8 @@ if(isset($_SESSION['username'])){
 			</p>
 				<p class="bodyTextType1">
 					If you already have an account, select the LOGIN tab to the right of the screen, enter your login information, and click the 'login' button.<br><br>
-					If you do not have an account, select the REGISTER tab to the right of the screen, complete all of the fields, and click the 'register' button.<br><br>
-					Each member should create only <b>one</b> account, to prevent contamination of the system. If you forget your password, contact an administrator to have it reset.<br><br>
+					If you do not have an account, select the REGISTER tab to the right of the screen, complete all of the fields, and click the 'register' button. You will need a chapter officer to input your class code to register.<br><br>
+					If you forget your username or password, contact an administrator to have it reset.<br><br>
 					Please <b>do not</b> use your student email for the email field, as some important communications may be lost if you do this.
 				</p>
 			<!--ANNOUNCEMENTS-->

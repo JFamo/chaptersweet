@@ -95,7 +95,7 @@ $blockedPages = $perm;
 		<header>
 				<img src="../imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
 				<p class="titleText">
-					Chapter Sweet
+					Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?>
 				</p>
 				<!--ICON LINKS DIV-->
 		</header>

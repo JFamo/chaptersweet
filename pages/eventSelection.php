@@ -7,9 +7,6 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
-//event deletion toggle
-$delevent = 0;
-
 //EMAIL PERMISSION
 require('../php/connect.php');
 
@@ -25,21 +22,10 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $emailPerm = $perm;
 
-//function for deleting events
-if(isset($_POST['deleventOn'])){
-
-	$randomVariableToReadPost = $_POST['deleventOn'];
-	$delevent = 1;
-
-}
-
 //functions for event signup
 if(isset($_POST['slot'])){
 
 	require('../php/connect.php');
-
-	//check if this is a deletion or signup
-	if($delevent == 0){
 
 		//get user's eventpoints
 		$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
@@ -116,35 +102,7 @@ if(isset($_POST['slot'])){
 				}
 			}
 		}
-	}
-	else{
-		//this is a deletion
-		//method variables, save locally
-		$name = $_POST['name'];
-		$team = $_POST['team'];
-		$slot = $_POST['slot'];
-		$open = $_POST['open'];
-
-		//if this slot is occupied
-		if($open == "no"){
-
-			//default variable values
-			$memberColumn = "member" . $slot;
-
-			//add the user to that team
-			$sql = "UPDATE teams SET $memberColumn=NULL WHERE event='$name' AND team='$team' AND $memberColumn='$fullname'";
-
-			if (!mysqli_query($link,$sql)){
-				die('Error: ' . mysqli_error($link));
-			}
-
-			//reset deletion toggle
-			$delevent = 0;
-
-		}
-
-	}
-
+	
 	mysqli_close($link);
 }
 
@@ -166,7 +124,7 @@ if(isset($_POST['slot'])){
 		<header>
 				<img src="../imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
 				<p class="titleText">
-					Chapter Sweet
+					Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?>
 				</p>
 		</header>
 <!--Spooky stuff still kind of at the top-->
@@ -197,16 +155,6 @@ if(isset($_POST['slot'])){
 					?>
 						<form method="post" action="../php/confirmEventsEmail.php">
 							<input type="submit" id="confirmEventsButton" name="confirmEventsButton" value="Email Event Confirmation" class="utilityButton" />
-						</form>
-					<?php
-					}
-					?>
-					<?php
-					if($rank == "admin"){
-					?>
-						<form method="post" target="hideFrame">
-							<input type="hidden" id="deleventOn" name="deleventOn" value="blank" />
-							<input type="submit" value="Remove User From Slot" class="utilityButton" />
 						</form>
 					<?php
 					}

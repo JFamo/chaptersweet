@@ -109,6 +109,28 @@ if(isset($_POST['promoteUser'])){
 
 }
 
+
+//function to create a new obligation
+if(isset($_POST['obligationName'])){
+
+	$name = $_POST['obligationName'];
+	$name = str_replace(' ','_',$name);
+	$defaultValue = $_POST['default'];
+
+	require('../php/connect.php');
+
+		$sql = "ALTER TABLE users ADD COLUMN $name VARCHAR(10) NOT NULL DEFAULT '$defaultValue'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Added Obligation " . $name. " Successfully!";
+
+	mysqli_close($link);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -128,7 +150,7 @@ if(isset($_POST['promoteUser'])){
 		<header>
 				<img src="../imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
 				<p class="titleText">
-					Chapter Sweet
+					Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?>
 				</p>
 		</header>
 <!--Spooky stuff still kind of at the top-->
@@ -369,40 +391,59 @@ if(isset($_POST['promoteUser'])){
 
 				</div>
 				</div>
-				<div class="adminDataSection">
+				<div class="adminDataSection" style="overflow:auto;">
 				<br>
 				<p class="userDashSectionHeader" style="padding-left:0px;">User Info</p>
 				<br>
-				<table class="usersTable" cellspacing="0" cellpadding="0">
+				<table class="usersTable" cellspacing="0" cellpadding="0" style="overflow:auto; margin-left:10px;">
 					<tr>
-
+					
 						<td style="width:250px; height:30px;"><b>Name</b></td>
 						<td style="width:80px; height:30px;"><b>Grade</b></td>
 						<td style="width:100px; height:30px;"><b>Rank</b></td>
 						<td style="width:200px; height:30px;"><b>Email</b></td>
 						<td style="width:80px; height:30px;"><b>Events</b></td>
 						<td style="width:80px; height:30px;"><b>Event Points</b></td>
-						<td style="width:300px; height:30px;"><b>Options</b></td>
+						<td style="width:80px; height:30px;"><b>Balance</b></td>
+						<td style="width:200px; height:30px;"><b>Options</b></td>
+					
+						<?php
 						
+						require('../php/connect.php');
+						
+						//get the user columns
+						$query="DESCRIBE users";
+		
+						$result = mysqli_query($link, $query);
+		
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+						
+						while($row = mysqli_fetch_array($result)) {
+							if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
+						   		echo "<td style='width:200px; height:30px;'><b>" . ucfirst($row['Field']) . "</b></td>";
+						   	}
+						}
+						
+						?>
+
 					</tr>
 				<?php
 
 				require('../php/connect.php');
 
 				//get points
-				$query="SELECT id, fullname, grade, rank, eventpoints, email FROM users ORDER BY fullname";
-
+				$query="SELECT fullname, grade, rank, eventpoints, email, balance FROM users ORDER BY fullname";
 				$result = mysqli_query($link, $query);
-
 				if (!$result){
 					die('Error: ' . mysqli_error($link));
 				}
-
 				if(mysqli_num_rows($result) == 0){
 					echo "No Users Found!<br>";
 				}
 				else{
-					while(list($id, $fullname, $grade, $thisrank, $eventpoints, $thisemail) = mysqli_fetch_array($result)){
+					while(list($fullname, $grade, $thisrank, $eventpoints, $thisemail, $thisbalance) = mysqli_fetch_array($result)){
 						?>
 
 						<tr class="userRow">
@@ -412,24 +453,18 @@ if(isset($_POST['promoteUser'])){
 						<td style="width:100px; height:30px;"><?php echo "".$thisrank ?></td>
 						<td style="width:200px; height:30px;"><?php echo "".$thisemail ?></td>
 						<td style="width:80px; height:30px;"><?php
-
 							require('../php/connect.php');
-
 							//get user's events
 							$eventsQuery="SELECT event FROM teams WHERE member1='$fullname' OR member2='$fullname' OR member3='$fullname' OR member4='$fullname' OR member5='$fullname' OR member6='$fullname'";
-
 							$eventsResult = mysqli_query($link, $eventsQuery);
-
 							if (!$eventsResult){
 								die('Error: ' . mysqli_error($link));
 							}
-
 							echo mysqli_num_rows($eventsResult);
-
 							mysqli_close($link);
-
 						?></td>
-						<td style="width:80px; height:30px;"><?php echo "<b>".$eventpoints."</b>" ?></td>
+						<td style="width:80px; height:30px;"><?php echo "".$eventpoints ?></td>
+						<td style="width:80px; height:30px;"><?php echo "".$thisbalance?></td>
 						<td style="width:300px; height:30px;">	
 							<form method="post" style="float:left; padding-right:20px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
@@ -455,7 +490,6 @@ if(isset($_POST['promoteUser'])){
 						<?php
 					}
 				}
-
 				?>
 				</table>
 
@@ -552,6 +586,29 @@ if(isset($_POST['promoteUser'])){
 
 				?>
 
+				</div>
+				<!--Obligations-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Obligations</p>
+					<form class="basicSpanDiv" method="post" id="newObligationForm" style="width:100%; height:40px; padding-top:15px;">
+						<span>
+						<b>Create New Obligation</b>
+						</span>
+						<span>
+						Default: 
+						<select id="default" name="default">
+							<option value="no">Incomplete</option>
+							<option value="yes">Complete</option>
+						</select>
+						</span>
+						<span>
+						Name :
+						<input type="text" id="obligationName" name="obligationName">
+						</span>
+						<span>
+						<input type="submit" class="box" value="Create">
+						</span>
+					</form>
 				</div>
 				</center>
 

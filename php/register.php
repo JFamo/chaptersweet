@@ -1,6 +1,6 @@
 <?php
 
-require_once('connect.php');
+session_start();
 
 $value1 = addslashes($_POST['fullname']);
 $value2 = addslashes($_POST['username']);
@@ -9,6 +9,12 @@ $value4 = addslashes($_POST['email']);
 //$emails = array(addslashes($_POST['email']),addslashes($_POST['secondmail']),addslashes($_POST['thirdmail']),addslashes($_POST['fourthmail']));
 $value5 = $_POST['grade'];
 $valuec = $_POST['code'];
+
+if($valuec == 'fr3shT5A'){
+	$_SESSION['chapter'] = 'freshman';
+}
+
+require_once('connect.php');
 
 /**
 if(isSet($email1)){
