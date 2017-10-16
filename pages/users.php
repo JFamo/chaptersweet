@@ -109,6 +109,27 @@ if(isset($_POST['promoteUser'])){
 
 }
 
+//function to change user obligation
+if(isset($_POST['obligationChange'])){
+
+	$user = $_POST['thisUser'];
+	$newValue = $_POST['newValue'];
+	$obligation = $_POST['obligation'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET $obligation='$newValue' WHERE fullname='$user'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Changed " . $user . " for " . $obligation . " to " . $newValue . "Successfully!";
+
+	mysqli_close($link);
+
+}
+
 
 //function to create a new obligation
 if(isset($_POST['obligationName'])){
@@ -422,7 +443,7 @@ if(isset($_POST['obligationName'])){
 						
 						while($row = mysqli_fetch_array($result)) {
 							if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
-						   		echo "<td style='width:80px; height:30px;'><b>" . ucfirst($row['Field']) . "</b></td>";
+						   		echo "<td style='width:100px; height:30px;'><b>" . ucfirst($row['Field']) . "</b></td>";
 						   	}
 						}
 						
@@ -512,7 +533,19 @@ if(isset($_POST['obligationName'])){
 						<?php
 
 						foreach($obligationsArray as $obligation){ ?>
-							<td style="width:80px; height:30px;"><?php echo $resultArray[$obligation]; ?></td>
+							<td style="width:100px; height:30px;">
+								<form method="post" target="#hideFrame">
+									<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+									<input type="hidden" name="obligation" value="<?php echo $obligation ?>" />
+									<input type="hidden" name="newValue" value="<?php 
+										if($resultArray[$obligation]=='yes'){ echo 'no'; }
+										if($resultArray[$obligation]=='no'){ echo 'yes'; } 
+									?>" />
+									<input type="submit" name="obligationChange" value="<?php 
+										echo ucfirst($resultArray[$obligation]);
+									?>" />
+								</form>
+							</td>
 							<?php
 						}
 
@@ -646,6 +679,8 @@ if(isset($_POST['obligationName'])){
 				</center>
 
 			</div>
+
+		<iframe name="hideFrame" id="hideFrame" style="display:none;"></iframe>
 
 <!--Spooky stuff at the bottom-->
 		<footer>
