@@ -152,6 +152,25 @@ if(isset($_POST['obligationName'])){
 
 }
 
+//function to delete an obligation
+if(isset($_POST['deleteObligation'])){
+
+	$name = $_POST['deleteObligation'];
+
+	require('../php/connect.php');
+
+		$sql = "ALTER TABLE users DROP COLUMN $name";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Deleted Obligation " . $name. " Successfully!";
+
+	mysqli_close($link);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -673,6 +692,42 @@ if(isset($_POST['obligationName'])){
 						</span>
 						<span>
 						<input type="submit" class="box" value="Create">
+						</span>
+					</form>
+					<form class="basicSpanDiv" method="post" id="deleteObligationForm" style="width:100%; height:40px; padding-top:15px;">
+						<span>
+						<b>Delete Obligation</b>
+						</span>
+						<span>
+						Obligation: 
+						<select id="deleteObligation" name="deleteObligation">
+							<?php
+						
+							require('../php/connect.php');
+							
+							//get the user columns
+							$query="DESCRIBE users";
+			
+							$result = mysqli_query($link, $query);
+			
+							if (!$result){
+								die('Error: ' . mysqli_error($link));
+							}
+							
+							while($row = mysqli_fetch_array($result)) {
+								$obligName = $row['Field'];
+								if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
+									?>
+									<option value="<?php echo $obligName; ?>"><?php echo $obligName; ?></option>
+									<?php
+							   	}
+							}
+							
+							?>
+						</select>
+						</span>
+						<span>
+						<input type="submit" class="box" value="Delete">
 						</span>
 					</form>
 				</div>
