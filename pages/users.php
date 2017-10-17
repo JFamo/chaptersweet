@@ -548,12 +548,12 @@ if(isset($_POST['deleteObligation'])){
 						<td style="width:80px; height:30px;"><?php echo "".$eventpoints ?></td>
 						<td style="width:80px; height:30px;"><?php echo "".$thisbalance?></td>
 						<td style="width:300px; height:30px;">	
-							<form method="post" style="float:left; padding-right:20px;">
+							<form method="post" style="float:left; padding-right:5px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="submit" name="viewEvents" value="View Events" />
 							</form>
 							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
-							<form method="post" style="float:left;">
+							<form method="post" style="float:left; padding-right:5px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="hidden" name="newRank" value="<?php 
 									if($thisrank=='member'){ echo 'officer'; }
