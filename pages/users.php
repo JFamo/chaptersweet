@@ -109,6 +109,24 @@ if(isset($_POST['promoteUser'])){
 
 }
 
+//function to delete user
+if(isset($_POST['deleteUser'])){
+
+	$user = $_POST['thisUser'];
+	require('../php/connect.php');
+
+		$sql = "DELETE FROM users WHERE fullname='$user'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Deleted " . $user . " Successfully!";
+
+	mysqli_close($link);
+
+}
+
 //function to change user obligation
 if(isset($_POST['obligationChange'])){
 
@@ -545,6 +563,12 @@ if(isset($_POST['deleteObligation'])){
 									if($thisrank=='member'){ echo 'Officer'; }
 									if($thisrank=='officer'){ echo 'Member'; } 
 								?>" />
+							</form>
+							<?php } ?>
+							<?php if($rank == "admin"){ ?>
+							<form method="post" style="float:left;">
+								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+								<input type="submit" name="deleteUser" value="Delete Account" />
 							</form>
 							<?php } ?>
 						</td>
