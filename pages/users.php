@@ -542,10 +542,13 @@ if(isset($_POST['deleteObligation'])){
 							if (!$eventsResult){
 								die('Error: ' . mysqli_error($link));
 							}
-							echo mysqli_num_rows($eventsResult);
+							$numEvents = mysqli_num_rows($eventsResult);
+							if($numEvents < 3 || $numEvents > 6){ echo "<p style='color:red;'>"; } 
+							echo $numEvents;
+							if($numEvents < 3 || $numEvents > 6){ echo "</p>"; }
 							mysqli_close($link);
 						?></td>
-						<td style="width:80px; height:30px;"><?php echo "".$eventpoints ?></td>
+						<td style="width:80px; height:30px;"><?php echo "".$eventpoints?></td>
 						<td style="width:80px; height:30px;"><?php echo "".$thisbalance?></td>
 						<td style="width:300px; height:30px;">	
 							<form method="post" style="float:left; padding-right:5px;">
