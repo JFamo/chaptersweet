@@ -4,276 +4,188 @@ session_start();
 
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
-$fullname = $_SESSION['fullname'];
+$eventsUser = $_SESSION['fullname'];
 
-//get permission settings
-require('../php/connect.php');
+//encase the whole page - KEEP NON-ADMINS OUT
+if($rank == "admin" || $rank == "officer"){
 
-//INFO POSTING
-$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+//function to update points by grade
+if(isset($_POST['grade'])){
 
-$result = mysqli_query($link, $query);
-
-if (!$result){
-	die('Error: ' . mysqli_error($link));
-}
-
-//save the result
-list($perm) = mysqli_fetch_array($result);
-$officerPerm = $perm;
-
-//EMAIL
-$query="SELECT value FROM settings WHERE name='officerEmailPermission'";
-
-$result = mysqli_query($link, $query);
-
-if (!$result){
-	die('Error: ' . mysqli_error($link));
-}
-
-//save the result
-list($perm) = mysqli_fetch_array($result);
-$emailPerm = $perm;
-
-//file uploading
-if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
-
-	//file details
-	$fileName = $_FILES['userfile']['name'];
-	$tmpName = $_FILES['userfile']['tmp_name'];
-	$fileSize = $_FILES['userfile']['size'];
-	$fileType = $_FILES['userfile']['type'];
-
-	//file data manipulation
-	$fp = fopen($tmpName, 'r');
-	$content = fread($fp, filesize($tmpName));
-	$content = addslashes($content);
-	fclose($fp);
-
-	if(!get_magic_quotes_gpc()){
-
-		$fileName = addslashes($fileName);
-
-	}
-
-	//file viewality
-	$view = $_POST['view'];
-
-	//get poster
-	$poster = $_SESSION['fullname'];
+	//file viewability
+	$grade = $_POST['grade'];
+	$points = $_POST['points'];
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster')";
+		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='$grade'";
 
-	$result = mysqli_query($link, $query);
-
-	if (!$result){
-		die('Error: ' . mysqli_error($link));
-	}
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Added " . $points . " Event Points to Users in Grade " . $grade . " Successfully!";
 
 	mysqli_close($link);
 
-	$fmsg =  "File ".$fileName." Uploaded Successfully!";
-
 }
 
-if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
+//function to update points by rank
+if(isset($_POST['rank'])){
 
-	//file details
-	$fileName = $_FILES['userfile']['name'];
-	$tmpName = $_FILES['userfile']['tmp_name'];
-	$fileSize = $_FILES['userfile']['size'];
-	$fileType = $_FILES['userfile']['type'];
-
-	//file data manipulation
-	$fp = fopen($tmpName, 'r');
-	$content = fread($fp, filesize($tmpName));
-	$content = addslashes($content);
-	fclose($fp);
-
-	if(!get_magic_quotes_gpc()){
-
-		$fileName = addslashes($fileName);
-
-	}
-
-	//file viewality
-	$view = $_POST['view'];
-	$class = "minutes";
-
-	//get poster
-	$poster = $_SESSION['fullname'];
+	//file viewability
+	$rank = $_POST['rank'];
+	$points = $_POST['points'];
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster, class) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster', '$class')";
+		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE rank='$rank'";
 
-	$result = mysqli_query($link, $query);
-
-	if (!$result){
-		die('Error: ' . mysqli_error($link));
-	}
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Added " . $points . " Event Points to Users of Rank " . $rank . " Successfully!";
 
 	mysqli_close($link);
 
-	$fmsg =  "File ".$fileName." Uploaded Successfully!";
-
 }
 
-//posting announcements
-if(isset($_POST['body'])){
+//function to update points by group
+if(isset($_POST['group'])){
 
-	//variables assignment
-	$articleTitle = addslashes($_POST['title']);
-	$articleBody = addslashes($_POST['body']);
-	$articlePoster = addslashes($_SESSION['fullname']);
-	$doMail = $_POST['mail'];
+	//file viewability
+	$group = $_POST['group'];
+	$points = $_POST['points'];
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO announcements (title, body, poster, date) VALUES ('$articleTitle', '$articleBody', '$articlePoster', now())";
-
-	$result = mysqli_query($link, $query);
-
-	if (!$result){
-		die('Error: ' . mysqli_error($link));
-	}
-
-	//emailing announcements
-	if($doMail == "yes"){
-
-		//get users
-		$query="SELECT fullname, email FROM users";
-
-		$result = mysqli_query($link, $query);
-
-		if (!$result){
-			die('Error: ' . mysqli_error($link));
+		if($group == "all"){
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points'";
+		}
+		if($group == "upper"){
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='11' OR grade='12'";
+		}
+		if($group == "lower"){
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='9' OR grade='10'";
 		}
 
-		//for each user
-		while(list($fullname, $email) = mysqli_fetch_array($result)){
-
-			//actual mail part
-			$mailMessage = "
-			<html>
-			<h1></html> $articleTitle <html></h1>
-<p><pre></html>
-$articleBody
-<html><pre></p>
-			<br>
-			<p>For more information about your events and various other chapter-related functions, visit <a href='http://chaptersweet.x10host.com'>http://chaptersweet.x10host.com</a>.</p>
-			<p>If you have any questions or concerns, contact your advisor.</p>
-			<p>This email is automated, do not attempt to respond.</p>
-			</html>
-			";
-
-			$headers = "MIME-Version: 1.0" . "\r\n";
-			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-
-			// More headers
-			$headers .= 'From: '.$articlePoster.' <chapters@xo7.x10hosting.com>' . "\r\n";
-
-			mail($email,"TSA Chapter Announcement",$mailMessage,$headers);
-
-}
-
-	}
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Added " . $points . " Event Points to Users of Group " . ucfirst($group) . " Successfully!";
 
 	mysqli_close($link);
 
-	$fmsg =  "Article '".$articleTitle."' Uploaded Successfully!";
+}
+
+//function to select user whose events to view
+if(isset($_POST['viewEvents'])){
+
+	//file viewability
+	$user = $_POST['thisUser'];
+	$eventsUser = $user;
 
 }
 
-//handling transactions
-if(isset($_POST['amount'])){
+//function to change user rank
+if(isset($_POST['promoteUser'])){
 
-	//variables assignment
-	$personfrom = $_POST['personfrom'];
-	$personto = $_POST['personto'];
-	$amount = $_POST['amount'];
-	$description = addslashes($_POST['description']);
+	$user = $_POST['thisUser'];
+	$newRank = $_POST['newRank'];
 
 	require('../php/connect.php');
 
-	//get real name of person to
-	if($personto != "donation"){
+		$sql = "UPDATE users SET rank='$newRank' WHERE fullname='$user'";
 
-		$nameQuery = "SELECT fullname FROM users WHERE id='$personto'";
-
-		$nameResult = mysqli_query($link, $nameQuery);
-
-		if (!$nameResult){
+		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
-
-		list($realNameTo) = mysqli_fetch_array($nameResult);
-
-	}
-	else{
-
-		$realNameTo = "Donation";
-
-	}
-
-	//get real name of person from
-	if($personfrom != "income"){
-
-		$nameQuery = "SELECT fullname FROM users WHERE id='$personfrom'";
-
-		$nameResult = mysqli_query($link, $nameQuery);
-
-		if (!$nameResult){
-			die('Error: ' . mysqli_error($link));
-		}
-
-		list($realNameFrom) = mysqli_fetch_array($nameResult);
-
-	}
-	else{
-
-		$realNameFrom = "Income";
-
-	}
-
-	//make the transaction
-	$query = "INSERT INTO transactions (personto, personfrom, description, amount, date) VALUES ('$realNameTo', '$realNameFrom', '$description', '$amount', now())";
-
-	$result = mysqli_query($link, $query);
-
-	if (!$result){
-		die('Error: ' . mysqli_error($link));
-	}
-
-	//update balances
-	if($personto != "donation"){
-
-		$query2 = "UPDATE users SET balance=balance+'$amount' WHERE id='$personto'";
-
-		$result2 = mysqli_query($link, $query2);
-
-		if (!$result2){
-			die('Error: ' . mysqli_error($link));
-		}
-
-	}
-	if($personfrom != "income"){
-
-		$query3 = "UPDATE users SET balance=balance-'$amount' WHERE id='$personfrom'";
-
-		$result3 = mysqli_query($link, $query3);
-
-		if (!$result3){
-			die('Error: ' . mysqli_error($link));
-		}
-
-	}
+		
+		$fmsg =  "Changed " . $user . " to Rank " . ucfirst($newRank) . " Successfully!";
 
 	mysqli_close($link);
 
-	$fmsg =  "Transaction of ".$amount." Completed Successfully!";
+}
+
+//function to delete user
+if(isset($_POST['deleteUser'])){
+
+	$user = $_POST['thisUser'];
+	require('../php/connect.php');
+
+		$sql = "DELETE FROM users WHERE fullname='$user'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Deleted " . $user . " Successfully!";
+
+	mysqli_close($link);
+
+}
+
+//function to change user obligation
+if(isset($_POST['obligationChange'])){
+
+	$user = $_POST['thisUser'];
+	$newValue = $_POST['newValue'];
+	$obligation = $_POST['obligation'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET $obligation='$newValue' WHERE fullname='$user'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Changed " . $user . " for " . $obligation . " to " . $newValue . "Successfully!";
+
+	mysqli_close($link);
+
+}
+
+
+//function to create a new obligation
+if(isset($_POST['obligationName'])){
+
+	$name = $_POST['obligationName'];
+	$name = str_replace(' ','_',$name);
+	$defaultValue = $_POST['default'];
+
+	require('../php/connect.php');
+
+		$sql = "ALTER TABLE users ADD COLUMN $name VARCHAR(10) NOT NULL DEFAULT '$defaultValue'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Added Obligation " . $name. " Successfully!";
+
+	mysqli_close($link);
+
+}
+
+//function to delete an obligation
+if(isset($_POST['deleteObligation'])){
+
+	$name = $_POST['deleteObligation'];
+
+	require('../php/connect.php');
+
+		$sql = "ALTER TABLE users DROP COLUMN $name";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Deleted Obligation " . $name. " Successfully!";
+
+	mysqli_close($link);
 
 }
 
@@ -305,462 +217,552 @@ if(isset($_POST['amount'])){
     			<input class="backButton" type="submit" value="Back" />
 			</form>
 			<center><p class="subTitleText">
-				Information
+				Users
 			</p></center>
 		</div>
 <!--Spooky stuff closer to the middle-->
-			<div id="contentPane" style="overflow:hidden">
+			<div id="contentPane">
 
 			<?php
 				if(isset($fmsg)){
 				?>
 
-					<p class = "bodyTextType1">
+					<p class = "bodyTextType1"><b>
 
 					<?php
 					echo $fmsg;
 					?>
 
-					</p><br>
+					</b></p><br>
 
 				<?php
 				}
 				?>
 
-				<!--INFO TYPES LINKS-->
+				<!--Description-->
+				<p class="bodyTextType1">
+					Here admins can review user information, check user event progress, manage user accounts, and get a summary of the chapter.
+					The summary box shows a general overview of member distribution.<br>
+					The user info box shows important information about users, as well as providing options to manage them.
+					The events box allows for a more detailed review of user event progress.<br>
+				</p>
+
+				<!--User Table-->
 				<center>
-				<div class="iconLinks">
+				<?php if($rank == "admin"){ ?>
+				<!--Points-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Assign Event Points</p><br>
 
-				<!--Files-->
-					<span onclick="showFiles();"><a href="#"><img src="../imgs/icon_files.png" height="64" width="64"><p class="bodyTextType1">Files</p></a></span>
-				<!--Minutes-->
-					<span onclick="showMinutes();"><a href="#"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Minutes</p></a></span>
-				<!--Announcements-->
-					<span onclick="showAnnouncements();"><a href="#"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
-				<!--Announce-->
-				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin"){ ?>
-					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Post Announcement</p></a></span>
-				<?php } ?>
-				<!--Audit-->
-				<?php if($rank == "officer" || $rank == "admin"){ ?>
-					<span onclick="showAudit();"><a href="#"><img src="../imgs/wallet.png" height="64" width="64"><p class="bodyTextType1">Audit</p></a></span>
-				<?php } ?>
-
-				</div>
-
-				<!--FILES-->
-				<div id="filesDiv" class="infoTab">
-
-				<div class="userDashHeader" style="width:80%;">
-					<p class="subTitleText" style="padding-top:15px">Files</p>
-				</div>
-
-				<!--Description-->
-				<p class="bodyTextType1">
-					Here you can view all of your chapter's important files. Officers and Admins can upload new files.
-				</p>
-
-				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "filesAnnouncements" || $officerPerm == "files")) || $rank == "admin"){ ?>
-					<form method="post" enctype="multipart/form-data" class="fileForm">
-						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
-						<span>Who Can View :
-						<select id="view" name="view">
-							<option value="all">All</option>
-							<option value="officer">Officers Only</option>
-						</select></span>
-						<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="uploadFile" type="submit" class="box" id="uploadFile" value="Upload"></span>
-					</form>
-				<?php } ?>
-
-				<br>
-				<br>
-
-				<?php
-
-				require('../php/connect.php');
-
-				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='file'";
-
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}
-
-				$doMemberSkip = 0;
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Files Found!<br>";
-				}
-				else{
-					//FOR MEMBERS - check if all available files are hidden
-					if($rank == "member"){
-
-						$viewLevel = "all";
-
-						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel'";
-
-						$result2 = mysqli_query($link, $query2);
-
-						if (!$result2){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						if(mysqli_num_rows($result2) == 0){
-							$doMemberSkip = 1;
-						}
-
-					}
-
-					if($doMemberSkip == 1){
-							echo "No Files Found!<br>";
-					}
-					else{
-						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
-							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
-								?>
-							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
-							<?php
-							if($view == "officer"){ ?>
-									<p style="float:left; padding-left: 10%;">Private</p>
-								<?php } ?>
-							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
-							<p style="float:right; padding-right: 10%;"><?php echo "".$poster ?></p>
-							<br>
-							
-							<?php
-							}
-						}
-					}
-				}
-						
-				mysqli_close($link);
-
-				?>
-
-				</div>
-
-				<!--MINUTES-->
-				<div id="minutesDiv" style="display:none;" class="infoTab">
-
-				<div class="userDashHeader" style="width:80%;">
-					<p class="subTitleText" style="padding-top:15px">Minutes</p>
-				</div>
-
-				<!--Description-->
-				<p class="bodyTextType1">
-					Here you can view the minutes of chapter meetings. The secretary can upload minutes here.
-				</p>
-
-				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "minutesAnnouncements" || $officerPerm == "minutes")) || $rank == "admin"){ ?>
-					<form method="post" enctype="multipart/form-data" class="fileForm">
-						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
-						<span>Who Can View :
-						<select id="view" name="view">
-							<option value="all">All</option>
-							<option value="officer">Officers Only</option>
-						</select></span>
-						<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="uploadMinutes" type="submit" class="box" id="uploadMinutes" value="Upload"></span>
-					</form>
-				<?php } ?>
+						<form class="basicSpanDiv" method="post" id="pointsGradeForm" style="width:100%; height:40px; padding-top:15px;">
+							<span>
+							By Grade
+							</span>
+							<span>
+							Grade : 
+							<select id="grade" name="grade">
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
+							</span>
+							<span>
+							How Many Points :
+							<input type="number" id="points" name="points">
+							</span>
+							<span>
+							<input type="submit" class="box" value="Assign Points">
+							</span>
+						</form>
+						<br>
+						<form class="basicSpanDiv" method="post" id="pointsRankForm" style="width:100%; height:40px; padding-top:15px;">
+							<span>
+							By Rank
+							</span>
+							<span>
+							Rank :
+							<select id="rank" name="rank">
+								<option value="member">Members</option>
+								<option value="officer">Officers</option>
+								<option value="admin">Admins</option>
+							</select>
+							</span>
+							<span>
+							How Many Points :
+							<input type="number" id="points" name="points">
+							</span>
+							<span>
+							<input type="submit" class="box" value="Assign Points">
+							</span>
+						</form>
+						<br>
+						<form class="basicSpanDiv" method="post" id="pointsAllForm" style="width:100%; height:40px; padding-top:15px;">
+							<span>
+							By Group
+							</span>
+							<span>
+							Group :
+							<select id="group" name="group">
+								<option value="all">All</option>
+								<option value="upper">Upperclassmen</option>
+								<option value="lower">Lowerclassmen</option>
+							</select>
+							</span>
+							<span>
+							How Many Points :
+							<input type="number" id="points" name="points">
+							</span>
+							<span>
+							<input type="submit" class="box" value="Assign Points">
+							</span>
+						</form>
 
 				<br>
+				</div>
+				<?php } ?>
+				<!--Summary-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Summary</p>
+				<div class="basicSpanDiv">
+
+					<?php
+
+					require("../php/connect.php");
+
+					//get number of users
+					$query="SELECT id FROM users";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Total Users : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of admins
+					$query="SELECT id FROM users WHERE rank='admin'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Admins : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of officers
+					$query="SELECT id FROM users WHERE rank='officer'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Officers : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of members
+					$query="SELECT id FROM users WHERE rank='member'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Members : <b>" . $numUsers . "</b></p></span>";
+
+					?>
+
+				</div>
+				<div class="basicSpanDiv">
+
+					<?php
+
+					require("../php/connect.php");
+
+					//get number of 9th graders
+					$query="SELECT id FROM users WHERE grade='9'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Freshmen : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of 10th graders
+					$query="SELECT id FROM users WHERE grade='10'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Sophomores : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of 11th graders
+					$query="SELECT id FROM users WHERE grade='11'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Juniors : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of 12th graders
+					$query="SELECT id FROM users WHERE grade='12'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Seniors : <b>" . $numUsers . "</b></p></span>";
+
+					mysqli_close($link);
+
+					?>
+
+				</div>
+				</div>
+				<div class="adminDataSection" style="overflow:auto;">
 				<br>
-
-				<?php
-
-				require('../php/connect.php');
-
-				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='minutes'";
-
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}
-
-				$doMemberSkip = 0;
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Minutes Found!<br>";
-				}
-				else{
-					//FOR MEMBERS - check if all available files are hidden
-					if($rank == "member"){
-
-						$viewLevel = "all";
-
-						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel'";
-
-						$result2 = mysqli_query($link, $query2);
-
-						if (!$result2){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						if(mysqli_num_rows($result2) == 0){
-							$doMemberSkip = 1;
-						}
-
-					}
-
-					if($doMemberSkip == 1){
-							echo "No Minutes Found!<br>";
-					}
-					else{
-						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
-							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
-								?>
-							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
-							<?php
-							if($view == "officer"){ ?>
-									<p style="float:left; padding-left: 10%;">Private</p>
-								<?php } ?>
-							<p style="float:right; padding-right: 25%;"><?php echo "".$date ?></p>
-							<p style="float:right; padding-right: 10%;"><?php echo "".$poster ?></p>
-							<br>
-							
-							<?php
-							}
-						}
-					}
-				}
-						
-				mysqli_close($link);
-
-				?>
-
-				</div>
-
-				<!--ANNOUNCEMENTS-->
-				<div id="announcementsDiv" style="display:none;" class="infoTab">
-
-				<div class="userDashHeader" style="width:80%;">
-					<p class="subTitleText" style="padding-top:15px">Announcements</p>
-				</div>
-
-				<!--Description-->
-				<p class="bodyTextType1">
-					Here you can view all of your chapter's announcements.
-				</p>
-
-				<div style="text-align: left;">
-				<?php
-
-				require('../php/connect.php');
-
-				$query="SELECT * FROM announcements ORDER BY id DESC";
-
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}		
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Articles Found!<br>";
-				}
-				else{
-					while(list($id, $title, $body, $poster, $date) = mysqli_fetch_array($result)){
-						?>
-
-						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:15%; padding-top:10px;"><?php echo "".$title ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "".$date ?></p>
-						<br><br>
-						<pre>
-						<p style="font-size:12px; font-family:tahoma; padding-left:20%; padding-top:10px; padding-bottom: 10px;">
-<?php echo "".$body ?>
-						</p>
-						</pre>
-						
+				<p class="userDashSectionHeader" style="padding-left:0px;">User Info</p>
+				<br>
+				<table class="usersTable" cellspacing="0" cellpadding="0" style="overflow:auto; margin-left:10px;">
+					<tr>
+					
+						<td style="width:250px; height:30px;"><b>Name</b></td>
+						<td style="width:80px; height:30px;"><b>Grade</b></td>
+						<td style="width:100px; height:30px;"><b>Rank</b></td>
+						<td style="width:200px; height:30px;"><b>Email</b></td>
+						<td style="width:80px; height:30px;"><b>Events</b></td>
+						<td style="width:80px; height:30px;"><b>Event Points</b></td>
+						<td style="width:80px; height:30px;"><b>Balance</b></td>
+						<td style="width:200px; height:30px;"><b>Options</b></td>
+					
 						<?php
-					}
-				}
 						
-				mysqli_close($link);
-
-				?>
-				</div>
-
-				</div>
-				
-				<!--ANNOUNCE-->
-				<div id="postDiv" style="display:none;" class="infoTab">
-
-				<div class="userDashHeader" style="width:80%;">
-					<p class="subTitleText" style="padding-top:15px">Post Announcement</p>
-				</div>
-
-				<!--Description-->
-				<p class="bodyTextType1">
-					Officers and Admins can write and post announcements here.
-				</p>
-
-				<form method="post" id="articleWriteForm">
-					<br>
-					Title:
-					<br>
-					<input class="taskFormInput" style="width:800px; height:40px;" type="text" name="title" id="title">
-					<br><br>
-					Body:
-					<br>
-					<textarea form="articleWriteForm" cols="110" rows="15" name="body" id="body"></textarea>
-					<br><br>
-					<?php 
-					if(($rank == "officer" && $emailPerm == "yes") || $rank == "admin"){ ?>
-					<select id="mail" name="mail">
-							<option value="no">Do Not Email</option>
-							<option value="yes">Send As Email</option>
-					</select>
-					<br><br>
-					<?php } ?>
-					<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Post">
-				</form>
-
-				</div>
-
-				<!--AUDIT-->
-				<div id="auditDiv" style="display:none;" class="infoTab">
-
-				<div class="userDashHeader" style="width:80%;">
-					<p class="subTitleText" style="padding-top:15px">Audit</p>
-				</div>
-
-				<!--Description-->
-				<p class="bodyTextType1">
-					Officers and Admins can view the audit, and make withdrawals and deposits here.
-				</p>
-
-				<form method="post" class="fileForm">
-					<span>$Amount : <input style="font-size:16px; border:1px solid #B60000;" name="amount" type="number" id="amount" value="<?php echo isset($_POST['amount']) ? $_POST['amount'] : '' ?>"></span>
-					<span>From :
-					<!--Give each user as an option-->
-					<select id="personfrom" name="personfrom">
-						<option value="income">Income</option>
-						<?php
-
 						require('../php/connect.php');
-
-						$query="SELECT id, fullname FROM users";
-
+						
+						//get the user columns
+						$query="DESCRIBE users";
+		
 						$result = mysqli_query($link, $query);
-
+		
 						if (!$result){
 							die('Error: ' . mysqli_error($link));
-						}	
-
-						while(list($id, $personname) = mysqli_fetch_array($result)){
-							?>
-
-							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
-							
-							<?php
 						}
-								
-						mysqli_close($link);
-
-						?>
-					</select></span>
-					<span>To :
-					<!--Give each user as an option-->
-					<select id="personto" name="personto">
-						<option value="donation">Donation</option>
-						<?php
-
-						require('../php/connect.php');
-
-						$query="SELECT id, fullname FROM users";
-
-						$result = mysqli_query($link, $query);
-
-						if (!$result){
-							die('Error: ' . mysqli_error($link));
-						}	
-
-						while(list($id, $personname) = mysqli_fetch_array($result)){
-							?>
-
-							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
-							
-							<?php
+						
+						while($row = mysqli_fetch_array($result)) {
+							if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
+						   		echo "<td style='width:100px; height:30px;'><b>" . ucfirst($row['Field']) . "</b></td>";
+						   	}
 						}
-								
-						mysqli_close($link);
-
+						
 						?>
-					</select></span>
-					<span>Description : 
-					<input style="font-size:14px; border:1px solid #B60000;" name="description" type="text" id="description" value="<?php echo isset($_POST['description']) ? $_POST['description'] : '' ?>"></span>
-					<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="transact" type="submit" class="box" id="transact" value="Transact"></span>
-				</form>
 
-				<br><br>
-
+					</tr>
 				<?php
-
-				//FIRST THING - CHAPTER BALANCES
 
 				require('../php/connect.php');
 
-				$query="SELECT balance FROM users WHERE id='53'";
-
+				//get user details
+				$query="SELECT * FROM users ORDER BY fullname";
 				$result = mysqli_query($link, $query);
-
 				if (!$result){
 					die('Error: ' . mysqli_error($link));
-				}		
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Chapter Balance Found!<br>";
 				}
-				else{
-					while(list($balance) = mysqli_fetch_array($result)){
-						?>
-							<b><p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo "Chapter Balance : $".$balance ?></p></b>
-						<?php
+
+				//figure out which fields are obligations
+				$obligationsArray = array();
+				$num_fields = mysqli_num_fields($result);
+				$fields = mysqli_fetch_fields($result);
+				//for each field
+				while($thisField = mysqli_fetch_field($result)){
+					$thisFieldName = $thisField->name;
+					//if the field is not one of the standard user columns
+					if(!($thisFieldName == 'id' || $thisFieldName == 'fullname' || $thisFieldName == 'username' || $thisFieldName == 'password' || $thisFieldName == 'email' || $thisFieldName == 'grade' || $thisFieldName == 'rank' || $thisFieldName == 'eventpoints' || $thisFieldName == 'balance')){
+
+						array_push($obligationsArray, $thisFieldName);
+
 					}
 				}
 
-				//SECOND THING - TRANSACTIONS
-
-				$query="SELECT * FROM transactions ORDER BY id DESC";
-
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}		
-
 				if(mysqli_num_rows($result) == 0){
-					echo "No Transactions Found!<br>";
+					echo "No Users Found!<br>";
 				}
 				else{
-					while(list($id, $personto, $personfrom, $description, $amount, $date) = mysqli_fetch_array($result)){
+					while($resultArray = mysqli_fetch_array($result)){
+
+						$fullname = $resultArray['fullname'];
+						$grade = $resultArray['grade'];
+						$thisrank = $resultArray['rank'];
+						$eventpoints = $resultArray['eventpoints'];
+						$thisemail = $resultArray['email'];
+						$thisbalance = $resultArray['balance'];
+
 						?>
 
-						<div class="basicSpanDiv" style="width:100%;">
-							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "From : ".$personfrom ?></p></span>
-							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "To : ".$personto ?></p></span>
-							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "$".$amount ?></p></span>
-							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "On : ".$date ?></p></span>
-						</div>
-						<p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo $description ?></p>
-						
+						<tr class="userRow">
+
+						<td style="width:250px; height:30px;"><?php echo "".$fullname ?></td>
+						<td style="width:60px; height:30px;"><?php echo "".$grade ?></td>
+						<td style="width:100px; height:30px;"><?php echo "".$thisrank ?></td>
+						<td style="width:200px; height:30px;"><?php echo "".$thisemail ?></td>
+						<td style="width:80px; height:30px;"><?php
+							require('../php/connect.php');
+							//get user's events
+							$eventsQuery="SELECT event FROM teams WHERE member1='$fullname' OR member2='$fullname' OR member3='$fullname' OR member4='$fullname' OR member5='$fullname' OR member6='$fullname'";
+							$eventsResult = mysqli_query($link, $eventsQuery);
+							if (!$eventsResult){
+								die('Error: ' . mysqli_error($link));
+							}
+							$numEvents = mysqli_num_rows($eventsResult);
+							if($numEvents < 3 || $numEvents > 6){ echo "<p style='color:red;'>"; } 
+							echo $numEvents;
+							if($numEvents < 3 || $numEvents > 6){ echo "</p>"; }
+							mysqli_close($link);
+						?></td>
+						<td style="width:80px; height:30px;"><?php echo "".$eventpoints?></td>
+						<td style="width:80px; height:30px;"><?php echo "".$thisbalance?></td>
+						<td style="width:300px; height:30px;">	
+							<form method="post" style="float:left; padding-right:5px;">
+								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+								<input type="submit" name="viewEvents" value="View Events" />
+							</form>
+							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
+							<form method="post" style="float:left; padding-right:5px;">
+								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+								<input type="hidden" name="newRank" value="<?php 
+									if($thisrank=='member'){ echo 'officer'; }
+									if($thisrank=='officer'){ echo 'member'; } 
+								?>" />
+								<input type="submit" name="promoteUser" value="Make <?php 
+									if($thisrank=='member'){ echo 'Officer'; }
+									if($thisrank=='officer'){ echo 'Member'; } 
+								?>" />
+							</form>
+							<?php } ?>
+							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
+							<form method="post" style="float:left;">
+								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+								<input type="submit" name="deleteUser" value="Delete Account" />
+							</form>
+							<?php } ?>
+						</td>
+
+						<?php
+
+						foreach($obligationsArray as $obligation){ ?>
+							<td style="width:100px; height:30px;">
+								<form method="post" target="#hideFrame">
+									<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+									<input type="hidden" name="obligation" value="<?php echo $obligation ?>" />
+									<input type="hidden" name="newValue" value="<?php 
+										if($resultArray[$obligation]=='yes'){ echo 'no'; }
+										if($resultArray[$obligation]=='no'){ echo 'yes'; } 
+									?>" />
+									<input type="submit" name="obligationChange" value="<?php 
+										echo ucfirst($resultArray[$obligation]);
+									?>" />
+								</form>
+							</td>
+							<?php
+						}
+
+						?>
+
+						</tr>
+
 						<?php
 					}
 				}
-						
-				mysqli_close($link);
+				?>
+				</table>
+
+				<br>
+				<br>
+
+				</div>
+				<div class="adminDataSection">
+
+					<br>
+					<p class="userDashSectionHeader" style="padding-left:0px;"><?php echo $eventsUser . "'s" ?> Events</p>
+					<br>
+
+					<?php
+					require('../php/connect.php');
+
+					//get user's events
+					$query="SELECT event FROM teams WHERE member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					//check for users with no events
+					if(mysqli_num_rows($result) == 0){
+						echo "<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>User Is Not Registered For Any Events!</b></p>";
+					}
+
+					//space out events when they're displayed
+					$doEventNewline = 0;
+
+					//in a table, of course
+					echo "<table>";
+					echo "<tr style='height: 225px; vertical-align: top;'>";
+
+					while(list($event) = mysqli_fetch_array($result)){
+
+						$doEventNewline += 1;
+
+						//rows of 3
+						if($doEventNewline > 3){
+							echo "</tr>";
+							echo "<tr style='height: 225px; vertical-align: top;'>";
+							$doEventNewline = 1;
+						}
+
+						echo "<td style='width:225px; position:relative;'>
+							<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>" . $event . "</b></p>";
+
+						echo "<br>";
+
+						$checkName = addslashes($eventsUser);
+						$checkEvent = addslashes($event);
+
+						//get user's tasks
+						$taskQuery="SELECT id, task, done FROM tasks WHERE user='$checkName' AND event='$checkEvent'";
+
+						$taskResult = mysqli_query($link, $taskQuery);
+
+						if (!$taskResult){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//check for users with no events
+						if(mysqli_num_rows($taskResult) == 0){
+							echo "<p style='font-family:tahoma; font-size:12px; padding-left:20px; padding-top:15px;'>No Tasks!</p>";
+						}
+
+						//for each task
+						while(list($id, $task, $done) = mysqli_fetch_array($taskResult)){
+							echo "<br>";
+							echo "<form method='post'>";
+							echo "<input type='hidden' name='event' value='" . $event . "'>";
+							echo "<input type='hidden' name='task' value='" . $task . "'>";
+							if($done == "yes"){
+								echo "<input style='padding-left:20px;' class='noCheckBox' type='checkbox' checked>";
+							}
+							else{
+								echo "<input style='padding-left:20px;' class='noCheckBox' type='checkbox'>";
+							}
+							echo "<p style='padding-left:20px; display:inline-block;'>" . $task . "</p>";
+							echo "</form>";
+						}
+
+
+						echo "</td>";
+
+					}
+
+					echo "</tr>";
+					echo "</table>";
 
 				?>
 
 				</div>
+				<!--Obligations-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Obligations</p>
+					<form class="basicSpanDiv" method="post" id="newObligationForm" style="width:100%; height:40px; padding-top:15px;">
+						<span>
+						<b>Create New Obligation</b>
+						</span>
+						<span>
+						Default: 
+						<select id="default" name="default">
+							<option value="no">Incomplete</option>
+							<option value="yes">Complete</option>
+						</select>
+						</span>
+						<span>
+						Name :
+						<input type="text" id="obligationName" name="obligationName">
+						</span>
+						<span>
+						<input type="submit" class="box" value="Create">
+						</span>
+					</form>
+					<form class="basicSpanDiv" method="post" id="deleteObligationForm" style="width:100%; height:40px; padding-top:15px;">
+						<span>
+						<b>Delete Obligation</b>
+						</span>
+						<span>
+						Obligation: 
+						<select id="deleteObligation" name="deleteObligation">
+							<?php
+						
+							require('../php/connect.php');
+							
+							//get the user columns
+							$query="DESCRIBE users";
+			
+							$result = mysqli_query($link, $query);
+			
+							if (!$result){
+								die('Error: ' . mysqli_error($link));
+							}
+							
+							while($row = mysqli_fetch_array($result)) {
+								$obligName = $row['Field'];
+								if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
+									?>
+									<option value="<?php echo $obligName; ?>"><?php echo $obligName; ?></option>
+									<?php
+							   	}
+							}
+							
+							?>
+						</select>
+						</span>
+						<span>
+						<input type="submit" class="box" value="Delete">
+						</span>
+					</form>
+				</div>
+				</center>
 
-			</center>
 			</div>
+
+		<iframe name="hideFrame" id="hideFrame" style="display:none;"></iframe>
 
 <!--Spooky stuff at the bottom-->
 		<footer>
@@ -775,3 +777,7 @@ if(isset($_POST['amount'])){
 <script src="../js/scripts.js" type="text/javascript"></script>
 
 </html>
+
+<?php
+}
+?>

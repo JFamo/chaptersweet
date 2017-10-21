@@ -1,7 +1,7 @@
 //function to handle task form submit
 function taskSubmit() {
-	//grab the form
-   	var frm = document.getElementsByName('tasksForm')[0];
+  //grab the form
+    var frm = document.getElementsByName('tasksForm')[0];
       submitValidateForm(frm);
 }
 
@@ -70,7 +70,7 @@ for (i = 0; i < acc.length; i++) {
           url = $form.attr( 'action' );
 
       /* Send the data using post with element id name and name2*/
-      var posting = $.post( url, { fullname: $('#fullname').val(), username: $('#username').val(), password: $('#password').val(), email: $('#email').val(), grade: $('#grade').val(), code: $('#code').val() } );
+      var posting = $.post( url, { fullname: $('#fullname').val(), username: $('#username').val(), password: $('#password').val(), email: $('#email').val(), grade: $('#grade').val(), code: $('#code').val(), chapter: $('#chapter').val() } );
 
       /* Alerts the results */
       posting.done(function( data ) {
@@ -93,6 +93,7 @@ var minutesDiv = document.getElementById("minutesDiv");
 var announcementsDiv = document.getElementById('announcementsDiv');
 var announceDiv = document.getElementById('postDiv');
 var auditDiv = document.getElementById('auditDiv');
+var rulesDiv = document.getElementById("rulesDiv");
 var currentDiv = filesDiv;
 var inTransition = false;
 
@@ -141,33 +142,39 @@ function getDirection(goDiv){
   if(currentDiv == filesDiv){
     myval = 1;
   }
-  if(currentDiv == minutesDiv){
+  if(currentDiv == rulesDiv){
     myval = 2;
   }
-  if(currentDiv == announcementsDiv){
+  if(currentDiv == minutesDiv){
     myval = 3;
   }
-  if(currentDiv == postDiv){
+  if(currentDiv == announcementsDiv){
     myval = 4;
   }
-  if(currentDiv == auditDiv){
+  if(currentDiv == postDiv){
     myval = 5;
+  }
+  if(currentDiv == auditDiv){
+    myval = 6;
   }
   //get the target tab value
   if(goDiv == filesDiv){
     goval = 1;
   }
-  if(goDiv == minutesDiv){
+  if(goDiv == rulesDiv){
     goval = 2;
   }
-  if(goDiv == announcementsDiv){
+  if(goDiv == minutesDiv){
     goval = 3;
   }
-  if(goDiv == postDiv){
+  if(goDiv == announcementsDiv){
     goval = 4;
   }
-  if(goDiv == auditDiv){
+  if(goDiv == postDiv){
     goval = 5;
+  }
+  if(goDiv == auditDiv){
+    goval = 6;
   }
   //get the direction
   if(myval < goval){
@@ -182,6 +189,13 @@ function getDirection(goDiv){
 function showFiles(){
   if(!inTransition){
     changeInfoTab(filesDiv, getDirection(filesDiv));
+  }
+}
+
+//function for Information Page rules tab
+function showRules(){
+  if(!inTransition){
+    changeInfoTab(rulesDiv, getDirection(rulesDiv));
   }
 }
 
