@@ -113,6 +113,10 @@ if(isset($_POST['promoteUser'])){
 if(isset($_POST['deleteUser'])){
 
 	$user = $_POST['thisUser'];
+	$confirm = $_POST['confirmDeleteUser'];
+
+	if($confirm == "yes"){
+
 	require('../php/connect.php');
 
 		$sql = "DELETE FROM users WHERE fullname='$user'";
@@ -124,6 +128,8 @@ if(isset($_POST['deleteUser'])){
 		$fmsg =  "Deleted " . $user . " Successfully!";
 
 	mysqli_close($link);
+
+	}
 
 }
 
@@ -568,12 +574,6 @@ if(isset($_POST['deleteObligation'])){
 								?>" />
 							</form>
 							<?php } ?>
-							<?php if($rank == "admin"){ ?>
-							<form method="post" style="float:left;">
-								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
-								<input type="submit" name="deleteUser" value="Delete Account" />
-							</form>
-							<?php } ?>
 						</td>
 
 						<?php
@@ -758,6 +758,98 @@ if(isset($_POST['deleteObligation'])){
 						</span>
 					</form>
 				</div>
+				
+				<?php if($rank == "admin"){ ?>
+				<!--User Management-->
+				<div class="adminDataSection">
+				<p class="userDashSectionHeader" style="padding-left:0px;">User Management</p><br>
+				
+					<form class="basicSpanDiv" method="post" id="newObligationForm" style="width:100%; height:40px; padding-top:15px;">
+						<span>
+						<b>Assign User Event Points</b>
+						</span>
+						<span>To :
+						<!--Give each user as an option-->
+						<select id="pointsTo" name="pointsTo">
+							<?php
+	
+							require('../php/connect.php');
+	
+							$query="SELECT id, fullname FROM users";
+	
+							$result = mysqli_query($link, $query);
+	
+							if (!$result){
+								die('Error: ' . mysqli_error($link));
+							}	
+	
+							while(list($id, $personname) = mysqli_fetch_array($result)){
+								?>
+	
+								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
+								
+								<?php
+							}
+									
+							mysqli_close($link);
+	
+							?>
+						</select></span>
+						<span>
+						How Many Points :
+						<input type="number" id="points" name="points">
+						</span>
+						<span>
+						<input type="submit" class="box" value="Assign Points">
+						</span>
+					</form>
+					<form class="basicSpanDiv" method="post" id="deleteUserForm" style="width:100%; height:40px; padding-top:15px;">
+						<span>
+						<b>Delete Account</b>
+						</span>
+						<span>User :
+						<!--Give each user as an option-->
+						<select id="thisUser" name="thisUser">
+							<?php
+	
+							require('../php/connect.php');
+	
+							$query="SELECT id, fullname, rank FROM users";
+	
+							$result = mysqli_query($link, $query);
+	
+							if (!$result){
+								die('Error: ' . mysqli_error($link));
+							}	
+	
+							while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
+								if($personrank != "admin"){
+								?>
+	
+								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
+								
+								<?php
+								}
+							}
+									
+							mysqli_close($link);
+	
+							?>
+						</select></span>
+						<span>
+						Are You Sure? :
+						<select id="confirmDeleteUser" name="confirmDeleteUser">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+						</select>
+						</span>
+						<span>
+						<input type="submit" name="deleteUser" value="Delete Account" />
+						</span>
+					</form>
+				
+				</div>
+				<?php } ?>
 				</center>
 
 			</div>
