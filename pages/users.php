@@ -80,6 +80,48 @@ if(isset($_POST['group'])){
 
 }
 
+//function to update points by individual
+if(isset($_POST['pointsTo'])){
+
+	//post variables
+	$user = $_POST['pointsTo'];
+	$points = $_POST['points'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE id='$user'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Added " . $points . " Event Points to User with ID " . $user . " Successfully!";
+
+	mysqli_close($link);
+
+}
+
+//function to remove points by individual
+if(isset($_POST['pointsFrom'])){
+
+	//post variables
+	$user = $_POST['pointsFrom'];
+	$points = $_POST['points'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET eventpoints=eventpoints-'$points' WHERE id='$user'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Removed " . $points . " Event Points to User with ID " . $user . " Successfully!";
+
+	mysqli_close($link);
+
+}
+
 //function to select user whose events to view
 if(isset($_POST['viewEvents'])){
 
@@ -119,16 +161,19 @@ if(isset($_POST['deleteUser'])){
 
 	require('../php/connect.php');
 
-		$sql = "DELETE FROM users WHERE fullname='$user'";
+		$sql = "DELETE FROM users WHERE id='$user'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
-		$fmsg =  "Deleted " . $user . " Successfully!";
+		$fmsg =  "Deleted User with ID " . $user . " Successfully!";
 
 	mysqli_close($link);
 
+	}
+	else{
+		$fmsg =  "Deletion Failed! It Was Not Confirmed!";
 	}
 
 }
@@ -764,7 +809,7 @@ if(isset($_POST['deleteObligation'])){
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">User Management</p><br>
 				
-					<form class="basicSpanDiv" method="post" id="newObligationForm" style="width:100%; height:40px; padding-top:15px;">
+					<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">
 						<span>
 						<b>Assign User Event Points</b>
 						</span>
@@ -801,6 +846,45 @@ if(isset($_POST['deleteObligation'])){
 						</span>
 						<span>
 						<input type="submit" class="box" value="Assign Points">
+						</span>
+					</form>
+					<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">
+						<span>
+						<b>Remove User Event Points</b>
+						</span>
+						<span>From :
+						<!--Give each user as an option-->
+						<select id="pointsFrom" name="pointsFrom">
+							<?php
+	
+							require('../php/connect.php');
+	
+							$query="SELECT id, fullname FROM users";
+	
+							$result = mysqli_query($link, $query);
+	
+							if (!$result){
+								die('Error: ' . mysqli_error($link));
+							}	
+	
+							while(list($id, $personname) = mysqli_fetch_array($result)){
+								?>
+	
+								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
+								
+								<?php
+							}
+									
+							mysqli_close($link);
+	
+							?>
+						</select></span>
+						<span>
+						How Many Points :
+						<input type="number" id="points" name="points">
+						</span>
+						<span>
+						<input type="submit" class="box" value="Remove Points">
 						</span>
 					</form>
 					<form class="basicSpanDiv" method="post" id="deleteUserForm" style="width:100%; height:40px; padding-top:15px;">
