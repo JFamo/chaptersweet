@@ -500,14 +500,13 @@ if(isset($_POST['amount'])){
 					Here you can view the rules for events. Officers and Admins can upload new rules files.
 				</p>
 
-				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "filesAnnouncements" || $officerPerm == "files")) || $rank == "admin"){ ?>
+				<?php if($rank == "admin"){ ?>
 					<form method="post" enctype="multipart/form-data" class="fileForm">
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
 						<span>Who Can View :
 						<select id="view" name="view">
 							<option value="all">All</option>
-							<option value="officer">Officers Only</option>
 						</select></span>
 						<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="uploadRules" type="submit" class="box" id="uploadRules" value="Upload"></span>
 					</form>
