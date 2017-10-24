@@ -11,14 +11,20 @@ if(isset($_POST['username']) and isset($_POST['password'])){
 	$_SESSION['chapter'] = $chapter;
 	
 	require('php/connect.php');
+	
+	$stmt = $link->stmt_init();
 
-	$query = "SELECT * FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
+	$stmt = $link->prepare("SELECT * FROM users WHERE username=? and password=?");
+	
+	$stmt->bind_param("ss", $sessionUsername, $sessionPassword);
 
-	$result = mysqli_query($link, $query);
+	$result = $stmt->get_result();
 
 	if (!$result){
 		die('Error: ' . mysqli_error($link));
 	}
+	
+	$stmt->close();
 
 	$count = mysqli_num_rows($result);
 
@@ -185,6 +191,11 @@ if(isset($_SESSION['username'])){
 							<option value="11">11</option>
 							<option value="12">12</option>
 						</select> <br>
+					Chapter : <br>
+			  			<select class="input1" name="chapter" id="chapter">
+			  				<option value="senior">High School</option>
+			  				<option value="freshman">Freshmen Academy</option>
+			  			</select><br><br>
 					Enter your chapter code: <br>
 			  			<input class="input1" type="text" id="code" required/> <br><br>
     				<input class="inputButton1" type="submit" value="Register"/>
