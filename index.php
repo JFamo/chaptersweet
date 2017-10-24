@@ -12,19 +12,13 @@ if(isset($_POST['username']) and isset($_POST['password'])){
 	
 	require('php/connect.php');
 	
-	$stmt = $link->stmt_init();
+	$query= "SELECT * FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
 
-	$stmt = $link->prepare("SELECT * FROM users WHERE username=? and password=?");
-	
-	$stmt->bind_param("ss", $sessionUsername, $sessionPassword);
-
-	$result = $stmt->get_result();
+	$result = mysqli_query($link, $query);
 
 	if (!$result){
 		die('Error: ' . mysqli_error($link));
 	}
-	
-	$stmt->close();
 
 	$count = mysqli_num_rows($result);
 
