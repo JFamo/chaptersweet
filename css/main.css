@@ -409,6 +409,27 @@ div.panel {
 	text-align: center;
 }
 
+.basicSpanDivNoHover{
+	display:table;
+	table-layout: fixed;
+}
+
+.basicSpanDivNoHover span{
+	display: table-cell;
+	text-align: center;
+}
+
+.basicHoverDiv {
+	background-color: white;
+}
+
+.basicHoverDiv:hover{
+	background-color: #ff5b5b;
+	width:100%; 
+	height:auto; 
+	overflow:auto;
+}
+
 .adminDataSection{
 	border: 1px solid black;
 	width: 80%;
