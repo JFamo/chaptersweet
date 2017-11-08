@@ -174,6 +174,7 @@ if(isset($_POST['body'])){
 	$articleBody = addslashes($_POST['body']);
 	$articlePoster = addslashes($_SESSION['fullname']);
 	$doMail = $_POST['mail'];
+	$doBoth = $_POST['whom'];
 
 	require('../php/connect.php');
 
@@ -222,7 +223,55 @@ $articleBody
 
 			mail($email,"TSA Chapter Announcement",$mailMessage,$headers);
 
-}
+		}
+		
+		if($doBoth == "yes"){
+		
+			mysqli_close($link);
+			
+			$_SESSION['chapter'] = 'freshman';
+			
+			require('../php/connect.php');
+			
+			//get users
+			$query="SELECT fullname, email FROM users";
+	
+			$result = mysqli_query($link, $query);
+	
+			if (!$result){
+				die('Error: ' . mysqli_error($link));
+			}
+	
+			//for each user
+			while(list($fullname, $email) = mysqli_fetch_array($result)){
+	
+				//actual mail part
+				$mailMessage = "
+				<html>
+				<h1></html> $articleTitle <html></h1>
+<p><pre></html>
+$articleBody
+<html><pre></p>
+				<br>
+				<p>For more information about your events and various other chapter-related functions, visit <a href='http://chaptersweet.x10host.com'>http://chaptersweet.x10host.com</a>.</p>
+				<p>If you have any questions or concerns, contact your advisor.</p>
+				<p>This email is automated, do not attempt to respond.</p>
+				</html>
+				";
+	
+				$headers = "MIME-Version: 1.0" . "\r\n";
+				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+	
+				// More headers
+				$headers .= 'From: '.$articlePoster.' <chapters@xo7.x10hosting.com>' . "\r\n";
+	
+				mail($email,"TSA Chapter Announcement",$mailMessage,$headers);
+	
+			}
+			
+			$_SESSION['chapter'] = 'senior';
+			
+		}
 
 	}
 
@@ -381,16 +430,16 @@ if(isset($_POST['amount'])){
 				<!--Rules-->
 					<span onclick="showRules();"><a href="#"><img src="../imgs/folder.png" height="64" width="64"><p class="bodyTextType1">Event Rules</p></a></span>
 				<!--Minutes-->
-					<span onclick="showMinutes();"><a href="#"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Minutes</p></a></span>
+					<span onclick="showMinutes();"><a href="#"><img src="../imgs/icon_minutes.png" height="64" width="64"><p class="bodyTextType1">Secretary</p></a></span>
 				<!--Announcements-->
 					<span onclick="showAnnouncements();"><a href="#"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
 				<!--Announce-->
 				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin"){ ?>
-					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Post Announcement</p></a></span>
+					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Reporter</p></a></span>
 				<?php } ?>
 				<!--Audit-->
 				<?php if($rank == "officer" || $rank == "admin"){ ?>
-					<span onclick="showAudit();"><a href="#"><img src="../imgs/wallet.png" height="64" width="64"><p class="bodyTextType1">Audit</p></a></span>
+					<span onclick="showAudit();"><a href="#"><img src="../imgs/wallet.png" height="64" width="64"><p class="bodyTextType1">Treasurer</p></a></span>
 				<?php } ?>
 
 				</div>
@@ -754,6 +803,10 @@ if(isset($_POST['amount'])){
 							<option value="no">Do Not Email</option>
 							<option value="yes">Send As Email</option>
 					</select>
+					<select id="whom" name="whom">
+							<option value="no">To BASHTSA</option>
+							<option value="yes">To Both Chapters</option>
+					</select>
 					<br><br>
 					<?php } ?>
 					<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Post">
@@ -880,7 +933,7 @@ if(isset($_POST['amount'])){
 					while(list($id, $personto, $personfrom, $description, $amount, $date) = mysqli_fetch_array($result)){
 						?>
 
-						<div class="basicHoverDiv" style="width:100%; height:auto; overflow:auto;">
+						<div class="basicHoverDiv">
 						<div class="basicSpanDiv" style="width:100%;">
 							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "From : ".$personfrom ?></p></span>
 							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "To : ".$personto ?></p></span>

@@ -664,7 +664,7 @@ if(isset($_POST['deleteObligation'])){
 					require('../php/connect.php');
 
 					//get user's events
-					$query="SELECT event FROM teams WHERE member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser'";
+					$query="SELECT event, team FROM teams WHERE member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser'";
 
 					$result = mysqli_query($link, $query);
 
@@ -684,7 +684,7 @@ if(isset($_POST['deleteObligation'])){
 					echo "<table>";
 					echo "<tr style='height: 225px; vertical-align: top;'>";
 
-					while(list($event) = mysqli_fetch_array($result)){
+					while(list($event, $team) = mysqli_fetch_array($result)){
 
 						$doEventNewline += 1;
 
@@ -704,7 +704,7 @@ if(isset($_POST['deleteObligation'])){
 						$checkEvent = addslashes($event);
 
 						//get user's tasks
-						$taskQuery="SELECT id, task, done FROM tasks WHERE user='$checkName' AND event='$checkEvent'";
+						$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent'";
 
 						$taskResult = mysqli_query($link, $taskQuery);
 

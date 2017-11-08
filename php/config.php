@@ -18,8 +18,7 @@ define('DB_USER', 'chapters_root');
 //  ~~~~~~~~~~~~~~HACKER~~~~~~~
 //  ~~~~PEOPLE~~~~~~~~~~~~~~~~~
 //seeing this
-define('DB_PASSWORD', '');
-//define host as localhost, connecting to own machine
+define('DB_PASSWORD', '');//define host as localhost, connecting to own machine
 define('DB_HOST', 'localhost');
 //charset is utf8, latin
 define('DB_CHARSET', 'utf8');

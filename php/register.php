@@ -9,6 +9,9 @@ $value4 = addslashes($_POST['email']);
 //$emails = array(addslashes($_POST['email']),addslashes($_POST['secondmail']),addslashes($_POST['thirdmail']),addslashes($_POST['fourthmail']));
 $value5 = $_POST['grade'];
 $valuec = $_POST['code'];
+$valuechapter = $_POST['chapter'];
+
+$_SESSION['chapter'] = $valuechapter;
 
 if($valuec == 'fr3shT5A'){
 	$_SESSION['chapter'] = 'freshman';

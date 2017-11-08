@@ -13,10 +13,11 @@ if(isset($_POST['newTask'])){
 	$taskName = addslashes($_POST['name']);
 	$taskEvent = addslashes($_POST['thisEvent']);
 	$taskUser = addslashes($_SESSION['fullname']);
+	$taskTeam = addslashes($_POST['thisTeam']);
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO tasks (user, event, task) VALUES ('$taskUser', '$taskEvent', '$taskName')";
+	$query = "INSERT INTO tasks (user, event, task, team) VALUES ('$taskUser', '$taskEvent', '$taskName', '$taskTeam')";
 
 	$result = mysqli_query($link,$query);
 
@@ -35,7 +36,7 @@ if(isset($_POST['done'])){
 	//variables assignment
 	$taskName = addslashes($_POST['task']);
 	$taskEvent = addslashes($_POST['event']);
-	$taskUser = addslashes($_SESSION['fullname']);
+	$taskTeam = addslashes($_POST['team']);
 
 	//check for task status update
 	if(isset($_POST['done'])){
@@ -47,7 +48,7 @@ if(isset($_POST['done'])){
 
 	require('../php/connect.php');
 
-	$query = "UPDATE tasks SET done='$done' WHERE user='$taskUser' AND event='$taskEvent' AND task='$taskName'";
+	$query = "UPDATE tasks SET done='$done' WHERE team='$taskTeam' AND event='$taskEvent' AND task='$taskName'";
 
 	$result = mysqli_query($link,$query);
 
@@ -112,7 +113,7 @@ $blockedPages = $perm;
 				<?php
 				}
 				?>
-		<!--Minutes-->
+		<!--Information-->
 				<?php
 				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin"){
 				?>
@@ -124,7 +125,7 @@ $blockedPages = $perm;
 				<?php
 				if($rank == "admin" || $rank == "officer"){
 				?>
-			<span><a href="users.php"><img src="../imgs/icon_users.png" height="32" width="32"><p class="bodyTextType1">Users</p></a></span>
+			<span><a href="users.php"><img src="../imgs/icon_users.png" height="32" width="32"><p class="bodyTextType1">My Chapter</p></a></span>
 				<?php
 				}
 				?>
@@ -196,7 +197,7 @@ $blockedPages = $perm;
 					require('../php/connect.php');
 
 					//get user's events
-					$query="SELECT event FROM teams WHERE member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name'";
+					$query="SELECT event, team FROM teams WHERE member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name'";
 
 					$result = mysqli_query($link,$query);
 
@@ -216,7 +217,7 @@ $blockedPages = $perm;
 					echo "<table>";
 					echo "<tr style='height: 225px; vertical-align: top;'>";
 
-					while(list($event) = mysqli_fetch_array($result)){
+					while(list($event, $team) = mysqli_fetch_array($result)){
 
 						$doEventNewline += 1;
 
@@ -234,6 +235,7 @@ $blockedPages = $perm;
 								<form method="post" style="font-family:tahoma;">
 									<b>New Task</b>
 									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
+									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
 									<br><br>
 									Name:<input type="text" id="name" name="name" style="width:125px" required />
 									<br><br>
@@ -252,7 +254,7 @@ $blockedPages = $perm;
 						$checkEvent = addslashes($event);
 
 						//get user's tasks
-						$taskQuery="SELECT id, task, done FROM tasks WHERE user='$checkName' AND event='$checkEvent'";
+						$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent'";
 
 						$taskResult = mysqli_query($link,$taskQuery);
 
@@ -270,6 +272,7 @@ $blockedPages = $perm;
 							echo "<br>";
 							echo "<form method='post'>";
 							echo "<input type='hidden' name='event' value='" . $event . "'>";
+							echo "<input type='hidden' name='team' id='team' value=" . $team . " />";
 							echo "<input type='hidden' name='task' value='" . $task . "'>";
 							if($done == "yes"){
 								echo "<input style='padding-left:20px;' name='done' type='checkbox' value='yes' onchange='this.form.submit()' checked>";
@@ -344,7 +347,7 @@ $blockedPages = $perm;
 			</div>
 			</td>
 			<td class="columns">
-			<div class="userDashSection" style="height:800px">
+			<div class="userDashSection" style="height:800px;">
 				<p class="userDashSectionHeader">
 					Announcements
 				</p>
@@ -371,9 +374,8 @@ $blockedPages = $perm;
 						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "".$date ?></p>
-						<br>
-						<pre>
-						<p style="font-size:12px; font-family:tahoma; padding-left:10%; padding-top:10px; padding-bottom: 10px;">
+						<pre style="white-space: pre-wrap; word-wrap: break-word;">
+						<p style="font-size:12px; font-family:tahoma; padding-top:0px; padding-left:5%; padding-right:5%; padding-bottom: 10px; ">
 <?php echo "".$body ?>
 						</p>
 						</pre>

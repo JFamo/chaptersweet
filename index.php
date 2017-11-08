@@ -143,7 +143,7 @@ if(isset($_SESSION['username'])){
 						<p style="font-size:14px; font-family:tahoma; padding-left:60px; padding-top:10px;"><?php echo "By : ".$poster ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:60px; padding-top:10px;"><?php echo "".$date ?></p>
 						<br><br>
-						<pre>
+						<pre style="white-space: pre-wrap; word-wrap: break-word;">
 						<p style="font-size:12px; font-family:tahoma; padding-left:80px; padding-top:10px; padding-bottom: 10px;">
 <?php echo "".$body ?>
 						</p>

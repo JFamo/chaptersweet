@@ -1,7 +1,7 @@
 //function to handle task form submit
 function taskSubmit() {
-  //grab the form
-    var frm = document.getElementsByName('tasksForm')[0];
+	//grab the form
+   	var frm = document.getElementsByName('tasksForm')[0];
       submitValidateForm(frm);
 }
 
