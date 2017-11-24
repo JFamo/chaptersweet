@@ -31,24 +31,25 @@ if(isset($_POST['newTask'])){
 
 }
 
-if(isset($_POST['done'])){
+if(isset($_POST['task'])){
 
 	//variables assignment
 	$taskName = addslashes($_POST['task']);
 	$taskEvent = addslashes($_POST['event']);
 	$taskTeam = addslashes($_POST['team']);
+	$isDone = addslashes($_POST['isdone']);
 
 	//check for task status update
-	if(isset($_POST['done'])){
-		$done = $_POST['done'];
+	if($isDone == "yes"){
+		$setdone = "no";
 	}
 	else{
-		$done = "no";
+		$setdone = "yes";
 	}
 
 	require('../php/connect.php');
 
-	$query = "UPDATE tasks SET done='$done' WHERE team='$taskTeam' AND event='$taskEvent' AND task='$taskName'";
+	$query = "UPDATE tasks SET done='$setdone' WHERE team='$taskTeam' AND event='$taskEvent' AND task='$taskName'";
 
 	$result = mysqli_query($link,$query);
 
@@ -274,11 +275,12 @@ $blockedPages = $perm;
 							echo "<input type='hidden' name='event' value='" . $event . "'>";
 							echo "<input type='hidden' name='team' id='team' value=" . $team . " />";
 							echo "<input type='hidden' name='task' value='" . $task . "'>";
+							echo "<input type='hidden' name='isdone' value='" . $done . "'>";
 							if($done == "yes"){
-								echo "<input style='padding-left:20px;' name='done' type='checkbox' value='yes' onchange='this.form.submit()' checked>";
+								echo "<input style='padding-left:20px;' name='done' type='checkbox' value='yes' onchange='this.form.submit();' checked='checked'>";
 							}
-							else{
-								echo "<input style='padding-left:20px;' name='done' type='checkbox' value='yes' onchange='this.form.submit()'>";
+							if($done == "no"){
+								echo "<input style='padding-left:20px;' name='done' type='checkbox' value='yes' onchange='this.form.submit();'>";
 							}
 							echo "<p style='padding-left:20px; display:inline-block;'>" . $task . "</p>";
 							echo "</form>";
