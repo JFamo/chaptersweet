@@ -80,6 +80,46 @@ if(isset($_POST['group'])){
 
 }
 
+//function to remove a user from an event
+if(isset($_POST['eventDelete'])){
+
+	//file viewability
+	$event = $_POST['eventDelete'];
+	$user = $_POST['deleteEventUser'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE teams SET member1 = NULL WHERE member1='$user' AND event = '$event'";
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql = "UPDATE teams SET member2 = NULL WHERE member2='$user' AND event = '$event'";
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql = "UPDATE teams SET member3 = NULL WHERE member3='$user' AND event = '$event'";
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql = "UPDATE teams SET member4 = NULL WHERE member4='$user' AND event = '$event'";
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql = "UPDATE teams SET member5 = NULL WHERE member5='$user' AND event = '$event'";
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql = "UPDATE teams SET member6 = NULL WHERE member6='$user' AND event = '$event'";
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Removed " . $user . " from " . $event . " Successfully!";
+
+	mysqli_close($link);
+
+}
+
 //function to update points by individual
 if(isset($_POST['pointsTo'])){
 
@@ -654,6 +694,8 @@ if(isset($_POST['deleteObligation'])){
 				<br>
 
 				</div>
+
+				<!--USER'S EVENT-->
 				<div class="adminDataSection">
 
 					<br>
@@ -742,6 +784,42 @@ if(isset($_POST['deleteObligation'])){
 					echo "</table>";
 
 				?>
+
+					<br><br>
+					<p class="userDashSectionHeader" style="padding-left:0px;">Remove From Events</p>
+					<p class="bodyTextType1">Here you can remove this user from any of their events.</p>
+
+					<form class="basicSpanDiv" method="post" id="removeFromEventForm" style="width:100%; height:40px; padding-top:15px;">
+						<input type="hidden" name="deleteEventUser" value="<?php echo $eventsUser; ?>" />
+						<span>
+						<b>Delete From Event</b>
+						</span>
+						<span>
+						Event: 
+						<select id="eventDelete" name="eventDelete">
+							<?php
+							require('../php/connect.php');
+
+							//get user's events
+							$query="SELECT event FROM teams WHERE member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser'";
+
+							$result = mysqli_query($link, $query);
+
+							if (!$result){
+								die('Error: ' . mysqli_error($link));
+							}
+
+							while(list($event) = mysqli_fetch_array($result)){
+								echo '<option value="' . $event . '"">' . $event . '</option>';
+							}
+
+							?>
+						</select>
+						</span>
+						<span>
+						<input type="submit" class="box" value="Remove">
+						</span>
+					</form>
 
 				</div>
 				<!--Obligations-->
