@@ -81,10 +81,14 @@ $blockedPages = $perm;
 
 <!DOCTYPE html>
 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="../js/scripts.js" type="text/javascript"></script>
+<!-- ima try this jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <head>
+	<!-- Bootstrap, cause it dabs -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<title>
 		Chapter Sweet
 	</title>
@@ -230,10 +234,8 @@ $blockedPages = $perm;
 						}
 
 						echo "<td style='width:225px; position:relative;'>
-							<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
-							<a id="newTaskLink" href='#'>New Task+</a>
-							<div id="newTaskDiv">
-								<form method="post" style="font-family:tahoma;">
+							<p style='font-family:tahoma; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
+							<a href='#' data-placement="bottom" title="Create a New Task" data-html=true data-toggle="popover" data-trigger="hover" data-content='<form method="post" style="font-family:tahoma;">
 									<b>New Task</b>
 									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
 									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
@@ -241,8 +243,7 @@ $blockedPages = $perm;
 									Name:<input type="text" id="name" name="name" style="width:125px" required />
 									<br><br>
 									<input type="submit" value="Create" name="newTask" style="font-family:tahoma;" id="newTask"/>
-								</form>
-							</div>
+								</form>'>New Task+</a>
 						<?php 
 
 						//event tasks
@@ -404,6 +405,7 @@ $blockedPages = $perm;
 			<center><p class="bodyTextType2">
 				© Joshua Famous 2017
 			</p></center>
+			<script src="../js/scripts.js" type="text/javascript"></script>
 		</footer>
 	</div>	
 </body>

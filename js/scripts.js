@@ -230,23 +230,28 @@ function showAudit(){
 //Event selection Event Points move with page scroll
 var eventPointsDiv = document.getElementById('eventPoints');
 
-$(window).scroll(function () {
+$(window).scroll(function (){
 
-  console.log(document.body.scrollTop);
+  if(eventPointsDiv === null){
 
-  if(document.body.scrollTop > 250){
-    eventPointsDiv.style.position = "fixed";
-    eventPointsDiv.style.backgroundColor = "#B60000";
-    eventPointsDiv.style.borderRadius = "15px";
-    eventPointsDiv.style.width = "175px";
-    eventPointsDiv.style.height = "25px";
   }
   else{
-    eventPointsDiv.style.position = "static";
-    eventPointsDiv.style.backgroundColor = "transparent";
-    eventPointsDiv.style.borderRadius = "0px";
-    eventPointsDiv.style.width = "auto";
-    eventPointsDiv.style.height = "auto";
+
+    if(document.body.scrollTop > 250){
+      eventPointsDiv.style.position = "fixed";
+      eventPointsDiv.style.backgroundColor = "#B60000";
+      eventPointsDiv.style.borderRadius = "15px";
+      eventPointsDiv.style.width = "175px";
+      eventPointsDiv.style.height = "25px";
+    }
+    else{
+      eventPointsDiv.style.position = "static";
+      eventPointsDiv.style.backgroundColor = "transparent";
+      eventPointsDiv.style.borderRadius = "0px";
+      eventPointsDiv.style.width = "auto";
+      eventPointsDiv.style.height = "auto";
+    }
+
   }
 
 });
@@ -276,3 +281,8 @@ function updateSettings(infoPerm, emailPerm, blockPages){
   blockedPages.value = blockPages;
 
 }
+
+//enable popovers
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({container: 'body'});   
+});
