@@ -481,3 +481,12 @@ div.panel {
 
 .usersTable{
 }
+
+.coolButton{
+    border: none;
+    color: white;
+    padding: 1px 2px;
+    text-decoration: none;
+    background-color: #af0000;
+    border-radius: 1px;
+}
