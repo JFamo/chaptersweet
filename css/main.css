@@ -4,7 +4,7 @@
 }
 
 /**Generic Color Class**/
-.color, header, #subTitleBar, footer, .bigButton, .backButton, .utilityButton, button.accordion, .userDashHeader, .fileForm {
+.color, header, #subTitleBar, footer, .bigButton, .backButton, .utilityButton, button.accordion, .fakeAccordion, .userDashHeader, .fileForm {
 	background-color: #B60000;
 	/**background-color: #0012b7;**/
 	/**background-color: #007750;**/
@@ -218,7 +218,7 @@ footer{
 	border: 1px solid black;
 }
 
-button.accordion {
+button.accordion, .fakeAccordion {
     font-size: 24px;
 	padding: 14px 40px;
 	border-radius: 4px;
@@ -234,14 +234,13 @@ button.accordion {
     color: white;
 }
 
-button.accordion.active, button.accordion:hover {
+button.accordion.active, button.accordion:hover, .fakeAccordion.active, .fakeAccordion:hover {
     background-color: #A10000;
 }
 
 div.panel {
     padding: 0 18px;
     background-color: white;
-    display: none;
 }
 
 .eventSignupButton {

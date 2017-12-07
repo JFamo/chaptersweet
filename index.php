@@ -72,6 +72,12 @@ if(isset($_SESSION['username'])){
 <!DOCTYPE html>
 
 <head>
+	<!-- ima try this jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Bootstrap, cause it dabs -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<title>
 		Chapter Sweet
 	</title>
@@ -160,38 +166,38 @@ if(isset($_SESSION['username'])){
 		<td class="columns" style="vertical-align: top; overflow: auto;">
 		<center>
 
-		<button class="accordion">Register</button>
+		<button class="fakeAccordion" data-toggle="collapse" data-target="#resultRegister">Register</button>
 			<div class="panel" id="resultRegister">
 
 			  	<form id="registerForm" action="php/register.php"> 
 
 			  		Enter your first and last name: <br>
-			  			<input class="input1" type="text" id="fullname" required/> <br>
+			  			<input class="input1 form-control" type="text" id="fullname" required/>
 			  		Enter a username: <br>
-			  			<input class="input1" type="text" id="username" required/> <br>
+			  			<input class="input1 form-control" type="text" id="username" required/> <br>
 			  		Enter a password: <br>
-			  			<input class="input1" type="password" id="password" required/> <br>
+			  			<input class="input1 form-control" type="password" id="password" required/> <br>
 			  		Enter your email: <br>
-			  			<input class="input1" type="email" id="email" required/> <br>
+			  			<input class="input1 form-control" type="email" id="email" required/> <br>
 			  		<!--Enter any additional emails: <br>
 			  			<input class="input1" type="email" id="secondmail" name="secondmail" /> <br>
 			  			<input class="input1" type="email" id="thirdmail" name="thirdmail" /> <br>
 			  			<input class="input1" type="email" id="fourthmail" name="fourthmail" /> <br>
 			  		-->
 			  		Enter your grade: <br>
-			  			<select class="input1" id="grade" name="grade" required>
+			  			<select class="input1 form-control" id="grade" name="grade" required>
 							<option value="9">9</option>
 							<option value="10">10</option>
 							<option value="11">11</option>
 							<option value="12">12</option>
 						</select> <br>
 					Chapter : <br>
-			  			<select class="input1" name="chapter" id="chapter">
+			  			<select class="input1 form-control" name="chapter" id="chapter">
 			  				<option value="senior">High School</option>
 			  				<option value="freshman">Freshmen Academy</option>
 			  			</select><br><br>
 					Enter your chapter code: <br>
-			  			<input class="input1" type="text" id="code" required/> <br><br>
+			  			<input class="input1 form-control" type="text" id="code" required/> <br><br>
     				<input class="inputButton1" type="submit" value="Register"/>
 
 				</form>
@@ -201,17 +207,17 @@ if(isset($_SESSION['username'])){
 		<br>
 		<br>
 
-		<button class="accordion">Login</button>
+		<button class="fakeAccordion" data-toggle="collapse" data-target="#resultLogin">Login</button>
 			<div class="panel" id="resultLogin">
 
 			 	<form name="loginForm" method="POST">
 
 			  		Enter your username: <br>
-			  			<input class="input1" type="text" name="username" required/> <br>
+			  			<input class="input1 form-control" type="text" name="username" required/> <br>
 			  		Enter your password: <br>
-			  			<input class="input1" type="password" name="password" required/> <br>
+			  			<input class="input1 form-control" type="password" name="password" required/> <br>
 			  		Chapter : <br>
-			  			<select class="input1" name="chapter">
+			  			<select class="input1 form-control" name="chapter">
 			  				<option value="senior">High School</option>
 			  				<option value="freshman">Freshmen Academy</option>
 			  			</select><br><br>
@@ -254,7 +260,6 @@ if(isset($_SESSION['username'])){
 	</div>	
 </body>
 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="js/scripts.js" type="text/javascript"></script>
 
 </html>
