@@ -490,3 +490,7 @@ div.panel {
     background-color: #af0000;
     border-radius: 1px;
 }
+
+.form-control{
+	width:80%;
+}

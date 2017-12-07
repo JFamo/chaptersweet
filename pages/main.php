@@ -234,14 +234,12 @@ $blockedPages = $perm;
 						}
 
 						echo "<td style='width:225px; position:relative;'>
-							<p style='font-family:tahoma; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
-							<a href='#' data-placement="bottom" title="Create a New Task" data-html=true data-toggle="popover" data-trigger="hover" data-content='<form method="post" style="font-family:tahoma;">
-									<b>New Task</b>
+							<p style='font-family:tahoma; cursor:pointer; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
+							<a data-placement="bottom" title="Create a New Task" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
 									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
 									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
-									<br><br>
-									Name:<input type="text" id="name" name="name" style="width:125px" required />
-									<br><br>
+									Task Name:<input type="text" id="name" name="name" style="width:125px" required />
+									<br>
 									<input type="submit" value="Create" name="newTask" style="font-family:tahoma;" id="newTask"/>
 								</form>'>New Task+</a>
 						<?php 

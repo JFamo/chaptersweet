@@ -284,7 +284,14 @@ if(isset($_POST['deleteObligation'])){
 
 <!DOCTYPE html>
 
+<!-- ima try this jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <head>
+	<!-- Bootstrap, cause it dabs -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<title>
 		Chapter Sweet
 	</title>
@@ -544,7 +551,19 @@ if(isset($_POST['deleteObligation'])){
 				<br>
 				<p class="userDashSectionHeader" style="padding-left:0px;">User Info</p>
 				<br>
-				<table class="usersTable" cellspacing="0" cellpadding="0" style="overflow:auto; margin-left:10px;">
+				<input class="form-control" id="myInput" type="text" placeholder="Search..">
+				<script>
+				$(document).ready(function(){
+				  $("#myInput").on("keyup", function() {
+				    var value = $(this).val().toLowerCase();
+				    $("#usersTable tr").filter(function() {
+				      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				    });
+				  });
+				});
+				</script>
+				<br>
+				<table class="usersTable" id="usersTable" cellspacing="0" cellpadding="0" style="overflow:auto; margin-left:10px;">
 					<tr>
 					
 						<td style="width:250px; height:30px;"><b>Name</b></td>
@@ -554,7 +573,7 @@ if(isset($_POST['deleteObligation'])){
 						<td style="width:80px; height:30px;"><b>Events</b></td>
 						<td style="width:80px; height:30px;"><b>Event Points</b></td>
 						<td style="width:80px; height:30px;"><b>Balance</b></td>
-						<td style="width:200px; height:30px;"><b>Options</b></td>
+						<td style="width:80px; height:30px;"><b>Options</b></td>
 					
 						<?php
 						
@@ -641,13 +660,14 @@ if(isset($_POST['deleteObligation'])){
 						?></td>
 						<td style="width:80px; height:30px;"><?php echo "".$eventpoints?></td>
 						<td style="width:80px; height:30px;"><?php echo "".$thisbalance?></td>
-						<td style="width:300px; height:30px;">	
+						<td style="width:80px; height:30px;">
+							<a style="cursor:pointer;" data-placement="left" title="User Options" data-html=true data-toggle="popover" data-content='
 							<form method="post" style="float:left; padding-right:5px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="submit" name="viewEvents" class="coolButton" value="View Events" />
 							</form>
 							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
-							<form method="post" style="float:left; padding-right:5px;">
+							<form method="post" style="float:left; padding-right:5px; padding-bottom:10px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="hidden" name="newRank" value="<?php 
 									if($thisrank=='member'){ echo 'officer'; }
@@ -658,7 +678,10 @@ if(isset($_POST['deleteObligation'])){
 									if($thisrank=='officer'){ echo 'Member'; } 
 								?>" />
 							</form>
+							<br>
 							<?php } ?>
+							
+							'>Options</a>
 						</td>
 
 						<?php
@@ -821,6 +844,8 @@ if(isset($_POST['deleteObligation'])){
 						</span>
 					</form>
 
+					<br>
+
 				</div>
 				<!--Obligations-->
 				<div class="adminDataSection">
@@ -880,6 +905,7 @@ if(isset($_POST['deleteObligation'])){
 						<input type="submit" class="coolButton" value="Delete">
 						</span>
 					</form>
+					<br>
 				</div>
 				
 				<?php if($rank == "admin"){ ?>
@@ -1009,7 +1035,7 @@ if(isset($_POST['deleteObligation'])){
 						<input type="submit" name="deleteUser" class="coolButton" value="Delete Account" />
 						</span>
 					</form>
-				
+					<br>
 				</div>
 				<?php } ?>
 				</center>
@@ -1027,7 +1053,6 @@ if(isset($_POST['deleteObligation'])){
 	</div>	
 </body>
 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 
 </html>
