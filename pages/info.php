@@ -441,6 +441,8 @@ if(isset($_POST['amount'])){
 				<?php if($rank == "officer" || $rank == "admin"){ ?>
 					<span onclick="showAudit();"><a href="#"><img src="../imgs/wallet.png" height="64" width="64"><p class="bodyTextType1">Treasurer</p></a></span>
 				<?php } ?>
+				<!--parli pro-->
+					<span onclick="showParliamentarian();"><a href="#"><img src="../imgs/icon_parli.png" height="64" width="64"><p class="bodyTextType1">Parliamentarian</p></a></span>
 
 				</div>
 
@@ -950,6 +952,36 @@ if(isset($_POST['amount'])){
 				mysqli_close($link);
 
 				?>
+
+				</div>
+				
+				<!--PARLI PRO-->
+				<div id="parliDiv" style="display:none;" class="infoTab">
+
+				<div class="userDashHeader" style="width:80%;">
+					<p class="subTitleText" style="padding-top:15px">Parliamentarian</p>
+				</div>
+
+				<!--Description-->
+				<p class="bodyTextType1">
+					Here the Chapter Team can share study resources and tests.
+				</p>
+				
+				<center>
+				
+				<b><p class="bodyTextType1">Helpful Guides : </p></b><br>
+				
+				<a href="https://docs.google.com/presentation/d/19JnTf9YjODwRgyt2N4jIxER_rYEQZaEyjZtwk_zvyRs/edit?usp=sharing">State Guide</a><br>
+				<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Basics.pptx">National Beginner Guide</a><br>
+				<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Advanced.pptx">National Advanced Guide</a><br>
+				
+				<br>
+				
+				<b><p class="bodyTextType1">The Latest Test : </p></b>
+
+				<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdvGr8_rHFdb60GTzJmlFz3xDlco_eTw4cdbCShC1kVBCiZ6g/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+				
+				</center>
 
 				</div>
 

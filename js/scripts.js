@@ -1,7 +1,7 @@
 //function to handle task form submit
 function taskSubmit() {
-	//grab the form
-   	var frm = document.getElementsByName('tasksForm')[0];
+  //grab the form
+    var frm = document.getElementsByName('tasksForm')[0];
       submitValidateForm(frm);
 }
 
@@ -94,6 +94,7 @@ var announcementsDiv = document.getElementById('announcementsDiv');
 var announceDiv = document.getElementById('postDiv');
 var auditDiv = document.getElementById('auditDiv');
 var rulesDiv = document.getElementById("rulesDiv");
+var parliDiv= document.getElementById("parliDiv");
 var currentDiv = filesDiv;
 var inTransition = false;
 
@@ -157,6 +158,9 @@ function getDirection(goDiv){
   if(currentDiv == auditDiv){
     myval = 6;
   }
+  if(currentDiv == parliDiv){
+    myval = 7;
+  }
   //get the target tab value
   if(goDiv == filesDiv){
     goval = 1;
@@ -175,6 +179,9 @@ function getDirection(goDiv){
   }
   if(goDiv == auditDiv){
     goval = 6;
+  }
+  if(goDiv== parliDiv){
+    myval = 7;
   }
   //get the direction
   if(myval < goval){
@@ -227,13 +234,20 @@ function showAudit(){
   }
 }
 
+//function for Information Page parli tab
+function showParliamentarian(){
+  if(!inTransition){
+    changeInfoTab(parliDiv, getDirection(parliDiv));
+  }
+}
+
 //Event selection Event Points move with page scroll
 var eventPointsDiv = document.getElementById('eventPoints');
 
 $(window).scroll(function (){
 
   if(eventPointsDiv === null){
-
+  //nothing
   }
   else{
 
