@@ -664,7 +664,7 @@ if(isset($_POST['deleteObligation'])){
 							<a style="cursor:pointer;" data-placement="left" title="User Options" data-html=true data-toggle="popover" data-content='
 							<form method="post" style="float:left; padding-right:5px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
-								<input type="submit" name="viewEvents" class="coolButton" value="View Events" />
+								<input type="submit" name="viewEvents" href="#userEvents" class="scroll coolButton" value="View Events" />
 							</form>
 							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
 							<form method="post" style="float:left; padding-right:5px; padding-bottom:10px;">
@@ -719,7 +719,7 @@ if(isset($_POST['deleteObligation'])){
 				</div>
 
 				<!--USER'S EVENT-->
-				<div class="adminDataSection">
+				<div class="adminDataSection" id="userEvents">
 
 					<br>
 					<p class="userDashSectionHeader" style="padding-left:0px;"><?php echo $eventsUser . "'s" ?> Events</p>

@@ -300,3 +300,12 @@ function updateSettings(infoPerm, emailPerm, blockPages){
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover({container: 'body'});   
 });
+
+//View events scroll to events
+$('.scroll').on('click', function(e) {
+  e.preventDefault();
+  var target = $(this).attr('href');
+  var offset = 0;
+  if ($(this).data('offset') != undefined) offset = $(this).data('offset');
+  $.scrollTo(target, 300, { offset: -offset });
+});

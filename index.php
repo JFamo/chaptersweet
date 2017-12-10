@@ -167,7 +167,7 @@ if(isset($_SESSION['username'])){
 		<center>
 
 		<button class="fakeAccordion" data-toggle="collapse" data-target="#resultRegister">Register</button>
-			<div class="panel" id="resultRegister">
+			<div class="panel collapse" id="resultRegister">
 
 			  	<form id="registerForm" action="php/register.php"> 
 
@@ -208,7 +208,7 @@ if(isset($_SESSION['username'])){
 		<br>
 
 		<button class="fakeAccordion" data-toggle="collapse" data-target="#resultLogin">Login</button>
-			<div class="panel" id="resultLogin">
+			<div class="panel collapse" id="resultLogin">
 
 			 	<form name="loginForm" method="POST">
 
