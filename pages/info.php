@@ -174,7 +174,6 @@ if(isset($_POST['body'])){
 	$articleBody = addslashes($_POST['body']);
 	$articlePoster = addslashes($_SESSION['fullname']);
 	$doMail = $_POST['mail'];
-	$doBoth = $_POST['whom'];
 
 	require('../php/connect.php');
 
@@ -223,54 +222,6 @@ $articleBody
 
 			mail($email,"TSA Chapter Announcement",$mailMessage,$headers);
 
-		}
-		
-		if($doBoth == "yes"){
-		
-			mysqli_close($link);
-			
-			$_SESSION['chapter'] = 'freshman';
-			
-			require('../php/connect.php');
-			
-			//get users
-			$query="SELECT fullname, email FROM users";
-	
-			$result = mysqli_query($link, $query);
-	
-			if (!$result){
-				die('Error: ' . mysqli_error($link));
-			}
-	
-			//for each user
-			while(list($fullname, $email) = mysqli_fetch_array($result)){
-	
-				//actual mail part
-				$mailMessage = "
-				<html>
-				<h1></html> $articleTitle <html></h1>
-<p><pre></html>
-$articleBody
-<html><pre></p>
-				<br>
-				<p>For more information about your events and various other chapter-related functions, visit <a href='http://chaptersweet.x10host.com'>http://chaptersweet.x10host.com</a>.</p>
-				<p>If you have any questions or concerns, contact your advisor.</p>
-				<p>This email is automated, do not attempt to respond.</p>
-				</html>
-				";
-	
-				$headers = "MIME-Version: 1.0" . "\r\n";
-				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-	
-				// More headers
-				$headers .= 'From: '.$articlePoster.' <chapters@xo7.x10hosting.com>' . "\r\n";
-	
-				mail($email,"TSA Chapter Announcement",$mailMessage,$headers);
-	
-			}
-			
-			$_SESSION['chapter'] = 'senior';
-			
 		}
 
 	}
@@ -804,10 +755,6 @@ if(isset($_POST['amount'])){
 					<select id="mail" name="mail">
 							<option value="no">Do Not Email</option>
 							<option value="yes">Send As Email</option>
-					</select>
-					<select id="whom" name="whom">
-							<option value="no">To BASHTSA</option>
-							<option value="yes">To Both Chapters</option>
 					</select>
 					<br><br>
 					<?php } ?>
