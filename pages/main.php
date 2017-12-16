@@ -176,8 +176,8 @@ $blockedPages = $perm;
 			</div>
 
 			<div class="container">
-			<div class="row no-gutters">
-			<div class="col col-sm-6">
+			<div class="row no-gutter" style="margin: 0;">
+			<div class="col-sm-6" style="padding:0; text-align:left;">
 			<div class="userDashSection" style="height:auto;">
 			<div style="padding-left: 20px;">
 				<p class="userDashSectionHeader">
@@ -347,7 +347,7 @@ $blockedPages = $perm;
 				</p>
 			</div>
 			</div>
-			<div class="col col-sm-6">
+			<div class="col-sm-6" style="padding:0; text-align:left;">
 			<div class="userDashSection" style="height:auto;">
 				<p class="userDashSectionHeader">
 					Announcements

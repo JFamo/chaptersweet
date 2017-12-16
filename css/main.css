@@ -492,3 +492,13 @@ div.panel {
 .form-control{
 	width:80%;
 }
+
+.no-gutter {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.no-gutter > [class*="col-"]{
+	padding-right: 0;
+  	padding-left: 0;
+}
