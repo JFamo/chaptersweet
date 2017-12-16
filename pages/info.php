@@ -882,7 +882,7 @@ if(isset($_POST['amount'])){
 					while(list($id, $personto, $personfrom, $description, $amount, $date) = mysqli_fetch_array($result)){
 						?>
 
-						<div class="basicHoverDiv">
+						<div class="basicHoverDiv" style="overflow:hidden;">
 						<div class="basicSpanDiv" style="width:100%;">
 							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "From : ".$personfrom ?></p></span>
 							<span><p style="font-size:14px; font-family:tahoma; padding-left:15%; padding-top:10px;"><?php echo "To : ".$personto ?></p></span>
