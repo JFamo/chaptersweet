@@ -370,7 +370,7 @@ if(isset($_POST['deleteObligation'])){
 							<input type="number" id="points" name="points">
 							</span>
 							<span>
-							<input type="submit" class="coolButton" value="Assign Points">
+							<input type="submit" class="btn btn-primary" value="Assign Points">
 							</span>
 						</form>
 						<br>
@@ -391,7 +391,7 @@ if(isset($_POST['deleteObligation'])){
 							<input type="number" id="points" name="points">
 							</span>
 							<span>
-							<input type="submit" class="coolButton" value="Assign Points">
+							<input type="submit" class="btn btn-primary" value="Assign Points">
 							</span>
 						</form>
 						<br>
@@ -412,7 +412,7 @@ if(isset($_POST['deleteObligation'])){
 							<input type="number" id="points" name="points">
 							</span>
 							<span>
-							<input type="submit" class="coolButton" value="Assign Points">
+							<input type="submit" class="btn btn-primary" value="Assign Points">
 							</span>
 						</form>
 
@@ -546,6 +546,30 @@ if(isset($_POST['deleteObligation'])){
 					?>
 
 				</div>
+				<div class="basicSpanDiv">
+
+					<?php
+
+					require("../php/connect.php");
+
+					//get total balance
+					$query="SELECT SUM(balance) FROM users";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					list($cumBalance) = mysqli_fetch_array($result);
+
+					echo "<span><p class='bodyTextType1'>Cumulative Balance : <b>" . $cumBalance . "</b></p></span>";
+
+					mysqli_close($link);
+
+					?>
+
+				</div>
 				</div>
 				<div class="adminDataSection" style="overflow:auto;">
 				<br>
@@ -664,7 +688,7 @@ if(isset($_POST['deleteObligation'])){
 							<a style="cursor:pointer;" data-placement="left" title="User Options" data-html=true data-toggle="popover" data-content='
 							<form method="post" style="float:left; padding-right:5px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
-								<input type="submit" name="viewEvents" href="#userEvents" class="scroll coolButton" value="View Events" />
+								<input type="submit" name="viewEvents" href="#userEvents" class="scroll btn btn-primary" value="View Events" />
 							</form>
 							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
 							<form method="post" style="float:left; padding-right:5px; padding-bottom:10px;">
@@ -673,7 +697,7 @@ if(isset($_POST['deleteObligation'])){
 									if($thisrank=='member'){ echo 'officer'; }
 									if($thisrank=='officer'){ echo 'member'; } 
 								?>" />
-								<input type="submit" name="promoteUser" class="coolButton" value="Make <?php 
+								<input type="submit" name="promoteUser" class="btn btn-primary" value="Make <?php 
 									if($thisrank=='member'){ echo 'Officer'; }
 									if($thisrank=='officer'){ echo 'Member'; } 
 								?>" />
@@ -695,7 +719,10 @@ if(isset($_POST['deleteObligation'])){
 										if($resultArray[$obligation]=='yes'){ echo 'no'; }
 										if($resultArray[$obligation]=='no'){ echo 'yes'; } 
 									?>" />
-									<input type="submit" class="coolButton" name="obligationChange" value="<?php 
+									<input type="submit" class="<?php
+										if($resultArray[$obligation]=='yes'){ echo 'btn btn-success'; }
+										if($resultArray[$obligation]=='no'){ echo 'btn btn-danger'; } 
+									?>" name="obligationChange" value="<?php 
 										echo ucfirst($resultArray[$obligation]);
 									?>" />
 								</form>
@@ -840,7 +867,7 @@ if(isset($_POST['deleteObligation'])){
 						</select>
 						</span>
 						<span>
-						<input type="submit" class="coolButton" value="Remove">
+						<input type="submit" class="btn btn-danger" value="Remove">
 						</span>
 					</form>
 
@@ -866,7 +893,7 @@ if(isset($_POST['deleteObligation'])){
 						<input type="text" id="obligationName" name="obligationName">
 						</span>
 						<span>
-						<input type="submit" class="coolButton" value="Create">
+						<input type="submit" class="btn btn-primary" value="Create">
 						</span>
 					</form>
 					<form class="basicSpanDiv" method="post" id="deleteObligationForm" style="width:100%; height:40px; padding-top:15px;">
@@ -902,7 +929,7 @@ if(isset($_POST['deleteObligation'])){
 						</select>
 						</span>
 						<span>
-						<input type="submit" class="coolButton" value="Delete">
+						<input type="submit" class="btn btn-danger" value="Delete">
 						</span>
 					</form>
 					<br>
@@ -949,7 +976,7 @@ if(isset($_POST['deleteObligation'])){
 						<input type="number" id="points" name="points">
 						</span>
 						<span>
-						<input type="submit" class="coolButton" value="Assign Points">
+						<input type="submit" class="btn btn-primary" value="Assign Points">
 						</span>
 					</form>
 					<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">
@@ -988,7 +1015,7 @@ if(isset($_POST['deleteObligation'])){
 						<input type="number" id="points" name="points">
 						</span>
 						<span>
-						<input type="submit" class="coolButton" value="Remove Points">
+						<input type="submit" class="btn btn-danger" value="Remove Points">
 						</span>
 					</form>
 					<form class="basicSpanDiv" method="post" id="deleteUserForm" style="width:100%; height:40px; padding-top:15px;">
@@ -1032,7 +1059,7 @@ if(isset($_POST['deleteObligation'])){
 						</select>
 						</span>
 						<span>
-						<input type="submit" name="deleteUser" class="coolButton" value="Delete Account" />
+						<input type="submit" name="deleteUser" class="btn btn-danger" value="Delete Account" />
 						</span>
 					</form>
 					<br>

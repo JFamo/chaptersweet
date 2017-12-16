@@ -175,10 +175,10 @@ $blockedPages = $perm;
 				<p class="subTitleText" style="padding-top:15px">My Dashboard</p>
 			</div>
 
-			<table class="columnsTable">
-			<tr class="columnsRow">
-			<td class="columns">
-			<div class="userDashSection" style="height:550px; overflow:auto;">
+			<div class="container">
+			<div class="row no-gutters">
+			<div class="col col-sm-6">
+			<div class="userDashSection" style="height:auto;">
 			<div style="padding-left: 20px;">
 				<p class="userDashSectionHeader">
 					My Events
@@ -296,7 +296,7 @@ $blockedPages = $perm;
 				?>
 			</div>
 			</div>
-			<div class="userDashSection" style="height:250px;">
+			<div class="userDashSection" style="height:auto;">
 				<p class="userDashSectionHeader">
 					My Account
 				</p>
@@ -346,9 +346,9 @@ $blockedPages = $perm;
 					<b>Rank:</b> <?php echo ucwords($rank) ?>
 				</p>
 			</div>
-			</td>
-			<td class="columns">
-			<div class="userDashSection" style="height:800px;">
+			</div>
+			<div class="col col-sm-6">
+			<div class="userDashSection" style="height:auto;">
 				<p class="userDashSectionHeader">
 					Announcements
 				</p>
@@ -390,10 +390,7 @@ $blockedPages = $perm;
 				?>
 			</div>
 			</div>
-			</td>
-			</tr>
-			</table>
-
+			</div>
 		</div>
 
 		</center>
