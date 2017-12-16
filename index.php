@@ -166,6 +166,10 @@ if(isset($_SESSION['username'])){
 		<td class="columns" style="vertical-align: top; overflow: auto;">
 		<center>
 
+		<br>
+		<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n3662/cf12/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cacf00/cpc000/pct/tcfff/fs100/szw320/szh135/tatTime%20Until%20Regionals/tac000/tptTime%20Since%20Regionals/tpc000/mac000/mpc000/iso2018-02-03T08:30:00" allowTransparency="true" frameborder="0" width="184" height="69"></iframe>
+		<br><br><br>
+
 		<button class="fakeAccordion" data-toggle="collapse" data-target="#resultRegister">Register</button>
 			<div class="panel collapse" id="resultRegister">
 
