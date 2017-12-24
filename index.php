@@ -100,9 +100,9 @@ if(isset($_SESSION['username'])){
 		</form>-->
 <!--Spooky stuff in the middle-->
 		<div id="contentPane" style="text-align:left;">
-		<table class="columnsTable">
-		<tr class="columnsRow">
-		<td class="columns" style="overflow:auto;">
+		<div class="container">
+		<div class="row">
+		<div class="col-lg-6">
 			<!--ABOUT THIS APP-->
 			<p class="subTitleText" style="color:black; padding-left:40px;">
 				About
@@ -121,54 +121,9 @@ if(isset($_SESSION['username'])){
 					If you forget your username or password, contact an administrator to have it reset.<br><br>
 					Please <b>do not</b> use your student email for the email field, as some important communications may be lost if you do this.
 				</p>
-			<!--ANNOUNCEMENTS-->
-			<p class="subTitleText" style="color:black; float:left; padding-left:40px;">
-				Announcements
-			</p>
-			<br><br>
-			<?php
-
-				require('php/connect.php');
-
-				$query="SELECT id, title, body, poster, date FROM announcements ORDER BY id DESC";
-
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}		
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Articles Found!<br>";
-				}
-				else{
-					while(list($id, $title, $body, $poster, $date) = mysqli_fetch_array($result)){
-						?>
-
-						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:60px; padding-top:10px;"><?php echo "".$title ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:60px; padding-top:10px;"><?php echo "By : ".$poster ?></p>
-						<p style="font-size:14px; font-family:tahoma; padding-left:60px; padding-top:10px;"><?php echo "".$date ?></p>
-						<br><br>
-						<pre style="white-space: pre-wrap; word-wrap: break-word;">
-						<p style="font-size:12px; font-family:tahoma; padding-left:80px; padding-top:10px; padding-bottom: 10px;">
-<?php echo "".$body ?>
-						</p>
-						</pre>
-						
-						<?php
-					}
-				}
-						
-				mysqli_close($link);
-
-				?>
-		</td>
-		<td class="columns" style="vertical-align: top; overflow: auto;">
+		</div>
+		<div class="col-lg-6">
 		<center>
-
-		<br>
-		<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n3662/cf12/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cacf00/cpc000/pct/tcfff/fs100/szw320/szh135/tatTime%20Until%20Regionals/tac000/tptTime%20Since%20Regionals/tpc000/mac000/mpc000/iso2018-02-03T08:30:00" allowTransparency="true" frameborder="0" width="184" height="69"></iframe>
-		<br><br><br>
 
 		<button class="fakeAccordion" data-toggle="collapse" data-target="#resultRegister">Register</button>
 			<div class="panel collapse" id="resultRegister">
@@ -250,10 +205,10 @@ if(isset($_SESSION['username'])){
 		}
 		?>
 
-		</td>
 		</center>
-		</tr>
-		</table>
+		</center>
+		</div>
+		</div>
 		</div>
 <!--Less spooky stuff at the bottom-->
 		<footer> 

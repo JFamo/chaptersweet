@@ -179,6 +179,56 @@ $blockedPages = $perm;
 			<div class="row no-gutter" style="margin: 0;">
 			<div class="col-sm-6" style="padding:0; text-align:left;">
 			<div class="userDashSection" style="height:auto;">
+				<p class="userDashSectionHeader">
+					My Account
+				</p>
+				<p class="bodyTextType1">
+					<b>Full Name:</b> <?php echo $name ?>
+					<br><br>
+					<b>Balance:</b> <?php 
+						require('../php/connect.php');
+
+						//get user's balance
+						//I copied this from email so variable names are weird
+						$emailquery="SELECT balance FROM users WHERE username='$username' AND fullname='$name'";
+
+						$emailresult = mysqli_query($link,$emailquery);
+
+						if (!$emailresult){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						list($email) = mysqli_fetch_array($emailresult); 
+
+						echo $email;
+
+						?>
+					<br><br>
+					<b>Grade:</b> <?php echo $grade ?>
+					<br><br>
+					<b>Email:</b> <?php 
+						require('../php/connect.php');
+
+						//get user's email
+						$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name'";
+
+						$emailresult = mysqli_query($link,$emailquery);
+
+						if (!$emailresult){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						list($email) = mysqli_fetch_array($emailresult); 
+
+						//$email = unserialize($email);
+						echo $email;
+
+						?>
+					<br><br>
+					<b>Rank:</b> <?php echo ucwords($rank) ?>
+				</p>
+			</div>
+			<div class="userDashSection" style="height:auto;">
 			<div style="padding-left: 20px;">
 				<p class="userDashSectionHeader">
 					My Events
@@ -296,58 +346,18 @@ $blockedPages = $perm;
 				?>
 			</div>
 			</div>
-			<div class="userDashSection" style="height:auto;">
-				<p class="userDashSectionHeader">
-					My Account
-				</p>
-				<p class="bodyTextType1">
-					<b>Full Name:</b> <?php echo $name ?>
-					<br><br>
-					<b>Balance:</b> <?php 
-						require('../php/connect.php');
-
-						//get user's balance
-						//I copied this from email so variable names are weird
-						$emailquery="SELECT balance FROM users WHERE username='$username' AND fullname='$name'";
-
-						$emailresult = mysqli_query($link,$emailquery);
-
-						if (!$emailresult){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						list($email) = mysqli_fetch_array($emailresult); 
-
-						echo $email;
-
-						?>
-					<br><br>
-					<b>Grade:</b> <?php echo $grade ?>
-					<br><br>
-					<b>Email:</b> <?php 
-						require('../php/connect.php');
-
-						//get user's email
-						$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name'";
-
-						$emailresult = mysqli_query($link,$emailquery);
-
-						if (!$emailresult){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						list($email) = mysqli_fetch_array($emailresult); 
-
-						//$email = unserialize($email);
-						echo $email;
-
-						?>
-					<br><br>
-					<b>Rank:</b> <?php echo ucwords($rank) ?>
-				</p>
-			</div>
 			</div>
 			<div class="col-sm-6" style="padding:0; text-align:left;">
+			<div class="userDashSection" style="height:auto;">
+				<p class="userDashSectionHeader">
+					My Next Conference
+				</p>
+				<center>
+				<br><br>
+				<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n3662/cf12/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cacf00/cpc000/pct/tcfff/fs100/szw320/szh135/tatTime%20Until%20Regionals/tac000/tptTime%20Since%20Regionals/tpc000/mac000/mpc000/iso2018-02-03T08:30:00" allowTransparency="true" frameborder="0" width="184" height="69"></iframe>
+				<br><br>
+				</center>
+			</div>
 			<div class="userDashSection" style="height:auto;">
 				<p class="userDashSectionHeader">
 					Announcements
@@ -375,7 +385,7 @@ $blockedPages = $perm;
 						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "".$date ?></p>
-						<pre style="white-space: pre-wrap; word-wrap: break-word;">
+						<pre class="announcement" style="white-space: pre-wrap; word-wrap: break-word;">
 						<p style="font-size:12px; font-family:tahoma; padding-top:0px; padding-left:5%; padding-right:5%; padding-bottom: 10px; ">
 <?php echo "".$body ?>
 						</p>

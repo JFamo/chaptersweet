@@ -502,3 +502,13 @@ div.panel {
 	padding-right: 0;
   	padding-left: 0;
 }
+
+.announcement{
+    display: block;
+    font-family: monospace;
+    padding: 9.5px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    word-break: break-all;
+    word-wrap: break-word;
+}
