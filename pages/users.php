@@ -201,9 +201,45 @@ if(isset($_POST['deleteUser'])){
 
 	require('../php/connect.php');
 
-		$sql = "DELETE FROM users WHERE id='$user'";
+		//first get fullname, given id
+		$sql = "SELECT fullname FROM users WHERE id='$user'";
 
-		if (!mysqli_query($link, $sql)){
+		$result = mysqli_query($link, $sql);
+
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		list($userFullname) = mysqli_fetch_array($result);
+
+		$sql2 = "UPDATE teams SET member1 = NULL WHERE member1='$userFullname'";
+		if (!mysqli_query($link, $sql2)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql2 = "UPDATE teams SET member2 = NULL WHERE member2='$userFullname'";
+		if (!mysqli_query($link, $sql2)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql2 = "UPDATE teams SET member3 = NULL WHERE member3='$userFullname'";
+		if (!mysqli_query($link, $sql2)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql2 = "UPDATE teams SET member4 = NULL WHERE member4='$userFullname'";
+		if (!mysqli_query($link, $sql2)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql2 = "UPDATE teams SET member5 = NULL WHERE member5='$userFullname'";
+		if (!mysqli_query($link, $sql2)){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql2 = "UPDATE teams SET member6 = NULL WHERE member6='$userFullname'";
+		if (!mysqli_query($link, $sql2)){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		$sql3 = "DELETE FROM users WHERE id='$user'";
+
+		if (!mysqli_query($link, $sql3)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
