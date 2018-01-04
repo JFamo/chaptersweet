@@ -703,10 +703,10 @@ if(isset($_POST['deleteObligation'])){
 						<tr class="userRow">
 
 						<td style="width:250px; height:30px;"><?php echo "".$fullname ?></td>
-						<td style="width:60px; height:30px;"><?php echo "".$grade ?></td>
+						<td style="width:60px; height:30px;"><?php if($thisrank != "adviser"){ echo "".$grade; } ?></td>
 						<td style="width:100px; height:30px;"><?php echo "".$thisrank ?></td>
 						<td style="width:200px; height:30px;"><?php echo "".$thisemail ?></td>
-						<td style="width:80px; height:30px;"><?php
+						<td style="width:80px; height:30px;"><?php if($thisrank != "adviser"){
 							require('../php/connect.php');
 							//get user's events
 							$eventsQuery="SELECT event FROM teams WHERE member1='$fullname' OR member2='$fullname' OR member3='$fullname' OR member4='$fullname' OR member5='$fullname' OR member6='$fullname'";
@@ -719,8 +719,9 @@ if(isset($_POST['deleteObligation'])){
 							echo $numEvents;
 							if($numEvents < 3 || $numEvents > 6){ echo "</p>"; }
 							mysqli_close($link);
+							}
 						?></td>
-						<td style="width:80px; height:30px;"><?php echo "".$eventpoints?></td>
+						<td style="width:80px; height:30px;"><?php if($thisrank != "adviser"){ echo "".$eventpoints; } ?></td>
 						<td style="width:80px; height:30px;"><?php echo "".$thisbalance?></td>
 						<td style="width:80px; height:30px;">
 							<a style="cursor:pointer;" data-placement="left" title="User Options" data-html=true data-toggle="popover" data-content='
@@ -748,24 +749,28 @@ if(isset($_POST['deleteObligation'])){
 
 						<?php
 
-						foreach($obligationsArray as $obligation){ ?>
-							<td style="width:100px; height:30px;">
-								<form method="post" target="#hideFrame">
-									<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
-									<input type="hidden" name="obligation" value="<?php echo $obligation ?>" />
-									<input type="hidden" name="newValue" value="<?php
-										if($resultArray[$obligation]=='yes'){ echo 'no'; }
-										if($resultArray[$obligation]=='no'){ echo 'yes'; } 
-									?>" />
-									<input type="submit" class="<?php
-										if($resultArray[$obligation]=='yes'){ echo 'btn btn-success'; }
-										if($resultArray[$obligation]=='no'){ echo 'btn btn-danger'; } 
-									?>" name="obligationChange" value="<?php 
-										echo ucfirst($resultArray[$obligation]);
-									?>" />
-								</form>
-							</td>
-							<?php
+						if($thisrank != "adviser"){
+
+							foreach($obligationsArray as $obligation){ ?>
+								<td style="width:100px; height:30px;">
+									<form method="post" target="#hideFrame">
+										<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+										<input type="hidden" name="obligation" value="<?php echo $obligation ?>" />
+										<input type="hidden" name="newValue" value="<?php
+											if($resultArray[$obligation]=='yes'){ echo 'no'; }
+											if($resultArray[$obligation]=='no'){ echo 'yes'; } 
+										?>" />
+										<input type="submit" class="<?php
+											if($resultArray[$obligation]=='yes'){ echo 'btn btn-success'; }
+											if($resultArray[$obligation]=='no'){ echo 'btn btn-danger'; } 
+										?>" name="obligationChange" value="<?php 
+											echo ucfirst($resultArray[$obligation]);
+										?>" />
+									</form>
+								</td>
+								<?php
+							}
+
 						}
 
 						?>
