@@ -112,7 +112,7 @@ $blockedPages = $perm;
 		<div class="iconLinksMain iconLinks">
 		<!--Events-->
 				<?php
-				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin"){
+				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
 			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="32" width="32"><p class="bodyTextType1">Event Selection</p></a></span>
 				<?php
@@ -120,7 +120,7 @@ $blockedPages = $perm;
 				?>
 		<!--Information-->
 				<?php
-				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin"){
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
 			<span><a href="info.php"><img src="../imgs/icon_info.png" height="32" width="32"><p class="bodyTextType1">Information</p></a></span>
 				<?php
@@ -128,7 +128,7 @@ $blockedPages = $perm;
 				?>
 		<!--Users-->
 				<?php
-				if($rank == "admin" || $rank == "officer"){
+				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 				?>
 			<span><a href="users.php"><img src="../imgs/icon_users.png" height="32" width="32"><p class="bodyTextType1">My Chapter</p></a></span>
 				<?php
@@ -138,9 +138,9 @@ $blockedPages = $perm;
 			<span><a href="../php/logout.php"><img src="../imgs/icon_logout.png" height="32" width="32"><p class="bodyTextType1">Logout</p></a></span>
 		<!--Admin Settings-->
 				<?php
-				if($rank == "admin"){
+				if($rank == "admin" || $rank == "adviser"){
 				?>
-			<span><a href="danger.php"><img src="../imgs/icon_settings.png" height="32" width="32"><p class="bodyTextType1">Admin Settings</p></a></span>
+			<span><a href="danger.php"><img src="../imgs/icon_settings.png" height="32" width="32"><p class="bodyTextType1">Adviser Settings</p></a></span>
 				<?php
 				}
 				?>
@@ -155,7 +155,7 @@ $blockedPages = $perm;
 
 				<?php
 					$article = "a";
-					if($rank == "officer" || $rank == "admin"){
+					if($rank == "officer" || $rank == "admin" || $rank == "adviser"){
 						$article = "an";
 					}
 					echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;

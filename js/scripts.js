@@ -283,7 +283,7 @@ $('input[class="noCheckBox"]').click(function(event) {
 });
 
 //function to update Settings on Admin Page
-function updateSettings(infoPerm, emailPerm, blockPages){
+function updateSettings(infoPerm, emailPerm, blockPages, chapterCode){
 
   var officerInfoPerm = document.getElementById('officerInfoPerm');
   officerInfoPerm.value = infoPerm;
@@ -293,6 +293,9 @@ function updateSettings(infoPerm, emailPerm, blockPages){
 
   var blockedPages = document.getElementById('blockedPages');
   blockedPages.value = blockPages;
+
+  var cc = document.getElementById('chapterCode');
+  cc.value = chapterCode;
 
 }
 

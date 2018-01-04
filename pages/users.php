@@ -7,7 +7,7 @@ $rank = $_SESSION['rank'];
 $eventsUser = $_SESSION['fullname'];
 
 //encase the whole page - KEEP NON-ADMINS OUT
-if($rank == "admin" || $rank == "officer"){
+if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 
 //function to update points by grade
 if(isset($_POST['grade'])){
@@ -375,7 +375,7 @@ if(isset($_POST['deleteObligation'])){
 
 				<!--Description-->
 				<p class="bodyTextType1">
-					Here admins can review user information, check user event progress, manage user accounts, and get a summary of the chapter.
+					Here advisers can review user information, check user event progress, manage user accounts, and get a summary of the chapter.
 					The summary box shows a general overview of member distribution.<br>
 					The user info box shows important information about users, as well as providing options to manage them.
 					The events box allows for a more detailed review of user event progress.<br>
@@ -383,7 +383,7 @@ if(isset($_POST['deleteObligation'])){
 
 				<!--User Table-->
 				<center>
-				<?php if($rank == "admin"){ ?>
+				<?php if($rank == "admin" || $rank == "adviser"){ ?>
 				<!--Points-->
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Assign Event Points</p><br>
@@ -419,7 +419,7 @@ if(isset($_POST['deleteObligation'])){
 							<select id="rank" name="rank">
 								<option value="member">Members</option>
 								<option value="officer">Officers</option>
-								<option value="admin">Admins</option>
+								<option value="adviser">Advisers</option>
 							</select>
 							</span>
 							<span>
@@ -478,7 +478,7 @@ if(isset($_POST['deleteObligation'])){
 					echo "<span><p class='bodyTextType1'>Total Users : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of admins
-					$query="SELECT id FROM users WHERE rank='admin'";
+					$query="SELECT id FROM users WHERE rank='adviser'";
 
 					$result = mysqli_query($link, $query);
 
@@ -488,7 +488,7 @@ if(isset($_POST['deleteObligation'])){
 
 					$numUsers = mysqli_num_rows($result);
 
-					echo "<span><p class='bodyTextType1'>Admins : <b>" . $numUsers . "</b></p></span>";
+					echo "<span><p class='bodyTextType1'>Advisers : <b>" . $numUsers . "</b></p></span>";
 
 					//get number of officers
 					$query="SELECT id FROM users WHERE rank='officer'";
@@ -696,6 +696,8 @@ if(isset($_POST['deleteObligation'])){
 						$thisemail = $resultArray['email'];
 						$thisbalance = $resultArray['balance'];
 
+						if($thisrank != "admin"){
+
 						?>
 
 						<tr class="userRow">
@@ -726,7 +728,7 @@ if(isset($_POST['deleteObligation'])){
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="submit" name="viewEvents" href="#userEvents" class="scroll btn btn-primary" value="View Events" />
 							</form>
-							<?php if($thisrank != "admin" && $rank == "admin"){ ?>
+							<?php if(($thisrank != "admin" && $thisrank != "adviser") && ($rank == "admin" || $rank == "adviser")){ ?>
 							<form method="post" style="float:left; padding-right:5px; padding-bottom:10px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
 								<input type="hidden" name="newRank" value="<?php 
@@ -771,6 +773,8 @@ if(isset($_POST['deleteObligation'])){
 						</tr>
 
 						<?php
+
+						}
 					}
 				}
 				?>
@@ -971,7 +975,7 @@ if(isset($_POST['deleteObligation'])){
 					<br>
 				</div>
 				
-				<?php if($rank == "admin"){ ?>
+				<?php if($rank == "admin" || $rank == "adviser"){ ?>
 				<!--User Management-->
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">User Management</p><br>
@@ -1074,7 +1078,7 @@ if(isset($_POST['deleteObligation'])){
 							}	
 	
 							while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
-								if($personrank != "admin"){
+								if($personrank != "admin" && $personrank != "adviser"){
 								?>
 	
 								<option value="<?php echo $id ?>"><?php echo $personname ?></option>

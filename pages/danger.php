@@ -6,7 +6,7 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 
 //encase the whole page - KEEP NON-ADMINS OUT
-if($rank == "admin"){
+if($rank == "admin" || $rank == "adviser"){
 
 //functions for clearing members
 if(isset($_POST['verify'])){
@@ -232,6 +232,26 @@ if(isset($_POST['verify3'])){
 
 }
 
+//function for updating Chapter Code Setting
+if(isset($_POST['chapterCode'])){
+
+	//code
+	$newCode = $_POST['chapterCode'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$newCode' WHERE name='code'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Chapter Code Updated!";
+
+	mysqli_close($link);
+
+}
+
 //function for updating Officer Info Permission Setting
 if(isset($_POST['officerInfoPerm'])){
 
@@ -324,7 +344,7 @@ if(isset($_POST['blockedPages'])){
     			<input class="backButton" type="submit" value="Back" />
 			</form>
 			<center><p class="subTitleText">
-				Admin Settings
+				Adviser Settings
 			</p></center>
 		</div>
 <!--Spooky stuff closer to the middle-->
@@ -348,7 +368,7 @@ if(isset($_POST['blockedPages'])){
 
 				<!--Description-->
 					<p class="bodyTextType1">
-						These settings are for ADMINS ONLY. They are <b> DANGEROUS </b> and have a risk of <b> OVERRIDING IMPORTANT DATA! </b> Proceed with caution, and verify that any function here is used intentionally.
+						These settings are for ADVISERS ONLY. They are <b> DANGEROUS </b> and have a risk of <b> OVERRIDING IMPORTANT DATA! </b> Proceed with caution, and verify that any function here is used intentionally.
 					</p>
 
 				<!--SETTINGS PANES-->
@@ -358,23 +378,34 @@ if(isset($_POST['blockedPages'])){
 				<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Code</p><br>
 
 					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
 
-					require('../php/connect.php');
+						$queryC="SELECT value FROM settings WHERE name='code'";
 
-					//get chapter code
-					$codeSQL = "SELECT value FROM settings WHERE name='code'";
+						$resultC = mysqli_query($link, $queryC);
 
-					$codeResult = mysqli_query($link, $codeSQL);
+						if (!$resultC){
+							die('Error: ' . mysqli_error($link));
+						}
 
-					if (!$codeResult){
-						die('Error: ' . mysql_error($link));
-					}
-
-					list($chapterCode) = mysqli_fetch_array($codeResult);
-
-					echo "<p class='bodyTextType1'>".$chapterCode."</p>";
-
+						//save the result
+						list($code) = mysqli_fetch_array($resultC);
+						$chapterCode = $code;
 					?>
+
+					<!--officer info permission setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Chapter Code</b>
+							<br>
+							<p class="description">The code used to register to your chapter.</p>
+						</span>
+						<span>
+							<input type="text" id="chapterCode" name="chapterCode" onchange="this.form.submit()" value="<?php echo $chapterCode ?>" />
+						</span>
+					</form>
 
 				<br></div>
 				<div class="adminDataSection">
@@ -458,7 +489,7 @@ if(isset($_POST['blockedPages'])){
 						<span>
 							<b>Pages Blocked to Non-Admins</b>
 							<br>
-							<p class="description">Users Page and Admin Settings Page are blocked by default.</p>
+							<p class="description">Users Page and Adviser Settings Page are blocked by default.</p>
 						</span>
 						<span>
 							Blocked Pages:
@@ -628,7 +659,7 @@ if(isset($_POST['blockedPages'])){
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
-	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages)); ?> );
+	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode)); ?> );
 </script>
 
 </html>

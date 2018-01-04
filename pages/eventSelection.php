@@ -144,14 +144,14 @@ if(isset($_POST['slot'])){
 						Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team. Each red cell represents the minimum required members for a team.
 					</p>
 					<?php
-					if($rank == "admin" || $rank == "officer"){
+					if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 					?>
 						<button onclick="window.print()" class="utilityButton">Print Sheet</button>
 					<?php
 					}
 					?>
 					<?php
-					if($rank == "admin" || ($rank == "officer" && $emailPerm == "yes")){
+					if($rank == "admin" || $rank == "adviser" ||($rank == "officer" && $emailPerm == "yes")){
 					?>
 						<form method="post" action="../php/confirmEventsEmail.php">
 							<input type="submit" id="confirmEventsButton" name="confirmEventsButton" value="Email Event Confirmation" class="utilityButton" />

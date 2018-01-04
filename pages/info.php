@@ -385,11 +385,11 @@ if(isset($_POST['amount'])){
 				<!--Announcements-->
 					<span onclick="showAnnouncements();"><a href="#"><img src="../imgs/icon_announcements.png" height="64" width="64"><p class="bodyTextType1">Announcements</p></a></span>
 				<!--Announce-->
-				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin"){ ?>
+				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin" || $rank == "adviser"){ ?>
 					<span onclick="showPost();"><a href="#"><img src="../imgs/icon_announce.png" height="64" width="64"><p class="bodyTextType1">Reporter</p></a></span>
 				<?php } ?>
 				<!--Audit-->
-				<?php if($rank == "officer" || $rank == "admin"){ ?>
+				<?php if($rank == "officer" || $rank == "admin" || $rank == "adviser"){ ?>
 					<span onclick="showAudit();"><a href="#"><img src="../imgs/wallet.png" height="64" width="64"><p class="bodyTextType1">Treasurer</p></a></span>
 				<?php } ?>
 				<!--parli pro-->
@@ -406,10 +406,10 @@ if(isset($_POST['amount'])){
 
 				<!--Description-->
 				<p class="bodyTextType1">
-					Here you can view all of your chapter's important files. Officers and Admins can upload new files.
+					Here you can view all of your chapter's important files. Officers and Advisers can upload new files.
 				</p>
 
-				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "filesAnnouncements" || $officerPerm == "files")) || $rank == "admin"){ ?>
+				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "filesAnnouncements" || $officerPerm == "files")) || $rank == "admin" || $rank == "adviser"){ ?>
 					<form method="post" enctype="multipart/form-data" class="fileForm">
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
@@ -467,7 +467,7 @@ if(isset($_POST['amount'])){
 					}
 					else{
 						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
-							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
+							if(($view == "officer" && ($rank == "officer" || $rank == "admin" || $rank == "adviser")) || ($view == "all")){
 								?>
 							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
 							<?php
@@ -499,10 +499,10 @@ if(isset($_POST['amount'])){
 
 				<!--Description-->
 				<p class="bodyTextType1">
-					Here you can view the rules for events. Officers and Admins can upload new rules files.
+					Here you can view the rules for events. Officers and Advisers can upload new rules files.
 				</p>
 
-				<?php if($rank == "admin"){ ?>
+				<?php if($rank == "admin" || $rank == "adviser"){ ?>
 					<form method="post" enctype="multipart/form-data" class="fileForm">
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
@@ -559,7 +559,7 @@ if(isset($_POST['amount'])){
 					}
 					else{
 						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
-							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
+							if(($view == "officer" && ($rank == "officer" || $rank == "admin" || $rank == "adviser")) || ($view == "all")){
 								?>
 							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
 							<?php
@@ -594,7 +594,7 @@ if(isset($_POST['amount'])){
 					Here you can view the minutes of chapter meetings. The secretary can upload minutes here.
 				</p>
 
-				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "minutesAnnouncements" || $officerPerm == "minutes")) || $rank == "admin"){ ?>
+				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "minutesAnnouncements" || $officerPerm == "minutes")) || $rank == "admin" || $rank == "adviser"){ ?>
 					<form method="post" enctype="multipart/form-data" class="fileForm">
 						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 						<span><input style="font-size:16px; border:1px solid #B60000;" name="userfile" type="file" id="userfile"></span>
@@ -652,7 +652,7 @@ if(isset($_POST['amount'])){
 					}
 					else{
 						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
-							if(($view == "officer" && ($rank == "officer" || $rank == "admin")) || ($view == "all")){
+							if(($view == "officer" && ($rank == "officer" || $rank == "admin" || $rank == "adviser")) || ($view == "all")){
 								?>
 							<a class="minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left; padding-left: 25%;"><?php echo "".$name ?></a>
 							<?php
@@ -737,7 +737,7 @@ if(isset($_POST['amount'])){
 
 				<!--Description-->
 				<p class="bodyTextType1">
-					Officers and Admins can write and post announcements here.
+					Officers and Advisers can write and post announcements here.
 				</p>
 
 				<form method="post" id="articleWriteForm">
@@ -751,7 +751,7 @@ if(isset($_POST['amount'])){
 					<textarea form="articleWriteForm" cols="110" rows="15" name="body" id="body"></textarea>
 					<br><br>
 					<?php 
-					if(($rank == "officer" && $emailPerm == "yes") || $rank == "admin"){ ?>
+					if(($rank == "officer" && $emailPerm == "yes") || $rank == "admin" || $rank == "adviser"){ ?>
 					<select id="mail" name="mail">
 							<option value="no">Do Not Email</option>
 							<option value="yes">Send As Email</option>
@@ -772,7 +772,7 @@ if(isset($_POST['amount'])){
 
 				<!--Description-->
 				<p class="bodyTextType1">
-					Officers and Admins can view the audit, and make withdrawals and deposits here.
+					Officers and Advisers can view the audit, and make withdrawals and deposits here.
 				</p>
 				
 				<a download="ledger.txt" id="downloadlink">Download Ledger</a><br>
