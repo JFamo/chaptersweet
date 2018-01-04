@@ -477,7 +477,7 @@ if(isset($_POST['deleteObligation'])){
 
 					echo "<span><p class='bodyTextType1'>Total Users : <b>" . $numUsers . "</b></p></span>";
 
-					//get number of admins
+					//get number of advisers
 					$query="SELECT id FROM users WHERE rank='adviser'";
 
 					$result = mysqli_query($link, $query);
@@ -996,7 +996,7 @@ if(isset($_POST['deleteObligation'])){
 	
 							require('../php/connect.php');
 	
-							$query="SELECT id, fullname FROM users";
+							$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
 	
 							$result = mysqli_query($link, $query);
 	
@@ -1004,12 +1004,14 @@ if(isset($_POST['deleteObligation'])){
 								die('Error: ' . mysqli_error($link));
 							}	
 	
-							while(list($id, $personname) = mysqli_fetch_array($result)){
+							while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
+								if($personrank != "admin"){
 								?>
 	
 								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
 								
 								<?php
+								}
 							}
 									
 							mysqli_close($link);
@@ -1035,7 +1037,7 @@ if(isset($_POST['deleteObligation'])){
 	
 							require('../php/connect.php');
 	
-							$query="SELECT id, fullname FROM users";
+							$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
 	
 							$result = mysqli_query($link, $query);
 	
@@ -1043,12 +1045,14 @@ if(isset($_POST['deleteObligation'])){
 								die('Error: ' . mysqli_error($link));
 							}	
 	
-							while(list($id, $personname) = mysqli_fetch_array($result)){
+							while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
+								if($personrank != "admin"){
 								?>
 	
 								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
 								
 								<?php
+								}
 							}
 									
 							mysqli_close($link);
@@ -1074,7 +1078,7 @@ if(isset($_POST['deleteObligation'])){
 	
 							require('../php/connect.php');
 	
-							$query="SELECT id, fullname, rank FROM users";
+							$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
 	
 							$result = mysqli_query($link, $query);
 	

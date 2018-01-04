@@ -6,6 +6,27 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 
+//function to get chapter balance
+function getChapterBalance()
+{
+	$returnValue = 0;
+	require('../php/connect.php');
+	$transQ = "SELECT personto, personfrom, description, amount, date FROM transactions";
+	$transR = mysqli_query($link, $transQ);
+	if (!$transR){
+		die('Error: ' . mysqli_error($link));
+	}
+	while($row = mysqli_fetch_array($transR)){
+		if($row['personto'] == 'Chapter'){
+			$returnValue += $row['amount'];
+		}
+		if($row['personfrom'] == 'Chapter'){
+			$returnValue -= $row['amount'];
+		}
+	}
+	return $returnValue;
+}
+
 //get permission settings
 require('../php/connect.php');
 
@@ -244,7 +265,7 @@ if(isset($_POST['amount'])){
 	require('../php/connect.php');
 
 	//get real name of person to
-	if($personto != "donation"){
+	if($personto != "expense" && $personto != "chapter"){
 
 		$nameQuery = "SELECT fullname FROM users WHERE id='$personto'";
 
@@ -257,14 +278,15 @@ if(isset($_POST['amount'])){
 		list($realNameTo) = mysqli_fetch_array($nameResult);
 
 	}
-	else{
-
-		$realNameTo = "Donation";
-
+	else if($personto == "expense"){
+		$realNameTo = "Expense";
+	}
+	else if($personto == "chapter"){
+		$realNameTo = "Chapter";
 	}
 
 	//get real name of person from
-	if($personfrom != "income"){
+	if($personfrom != "income" && $personfrom != "chapter"){
 
 		$nameQuery = "SELECT fullname FROM users WHERE id='$personfrom'";
 
@@ -277,10 +299,11 @@ if(isset($_POST['amount'])){
 		list($realNameFrom) = mysqli_fetch_array($nameResult);
 
 	}
-	else{
-
+	else if($personfrom == "income"){
 		$realNameFrom = "Income";
-
+	}
+	else if($personfrom == "chapter"){
+		$realNameFrom = "Chapter";
 	}
 
 	//make the transaction
@@ -293,7 +316,7 @@ if(isset($_POST['amount'])){
 	}
 
 	//update balances
-	if($personto != "donation"){
+	if($personto != "expense" && $personto != "chapter"){
 
 		$query2 = "UPDATE users SET balance=balance+'$amount' WHERE id='$personto'";
 
@@ -304,7 +327,7 @@ if(isset($_POST['amount'])){
 		}
 
 	}
-	if($personfrom != "income"){
+	if($personfrom != "income" && $personfrom != "chapter"){
 
 		$query3 = "UPDATE users SET balance=balance-'$amount' WHERE id='$personfrom'";
 
@@ -767,17 +790,17 @@ if(isset($_POST['amount'])){
 				<div id="auditDiv" style="display:none;" class="infoTab">
 
 				<div class="userDashHeader" style="width:80%;">
-					<p class="subTitleText" style="padding-top:15px">Audit</p>
+					<p class="subTitleText" style="padding-top:15px">Ledger</p>
 				</div>
 
 				<!--Description-->
 				<p class="bodyTextType1">
-					Officers and Advisers can view the audit, and make withdrawals and deposits here.
+					Officers and Advisers can view the ledger and transactions, and make withdrawals and deposits here.
 				</p>
 				
-				<a download="ledger.txt" id="downloadlink">Download Ledger</a><br>
+				<a download="ledger.txt" id="downloadlink">Download Ledger</a><br><br>
 				
-<p style="display:none;" id='auditText'>
+				<p style="display:none;" id='auditText'>
 				<?php
 				
 				require('../php/connect.php');
@@ -800,7 +823,7 @@ if(isset($_POST['amount'])){
 			
 				while($row = mysqli_fetch_array($catsR)){
 					//chapter balance
-					if($row['personto'] == "Joshua Pennington"){
+					if($row['personto'] == "Chapter"){
 						$incomeSumC += $row['amount'];
 						if(!array_key_exists($row['description'], $descriptionsIncomeC)){
 							$descriptionsIncomeC[$row['description']] = $row['amount'];
@@ -809,7 +832,7 @@ if(isset($_POST['amount'])){
 							$descriptionsIncomeC[$row['description']] = $descriptionsIncomeC[$row['description']] + $row['amount'];
 						}
 					}
-					else if($row['personfrom'] == "Joshua Pennington"){
+					else if($row['personfrom'] == "Chapter"){
 						$expenseSumC += $row['amount'];
 						if(!array_key_exists($row['description'], $descriptionsExpenseC)){
 							$descriptionsExpenseC[$row['description']] = $row['amount'];
@@ -819,7 +842,7 @@ if(isset($_POST['amount'])){
 						}
 					}
 					//member balance
-					if($row['personto'] != "Joshua Pennington" && $row['personto'] != "Donation"){
+					if($row['personto'] != "Chapter" && $row['personto'] != "Expense"){
 						$incomeSumM += $row['amount'];
 						if(!array_key_exists($row['description'], $descriptionsIncomeM)){
 							$descriptionsIncomeM[$row['description']] = $row['amount'];
@@ -828,7 +851,7 @@ if(isset($_POST['amount'])){
 							$descriptionsIncomeM[$row['description']] = $descriptionsIncomeM[$row['description']] + $row['amount'];
 						}
 					}
-					else if($row['personfrom'] != "Joshua Pennington" && $row['personfrom'] != "Income"){
+					else if($row['personfrom'] != "Chapter" && $row['personfrom'] != "Income"){
 						$expenseSumM += $row['amount'];
 						if(!array_key_exists($row['description'], $descriptionsExpenseM)){
 							$descriptionsExpenseM[$row['description']] = $row['amount'];
@@ -847,7 +870,7 @@ if(isset($_POST['amount'])){
 				echo "\t\t\t\t";
 				echo "Generated By : " . $fullname;
 				echo "\n------------------------------------------------------------------------------------\nChapter Account\n------------------------------------------------------------------------------------";
-				echo "\n\n";
+				echo "\n";
 				echo "\t\tIncome";
 				foreach ($descriptionsIncomeC as $key => $value) {
 				    echo "\n";
@@ -872,29 +895,8 @@ if(isset($_POST['amount'])){
 				echo "\n";
 				echo "\t\t\t";
 				echo "Change : $" . ($incomeSumC - $expenseSumC);
-				echo "\n";
-				echo "\t\t\t";
-				
-				//get chapter balance
-				$query="SELECT balance FROM users WHERE id='53'";
-
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}		
-
-				if(mysqli_num_rows($result) == 0){
-					echo "N/A";
-				}
-				else{
-					while(list($balance) = mysqli_fetch_array($result)){
-						echo "Chapter Balance : $" . $balance;
-					}
-				}
-				
 				echo "\n------------------------------------------------------------------------------------\nMember Accounts\n------------------------------------------------------------------------------------";
-				echo "\n\n";
+				echo "\n";
 				echo "\t\tIncome";
 				foreach ($descriptionsIncomeM as $key => $value) {
 				    echo "\n";
@@ -919,25 +921,30 @@ if(isset($_POST['amount'])){
 				echo "\n";
 				echo "\t\t\t";
 				echo "Change : $" . ($incomeSumM - $expenseSumM);
-				
 				echo "\n------------------------------------------------------------------------------------\nTotal\n------------------------------------------------------------------------------------";
 				echo "\n";
 				echo "\t\t\t";
-				//get total balance
-					$query="SELECT SUM(balance) FROM users";
+				echo "Chapter Balance : $" . (getChapterBalance()) . "";
+				echo "\n";
+				echo "\t\t\t";
+				//get total user balance
+				require('../php/connect.php');
 
-					$result = mysqli_query($link, $query);
+				$query="SELECT SUM(balance) FROM users";
 
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
+				$result = mysqli_query($link, $query);
 
-					list($cumBalance) = mysqli_fetch_array($result);
-
-					echo "Cumulative Balance : $" . $cumBalance;
+				if (!$result){
+					die('Error: ' . mysqli_error($link));
+				}
+				list($cumBalance) = mysqli_fetch_array($result);
+				echo "Cumulative User Balances : $" . $cumBalance;
+				echo "\n";
+				echo "\t\t\t";
+				echo "Total Balance : $" . ($cumBalance + getChapterBalance());
 				
 				?>
-</p>
+				</p>
 				
 				<script>
 				var textFile = null;
@@ -965,11 +972,12 @@ if(isset($_POST['amount'])){
 					<!--Give each user as an option-->
 					<select id="personfrom" name="personfrom">
 						<option value="income">Income</option>
+						<option value="chapter">Chapter</option>
 						<?php
 
 						require('../php/connect.php');
 
-						$query="SELECT id, fullname FROM users";
+						$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
 
 						$result = mysqli_query($link, $query);
 
@@ -977,12 +985,14 @@ if(isset($_POST['amount'])){
 							die('Error: ' . mysqli_error($link));
 						}	
 
-						while(list($id, $personname) = mysqli_fetch_array($result)){
+						while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
+							if($personrank != "admin"){
 							?>
 
 							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
 							
 							<?php
+							}
 						}
 								
 						mysqli_close($link);
@@ -992,12 +1002,13 @@ if(isset($_POST['amount'])){
 					<span>To :
 					<!--Give each user as an option-->
 					<select id="personto" name="personto">
-						<option value="donation">Donation</option>
+						<option value="expense">Expense</option>
+						<option value="chapter">Chapter</option>
 						<?php
 
 						require('../php/connect.php');
 
-						$query="SELECT id, fullname FROM users";
+						$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
 
 						$result = mysqli_query($link, $query);
 
@@ -1005,12 +1016,14 @@ if(isset($_POST['amount'])){
 							die('Error: ' . mysqli_error($link));
 						}	
 
-						while(list($id, $personname) = mysqli_fetch_array($result)){
+						while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
+							if($personrank != "admin"){
 							?>
 
 							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
 							
 							<?php
+							}
 						}
 								
 						mysqli_close($link);
@@ -1024,32 +1037,13 @@ if(isset($_POST['amount'])){
 
 				<br><br>
 
+				<b><p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo "Chapter Balance : $" . getChapterBalance(); ?></p></b>
+
 				<?php
 
-				//FIRST THING - CHAPTER BALANCES
+				//SECOND THING - TRANSACTIONS
 
 				require('../php/connect.php');
-
-				$query="SELECT balance FROM users WHERE id='53'";
-
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}		
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Chapter Balance Found!<br>";
-				}
-				else{
-					while(list($balance) = mysqli_fetch_array($result)){
-						?>
-							<b><p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo "Chapter Balance : $".$balance ?></p></b>
-						<?php
-					}
-				}
-
-				//SECOND THING - TRANSACTIONS
 
 				$query="SELECT * FROM transactions ORDER BY id DESC";
 
