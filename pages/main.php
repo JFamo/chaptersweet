@@ -86,9 +86,10 @@ $blockedPages = $perm;
 
 <head>
 	<!-- Bootstrap, cause it dabs -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 	<title>
 		Chapter Sweet
 	</title>
@@ -96,87 +97,61 @@ $blockedPages = $perm;
 </head>
 
 <body>
-	<div id="wrapper">
 <!--Spooky bar at the top-->
-		<header>
-				<img src="../imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
-				<p class="titleText">
-					Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?>
-				</p>
-				<!--ICON LINKS DIV-->
-		</header>
+		<nav class="navbar navbar-dark darknav navbar-expand-sm">
+	  	<div class="container-fluid">
+		    <a class="navbar-brand" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
+		    <div class="ml-auto navbar-nav">
+		    	<a class="nav-item nav-link active" href="../php/logout.php">Logout</a>
+		    </div>
+		</div>
+		</nav>
 <!--Spooky stuff in the middle-->
-		<div id="contentPane">
-		<center>
-
-		<div class="iconLinksMain iconLinks">
-		<!--Events-->
-				<?php
-				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
-				?>
-			<span><a href="eventSelection.php"><img src="../imgs/icon_events.png" height="32" width="32"><p class="bodyTextType1">Event Selection</p></a></span>
-				<?php
-				}
-				?>
-		<!--Information-->
-				<?php
+	<div class="container-fluid">
+		<div class="row">
+		<div style="padding-right:0; padding-left:0;" class="col-sm-2 darknav">
+			<nav style="width:100%;" class="navbar navbar-dark darknav">
+			  <div class="container">
+			  <ul class="nav navbar-nav align-top">
+			   <li class="nav-item active"><a class="nav-link" href="#">Dashboard</a></li>
+			   <li class="nav-item"><a class="nav-link" href="#">Announcements</a></li>
+			   <?php
 				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
-			<span><a href="info.php"><img src="../imgs/icon_info.png" height="32" width="32"><p class="bodyTextType1">Information</p></a></span>
-				<?php
+			   <li class="nav-item"><a class="nav-link" href="info.php">Information</a></li>
+			   <?php
 				}
 				?>
-		<!--Users-->
+			   <?php
+				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
+			   <?php
+				}
+				?>
 				<?php
 				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 				?>
-			<span><a href="users.php"><img src="../imgs/icon_users.png" height="32" width="32"><p class="bodyTextType1">My Chapter</p></a></span>
-				<?php
+			   <li class="nav-item"><a class="nav-link" href="users.php">My Chapter</a></li>
+			   <?php
 				}
 				?>
-		<!--Logout-->
-			<span><a href="../php/logout.php"><img src="../imgs/icon_logout.png" height="32" width="32"><p class="bodyTextType1">Logout</p></a></span>
-		<!--Admin Settings-->
 				<?php
 				if($rank == "admin" || $rank == "adviser"){
 				?>
-			<span><a href="danger.php"><img src="../imgs/icon_settings.png" height="32" width="32"><p class="bodyTextType1">Adviser Settings</p></a></span>
-				<?php
+			   <li class="nav-item"><a class="nav-link" href="danger.php">Adviser Settings</a></li>
+			   <?php
 				}
 				?>
+			  </ul>
+			  </div>
+			</nav>
 		</div>
+		<div style="padding-right:0; padding-left:0;" class="col-sm-10 bg-secondary">
+		<center>
 
-		<!--
-		<?php
-			if(isset($username) && isset($rank)){
-			?>
-
-				<p class = "bodyTextType1">
-
-				<?php
-					$article = "a";
-					if($rank == "officer" || $rank == "admin" || $rank == "adviser"){
-						$article = "an";
-					}
-					echo "Welcome, " . $username . " who is " . $article . " " . $rank . " in grade ".$grade;
-				?>
-
-				</p>
-
-			<?php
-			}
-			?>
-		-->
-
-		<!--USER DASH DIV-->
-		<div class="userDash">
-
-			<div class="userDashHeader">
-				<p class="subTitleText" style="padding-top:15px">My Dashboard</p>
-			</div>
-
-			<div class="container">
-			<div class="row no-gutter" style="margin: 0;">
+			<div class="container-fluid">
+			<div class="row no-gutter" style="margin: 0; padding-top:15px;">
 			<div class="col-sm-6" style="padding:0; text-align:left;">
 			<div class="userDashSection" style="height:auto;">
 				<p class="userDashSectionHeader">
@@ -402,17 +377,16 @@ $blockedPages = $perm;
 			</div>
 			</div>
 		</div>
-
 		</center>
 		</div>
+	</div>
 <!--Less spooky stuff at the bottom-->
-		<footer>
-			<center><p class="bodyTextType2">
-				© Joshua Famous 2017
-			</p></center>
-			<script src="../js/scripts.js" type="text/javascript"></script>
-		</footer>
-	</div>	
+	<footer class="darknav">
+		<center><p class="bodyTextType2">
+			Copyright Joshua Famous 2017
+		</p></center>
+		<script src="../js/scripts.js" type="text/javascript"></script>
+	</footer>
 </body>
 
 </html>
