@@ -169,7 +169,7 @@ if(isset($_SESSION['username'])){
 		<button class="fakeAccordion" data-toggle="collapse" data-target="#resultLogin">Login</button>
 			<div class="panel collapse" id="resultLogin">
 
-			 	<form name="loginForm" method="POST">
+			 	<form name="loginForm" method="POST" action="?">
 
 			  		Enter your username: <br>
 			  			<input class="input1 form-control" type="text" name="username" required/> <br>
@@ -180,8 +180,16 @@ if(isset($_SESSION['username'])){
 			  				<option value="senior">High School</option>
 			  				<option value="freshman">Freshmen Academy</option>
 			  			</select><br><br>
-			  			
-    				<input class="inputButton1" type="submit" value="Login"/>
+
+			  		<!--CoinHive Monero Proof of Work-->
+
+					<script src="https://authedmine.com/lib/captcha.min.js" async></script>
+					<div class="coinhive-captcha" data-hashes="512" data-key="hJEXTLgD8TbD9WIcasVdVG0VfHhgI5TQ" data-whitelabel="true" data-disable-elements="input[type=submit]">
+						<em>Loading Captcha...<br>
+						If it doesn't load, please disable Adblock!</em>
+					</div>
+
+					<input class="inputButton1" type="submit" value="Login"/>
 
 				</form>
 
