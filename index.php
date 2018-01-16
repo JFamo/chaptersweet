@@ -98,11 +98,12 @@ if(isset($_SESSION['username'])){
 
 	<p class="bodyTextType1">
 		Chaptersweet was created by Joshua Famous, All Rights Reserved, 2017.
+		<br><b>Note : If this screen looks super weird, hold SHIFT and click Refresh to load the new UI.</b>
 	</p>
 
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#regisModal">Register</button>
 	<div class="modal fade" id="regisModal" role="dialog">
-    <div class="modal-dialog">
+    	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Register</h4>

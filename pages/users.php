@@ -4,7 +4,6 @@ session_start();
 
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
-$eventsUser = $_SESSION['fullname'];
 
 //encase the whole page - KEEP NON-ADMINS OUT
 if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
@@ -162,14 +161,6 @@ if(isset($_POST['pointsFrom'])){
 
 }
 
-//function to select user whose events to view
-if(isset($_POST['viewEvents'])){
-
-	//file viewability
-	$user = $_POST['thisUser'];
-	$eventsUser = $user;
-
-}
 
 //function to change user rank
 if(isset($_POST['promoteUser'])){
@@ -320,14 +311,13 @@ if(isset($_POST['deleteObligation'])){
 
 <!DOCTYPE html>
 
-<!-- ima try this jquery-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 <head>
 	<!-- Bootstrap, cause it dabs -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	<!-- ima try this jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 	<title>
 		Chapter Sweet
 	</title>
@@ -337,55 +327,122 @@ if(isset($_POST['deleteObligation'])){
 
 <body>
 
-	<div id="wrapper">
-<!--Spooky stuff at the top-->
-		<header>
-				<img src="../imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
-				<p class="titleText">
-					Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?>
-				</p>
-		</header>
-<!--Spooky stuff still kind of at the top-->
-		<div id="subTitleBar">
-			<form action="../index.php">
-    			<input class="backButton" type="submit" value="Back" />
-			</form>
-			<center><p class="subTitleText">
-				Users
-			</p></center>
+<!--Spooky bar at the top-->
+	<nav class="navbar navbar-dark darknav navbar-expand-sm">
+		<div class="container-fluid">
+		<a class="navbar-brand" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
+			   <div class="ml-auto navbar-nav">
+			    	<a class="nav-item nav-link active" href="../php/logout.php">Logout</a>
+			   </div>
 		</div>
-<!--Spooky stuff closer to the middle-->
-			<div id="contentPane">
-
-			<?php
-				if(isset($fmsg)){
+	</nav>
+<!--Spooky stuff in the middle-->
+	<div class="container-fluid">
+		<div class="row">
+		<div style="padding-right:0; padding-left:0;" class="col-sm-2 darknav">
+			<nav style="width:100%;" class="navbar navbar-dark darknav">
+			  <div class="container">
+			  <ul class="nav navbar-nav align-top">
+			   <li class="nav-item"><a class="nav-link" href="../index.php">Dashboard</a></li>
+			   <li class="nav-item active"><a class="nav-link" href="users.php">My Chapter</a></li>
+			   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
-
-					<p class = "bodyTextType1"><b>
-
-					<?php
-					echo $fmsg;
-					?>
-
-					</b></p><br>
-
-				<?php
+			   <li class="nav-item"><a class="nav-link" href="files.php">Files</a></li>
+			   <?php
 				}
 				?>
+			   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="rules.php">Event Rules</a></li>
+			   <?php
+				}
+				?>
+	          	   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="secretary.php">Secretary</a></li>
+			   <?php
+				}
+				?>
+			   <?php
+				 if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin" || $rank == "adviser"){
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="reporter.php">Reporter</a></li>
+			    <?php
+				 }
+				 ?>
+		           <?php
+				 if($rank == "officer" || $rank == "admin" || $rank == "adviser"){ 
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="treasurer.php">Treasurer</a></li>
+			    <?php
+				 }
+				 ?>
+                           <?php
+				 if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="parli.php">Parliamentarian</a></li>
+			    <?php
+				 }
+				 ?>
+			   <?php
+				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
+			   <?php
+				}
+				?>
+			   <?php
+				if($rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="danger.php">Adviser Settings</a></li>
+			   <?php
+				}
+				?>
+			  </ul>
+			  </div>
+			</nav>
+		</div>
+		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; background-color:#efefef;" class="col-sm-10">
 
-				<!--Description-->
-				<p class="bodyTextType1">
-					Here advisers can review user information, check user event progress, manage user accounts, and get a summary of the chapter.
-					The summary box shows a general overview of member distribution.<br>
-					The user info box shows important information about users, as well as providing options to manage them.
-					The events box allows for a more detailed review of user event progress.<br>
-				</p>
-
+<!--Description-->
+	<p class="display-4" style="padding-left:20px;">
+		My Chapter
+	</p>	
+	<center>
+	<?php
+				if(isset($fmsg)){
+				?>
+					<div style="margin: 15px 15px 15px 15px;" class="alert alert-info" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						    <span aria-hidden="true">&times;</span>
+						</button>
+				  		<p><?php
+							echo $fmsg;
+						?></p>
+					</div>
+				<?php
+				}
+				else{
+				?>
+	<div style="margin: 15px 15px 15px 15px;" class="alert alert-success" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		</button>
+  		<p>Here advisers can review user information, check user event progress, manage user accounts, and get a summary of the chapter.
+		The summary box shows a general overview of member distribution.<br>
+		The user info box shows important information about users, as well as providing options to manage them.</p>
+	</div>
+	<?php
+		}
+	?>
 				<!--User Table-->
 				<center>
 				<?php if($rank == "admin" || $rank == "adviser"){ ?>
 				<!--Points-->
-				<div class="adminDataSection">
+				<div class="adminDataSection" style="margin-bottom:15px;">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Assign Event Points</p><br>
 
 						<form class="basicSpanDiv" method="post" id="pointsGradeForm" style="width:100%; height:40px; padding-top:15px;">
@@ -456,7 +513,7 @@ if(isset($_POST['deleteObligation'])){
 				</div>
 				<?php } ?>
 				<!--Summary-->
-				<div class="adminDataSection">
+				<div class="adminDataSection" style="margin-bottom:15px;">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Summary</p>
 				<div class="basicSpanDiv">
 
@@ -607,7 +664,7 @@ if(isset($_POST['deleteObligation'])){
 
 				</div>
 				</div>
-				<div class="adminDataSection" style="overflow:auto;">
+				<div class="adminDataSection" style="margin-bottom:15px; overflow:auto;">
 				<br>
 				<p class="userDashSectionHeader" style="padding-left:0px;">User Info</p>
 				<br>
@@ -722,13 +779,13 @@ if(isset($_POST['deleteObligation'])){
 							}
 						?></td>
 						<td style="width:80px; height:30px;"><?php if($thisrank != "adviser"){ echo "".$eventpoints; } ?></td>
-						<td style="width:80px; height:30px;"><?php echo "".$thisbalance?></td>
+						<td style="width:80px; height:30px;"><?php echo "".$thisbalance ?></td>
 						<td style="width:80px; height:30px;">
-							<a style="cursor:pointer;" data-placement="left" title="User Options" data-html=true data-toggle="popover" data-content='
 							<form method="post" style="float:left; padding-right:5px;">
-								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
-								<input type="submit" name="viewEvents" href="#userEvents" class="scroll btn btn-primary" value="View Events" />
+								<input type="hidden" id="viewEvents" name="viewEvents" value="<?php echo addslashes($fullname) ?>">
+								<input type="submit" name="viewUser" class="btn btn-primary" value="User Options">
 							</form>
+							<!-- 
 							<?php if(($thisrank != "admin" && $thisrank != "adviser") && ($rank == "admin" || $rank == "adviser")){ ?>
 							<form method="post" style="float:left; padding-right:5px; padding-bottom:10px;">
 								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
@@ -742,9 +799,7 @@ if(isset($_POST['deleteObligation'])){
 								?>" />
 							</form>
 							<br>
-							<?php } ?>
-							
-							'>Options</a>
+							<?php } ?> -->
 						</td>
 
 						<?php
@@ -790,137 +845,13 @@ if(isset($_POST['deleteObligation'])){
 
 				</div>
 
-				<!--USER'S EVENT-->
-				<div class="adminDataSection" id="userEvents">
+<!-- User Info Modal -->
+						<div class="modal fade" id="userModal" role="dialog">
+					    
+						</div>
 
-					<br>
-					<p class="userDashSectionHeader" style="padding-left:0px;"><?php echo $eventsUser . "'s" ?> Events</p>
-					<br>
-
-					<?php
-					require('../php/connect.php');
-
-					//get user's events
-					$query="SELECT event, team FROM teams WHERE member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					//check for users with no events
-					if(mysqli_num_rows($result) == 0){
-						echo "<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>User Is Not Registered For Any Events!</b></p>";
-					}
-
-					//space out events when they're displayed
-					$doEventNewline = 0;
-
-					//in a table, of course
-					echo "<table>";
-					echo "<tr style='height: 225px; vertical-align: top;'>";
-
-					while(list($event, $team) = mysqli_fetch_array($result)){
-
-						$doEventNewline += 1;
-
-						//rows of 3
-						if($doEventNewline > 3){
-							echo "</tr>";
-							echo "<tr style='height: 225px; vertical-align: top;'>";
-							$doEventNewline = 1;
-						}
-
-						echo "<td style='width:225px; position:relative;'>
-							<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:15px;'><b>" . $event . "</b></p>";
-
-						echo "<br>";
-
-						$checkName = addslashes($eventsUser);
-						$checkEvent = addslashes($event);
-
-						//get user's tasks
-						$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent'";
-
-						$taskResult = mysqli_query($link, $taskQuery);
-
-						if (!$taskResult){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						//check for users with no events
-						if(mysqli_num_rows($taskResult) == 0){
-							echo "<p style='font-family:tahoma; font-size:12px; padding-left:20px; padding-top:15px;'>No Tasks!</p>";
-						}
-
-						//for each task
-						while(list($id, $task, $done) = mysqli_fetch_array($taskResult)){
-							echo "<br>";
-							echo "<form method='post'>";
-							echo "<input type='hidden' name='event' value='" . $event . "'>";
-							echo "<input type='hidden' name='task' value='" . $task . "'>";
-							if($done == "yes"){
-								echo "<input style='padding-left:20px;' class='noCheckBox' type='checkbox' checked>";
-							}
-							else{
-								echo "<input style='padding-left:20px;' class='noCheckBox' type='checkbox'>";
-							}
-							echo "<p style='padding-left:20px; display:inline-block;'>" . $task . "</p>";
-							echo "</form>";
-						}
-
-
-						echo "</td>";
-
-					}
-
-					echo "</tr>";
-					echo "</table>";
-
-				?>
-
-					<br><br>
-					<p class="userDashSectionHeader" style="padding-left:0px;">Remove From Events</p>
-					<p class="bodyTextType1">Here you can remove this user from any of their events.</p>
-
-					<form class="basicSpanDiv" method="post" id="removeFromEventForm" style="width:100%; height:40px; padding-top:15px;">
-						<input type="hidden" name="deleteEventUser" value="<?php echo $eventsUser; ?>" />
-						<span>
-						<b>Delete From Event</b>
-						</span>
-						<span>
-						Event: 
-						<select id="eventDelete" name="eventDelete">
-							<?php
-							require('../php/connect.php');
-
-							//get user's events
-							$query="SELECT event FROM teams WHERE member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser'";
-
-							$result = mysqli_query($link, $query);
-
-							if (!$result){
-								die('Error: ' . mysqli_error($link));
-							}
-
-							while(list($event) = mysqli_fetch_array($result)){
-								echo '<option value="' . $event . '"">' . $event . '</option>';
-							}
-
-							?>
-						</select>
-						</span>
-						<span>
-						<input type="submit" class="btn btn-danger" value="Remove">
-						</span>
-					</form>
-
-					<br>
-
-				</div>
 				<!--Obligations-->
-				<div class="adminDataSection">
+				<div class="adminDataSection" style="margin-bottom:15px;">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Obligations</p>
 					<form class="basicSpanDiv" method="post" id="newObligationForm" style="width:100%; height:40px; padding-top:15px;">
 						<span>
@@ -1117,16 +1048,28 @@ if(isset($_POST['deleteObligation'])){
 				</center>
 
 			</div>
+		</div>
+	</div>
+	</div>	
 
-		<iframe name="hideFrame" id="hideFrame" style="display:none;"></iframe>
+	<iframe name="hideFrame" id="hideFrame" style="display:none;"></iframe>
 
 <!--Spooky stuff at the bottom-->
-		<footer>
+		<footer class="darknav">
 			<center><p class="bodyTextType2">
-				© Joshua Famous 2017
+				Copyright Joshua Famous 2017
 			</p></center>
+		<?php if(isset($_POST['viewUser'])){
+			$_SESSION['eventsUser'] = $_POST['viewEvents'];
+			$_POST['viewUser'] = null; ?>
+			<script type="text/javascript">
+			    	$("#userModal").load("../php/userModal.php");
+			    	$("#userModal").modal('show');
+			    	document.getElementById('closeModalButton').onclick = function(){ $("#userModal").modal('hide'); };
+			</script>
+			<?php } ?>
+
 		</footer>
-	</div>	
 </body>
 
 <script src="../js/scripts.js" type="text/javascript"></script>

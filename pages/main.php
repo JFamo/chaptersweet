@@ -7,6 +7,22 @@ $rank = $_SESSION['rank'];
 $grade = $_SESSION['grade'];
 $name = $_SESSION['fullname'];
 
+//get permission settings
+require('../php/connect.php');
+
+//INFO POSTING
+$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$officerPerm = $perm;
+
 if(isset($_POST['newTask'])){
 
 	//variables assignment
@@ -114,14 +130,55 @@ $blockedPages = $perm;
 			  <div class="container">
 			  <ul class="nav navbar-nav align-top">
 			   <li class="nav-item active"><a class="nav-link" href="#">Dashboard</a></li>
-			   <li class="nav-item"><a class="nav-link" href="#">Announcements</a></li>
 			   <?php
-				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 				?>
-			   <li class="nav-item"><a class="nav-link" href="info.php">Information</a></li>
+			   <li class="nav-item"><a class="nav-link" href="users.php">My Chapter</a></li>
 			   <?php
 				}
 				?>
+			   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="files.php">Files</a></li>
+			   <?php
+				}
+				?>
+			   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="rules.php">Event Rules</a></li>
+			   <?php
+				}
+				?>
+	          	   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="secretary.php">Secretary</a></li>
+			   <?php
+				}
+				?>
+			   <?php
+				 if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin" || $rank == "adviser"){
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="reporter.php">Reporter</a></li>
+			    <?php
+				 }
+				 ?>
+		           <?php
+				 if($rank == "officer" || $rank == "admin" || $rank == "adviser"){ 
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="treasurer.php">Treasurer</a></li>
+			    <?php
+				 }
+				 ?>
+                           <?php
+				 if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="parli.php">Parliamentarian</a></li>
+			    <?php
+				 }
+				 ?>
 			   <?php
 				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
@@ -129,14 +186,7 @@ $blockedPages = $perm;
 			   <?php
 				}
 				?>
-				<?php
-				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
-				?>
-			   <li class="nav-item"><a class="nav-link" href="users.php">My Chapter</a></li>
 			   <?php
-				}
-				?>
-				<?php
 				if($rank == "admin" || $rank == "adviser"){
 				?>
 			   <li class="nav-item"><a class="nav-link" href="danger.php">Adviser Settings</a></li>
@@ -147,13 +197,16 @@ $blockedPages = $perm;
 			  </div>
 			</nav>
 		</div>
-		<div style="padding-right:0; padding-left:0;" class="col-sm-10 bg-secondary">
+		<div style="padding-right:0; padding-left:0; background-color:#efefef;" class="col-sm-10">
+		<p class="display-4" style="padding-left:20px;">
+			My Dashboard
+		</p>
 		<center>
 
 			<div class="container-fluid">
-			<div class="row no-gutter" style="margin: 0; padding-top:15px;">
+			<div class="row no-gutter" style="margin: 0; padding-top:15px; padding-bottom:15px;">
 			<div class="col-sm-6" style="padding:0; text-align:left;">
-			<div class="userDashSection" style="height:auto;">
+			<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
 				<p class="userDashSectionHeader">
 					My Account
 				</p>
@@ -203,7 +256,7 @@ $blockedPages = $perm;
 					<b>Rank:</b> <?php echo ucwords($rank) ?>
 				</p>
 			</div>
-			<div class="userDashSection" style="height:auto;">
+			<div style="height:auto; min-height:0px;" class="userDashSection">
 			<div style="padding-left: 20px;">
 				<p class="userDashSectionHeader">
 					My Events
@@ -259,8 +312,8 @@ $blockedPages = $perm;
 						}
 
 						echo "<td style='width:225px; position:relative;'>
-							<p style='font-family:tahoma; cursor:pointer; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
-							<a data-placement="bottom" title="Create a New Task" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
+							<p style='font-family:tahoma; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
+							<a style="cursor:pointer;" class="text-primary" data-placement="bottom" title="Create a New Task" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
 									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
 									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
 									Task Name:<input type="text" id="name" name="name" style="width:125px" required />
@@ -323,7 +376,7 @@ $blockedPages = $perm;
 			</div>
 			</div>
 			<div class="col-sm-6" style="padding:0; text-align:left;">
-			<div class="userDashSection" style="height:auto;">
+			<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
 				<p class="userDashSectionHeader">
 					My Next Conference
 				</p>
@@ -333,7 +386,7 @@ $blockedPages = $perm;
 				<br><br>
 				</center>
 			</div>
-			<div class="userDashSection" style="height:auto;">
+			<div style="height:auto; min-height:0px;" class="userDashSection">
 				<p class="userDashSectionHeader">
 					Announcements
 				</p>

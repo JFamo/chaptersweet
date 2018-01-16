@@ -318,9 +318,10 @@ if(isset($_POST['blockedPages'])){
 
 <head>
 	<!-- Bootstrap, cause it dabs -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 	<title>
 		Chapter Sweet
 	</title>
@@ -329,42 +330,103 @@ if(isset($_POST['blockedPages'])){
 </head>
 
 <body>
-
-	<div id="wrapper">
-<!--Spooky stuff at the top-->
-		<header>
-				<img src="../imgs/iconImage.png" alt="icon" width="80" height="80" id="iconMain">
-				<p class="titleText">
-					Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?>
-				</p>
-		</header>
-<!--Spooky stuff still kind of at the top-->
-		<div id="subTitleBar">
-			<form action="../index.php">
-    			<input class="backButton" type="submit" value="Back" />
-			</form>
-			<center><p class="subTitleText">
-				Adviser Settings
-			</p></center>
+<!--Spooky bar at the top-->
+	<nav class="navbar navbar-dark darknav navbar-expand-sm">
+	  	<div class="container-fluid">
+		   	<a class="navbar-brand" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
+		<div class="ml-auto navbar-nav">
+		    	<a class="nav-item nav-link active" href="../php/logout.php">Logout</a>
 		</div>
-<!--Spooky stuff closer to the middle-->
-			<div id="contentPane">
-
-			<?php
-				if(isset($fmsg)){
+	</div>
+	</nav>
+<!--Spooky stuff in the middle-->
+	<div class="container-fluid">
+		<div class="row">
+		<div style="padding-right:0; padding-left:0;" class="col-sm-2 darknav">
+			<nav style="width:100%;" class="navbar navbar-dark darknav">
+			  <div class="container">
+			  <ul class="nav navbar-nav align-top">
+			   <li class="nav-item"><a class="nav-link" href="../index.php">Dashboard</a></li>
+			   <?php
+				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 				?>
-
-					<p class = "bodyTextType1"><b>
-
-					<?php
-					echo $fmsg;
-					?>
-
-					</b></p><br>
-
-				<?php
+			   <li class="nav-item"><a class="nav-link" href="users.php">My Chapter</a></li>
+			   <?php
 				}
 				?>
+			   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="files.php">Files</a></li>
+			   <?php
+				}
+				?>
+			   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="rules.php">Event Rules</a></li>
+			   <?php
+				}
+				?>
+	          	   <?php
+				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="secretary.php">Secretary</a></li>
+			   <?php
+				}
+				?>
+			   <?php
+				 if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesAnnouncements" || $officerPerm == "filesAnnouncements" || $officerPerm == "announcements")) || $rank == "admin" || $rank == "adviser"){
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="reporter.php">Reporter</a></li>
+			    <?php
+				 }
+				 ?>
+		           <?php
+				 if($rank == "officer" || $rank == "admin" || $rank == "adviser"){ 
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="treasurer.php">Treasurer</a></li>
+			    <?php
+				 }
+				 ?>
+                           <?php
+				 if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				 ?>
+			    <li class="nav-item"><a class="nav-link" href="parli.php">Parliamentarian</a></li>
+			    <?php
+				 }
+				 ?>
+			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
+			   <?php
+				if($rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item active"><a class="nav-link" href="#">Adviser Settings</a></li>
+			   <?php
+				}
+				?>
+			  </ul>
+			  </div>
+			</nav>
+		</div>
+		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; overflow:hidden; background-color:#efefef;" class="col-sm-10">
+		<p class="display-4" style="padding-left:20px;">
+			Adviser Settings
+		</p>
+
+			<?php
+			if(isset($fmsg)){
+				?>
+					<div style="margin: 15px 15px 15px 15px;" class="alert alert-info" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						    <span aria-hidden="true">&times;</span>
+						</button>
+				  		<p><?php
+							echo $fmsg;
+						?></p>
+					</div>
+				<?php
+				}
+			?>
 
 				<!--Description-->
 					<p class="bodyTextType1">
@@ -407,7 +469,7 @@ if(isset($_POST['blockedPages'])){
 						</span>
 					</form>
 
-				<br></div>
+				<br></div><br>
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Settings</p><br>
 
@@ -521,6 +583,7 @@ if(isset($_POST['blockedPages'])){
 					<br>
 
 				<br></div>
+				<br>
 				<!--Data Management-->
 				<div class="adminDataSection">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Data Management</p><br>
@@ -646,14 +709,17 @@ if(isset($_POST['blockedPages'])){
 				<br></div>
 
 			</div>
+		</center>
+		</div>
+		</div>
+		</div>
 
 <!--Spooky stuff at the bottom-->
-		<footer>
+		<footer class="darknav">
 			<center><p class="bodyTextType2">
-				© Joshua Famous 2017
+				Copyright Joshua Famous 2017
 			</p></center>
 		</footer>
-	</div>	
 </body>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>

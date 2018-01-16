@@ -318,16 +318,9 @@ div.panel {
 	width:20px;
 	min-width:95%;
 	max-width:95%;
-	min-height:95%;
-	max-height:95%;
 	height:auto;
 	border-radius: 5px;
-	border: 1px solid black;
 	background-color:white;
-}
-
-.userDashSection:hover{
-	box-shadow: inset 0 0 0 2px black;
 }
 
 .userDashSectionHeader{
@@ -434,22 +427,15 @@ div.panel {
 }
 
 .adminDataSection{
-	border: 1px solid black;
-	width: 80%;
-}
-
-.adminDataSection:hover{
-	box-shadow: inset 0 0 0 2px black;
+	width: 90%;
+	border-radius:5px;
+	background-color:white;
 }
 
 .userRow{
 	transition: .2s ease-in-out;
 	transform: scale(1);
 	height: 45px;
-}
-
-.userRow:hover{
-	background-color: #ff5b5b;
 }
 
 .hoverForm:hover{
@@ -466,14 +452,6 @@ div.panel {
 .basicSpanForm span{
 	display: table-cell;
 	text-align: center;
-}
-
-.basicSpanForm:not(.nohover):hover{
-	background-color: #ff5b5b;
-}
-
-.basicSpanDiv:hover{
-	background-color: #ff5b5b;
 }
 
 .description{

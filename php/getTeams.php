@@ -49,7 +49,7 @@ else{
 
 				$cellColor = "#e5e5e5";
 				if($q <= $membermin){
-					$cellColor = "#B60000";
+					$cellColor = "#1d69e2";
 				}
 
 				$outputVar = $outputVar . ' <td style="background-color: ' . $cellColor . '; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';
