@@ -8,6 +8,22 @@ $rank = $_SESSION['rank'];
 //encase the whole page - KEEP NON-ADMINS OUT
 if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 
+//get permission settings
+require('../php/connect.php');
+
+//INFO POSTING
+$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$officerPerm = $perm;
+
 //function to update points by grade
 if(isset($_POST['grade'])){
 
@@ -312,6 +328,7 @@ if(isset($_POST['deleteObligation'])){
 <!DOCTYPE html>
 
 <head>
+
 	<!-- Bootstrap, cause it dabs -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
 	<!-- ima try this jquery-->
@@ -783,7 +800,8 @@ if(isset($_POST['deleteObligation'])){
 						<td style="width:80px; height:30px;">
 							<form method="post" style="float:left; padding-right:5px;">
 								<input type="hidden" id="viewEvents" name="viewEvents" value="<?php echo addslashes($fullname) ?>">
-								<input type="submit" name="viewUser" class="btn btn-primary" value="User Options">
+                                                                <input type="hidden" id="viewEventsRank" name="viewEventsRank" value="<?php echo $thisrank ?>">
+								<input type="submit" name="viewUser" class="btn btn-primary" onclick="" value="User Options">
 							</form>
 							<!-- 
 							<?php if(($thisrank != "admin" && $thisrank != "adviser") && ($rank == "admin" || $rank == "adviser")){ ?>
@@ -1061,11 +1079,11 @@ if(isset($_POST['deleteObligation'])){
 			</p></center>
 		<?php if(isset($_POST['viewUser'])){
 			$_SESSION['eventsUser'] = $_POST['viewEvents'];
+                        $_SESSION['eventsUserRank'] = $_POST['viewEventsRank'];
 			$_POST['viewUser'] = null; ?>
 			<script type="text/javascript">
 			    	$("#userModal").load("../php/userModal.php");
-			    	$("#userModal").modal('show');
-			    	document.getElementById('closeModalButton').onclick = function(){ $("#userModal").modal('hide'); };
+			    	document.getElementById('closeModalButton').onclick = function(){ $('#userModal').modal('hide'); };
 			</script>
 			<?php } ?>
 
