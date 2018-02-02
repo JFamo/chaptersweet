@@ -1,16 +1,33 @@
 <?php
 session_start();
+$rank = $_SESSION['rank'];
+$daUsah = $_SESSION['eventsUser'];
+$thisrank = $_SESSION['eventsUserRank'];
 $out = "";
 $out = $out .  '<div class="modal-dialog modal-lg">';
 $out = $out .  '<div class="modal-content">';
 $out = $out .  '<div class="modal-header">';
 $out = $out .  '<h4 class="modal-title">' . $_SESSION['eventsUser'] . '</h4>';
+//promote
+	if(($thisrank != "admin" && $thisrank != "adviser") && ($rank == "admin" || $rank == "adviser")){
+	$out = $out . '<form method="post" style="float:left; padding-right:5px; margin-left:20px; padding-bottom:10px;">';
+	$out = $out . '<input type="hidden" name="thisUser" value="' . addslashes($daUsah) . '" />';
+	$out = $out . '<input type="hidden" name="newRank" value="';
+	if($thisrank=='member'){ $out = $out . 'officer'; }
+	if($thisrank=='officer'){ $out = $out . 'member'; }
+	$out = $out . '"/>';
+	$out = $out . '<input type="submit" name="promoteUser" class="btn btn-primary" value="Make ';
+	if($thisrank=='member'){ $out = $out . 'Officer'; }
+	if($thisrank=='officer'){ $out = $out . 'Member'; } 
+	$out = $out . '" />';
+	$out = $out . '</form><br>';
+	}
 $out = $out .  '<button type="button" id="closeModalButton" class="close" data-dismiss="modal">&times;</button>';
 $out = $out .  '</div>';
 $out = $out .  '<div class="modal-body">';
 //user's events
 $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bottom:15px;">';
-
+	
 	$out = $out .  "<br>";
 	$out = $out .  '<p class="userDashSectionHeader" style="padding-left:0px;">' . $_SESSION['eventsUser'] . "'s Events</p> ";
 	$out = $out .  "<br>";
@@ -18,8 +35,7 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 	require('../php/connect.php');
 
 	//get user's events
-	$daUsah = $_SESSION['eventsUser'];
-	$queryEve="SELECT event, team FROM teams WHERE member1='$daUsah' OR member2='$daUsah' OR member3='daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah'";
+	$queryEve="SELECT event, team FROM teams WHERE member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah'";
 
 	$resultEve = mysqli_query($link, $queryEve);
 
@@ -115,7 +131,6 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 require('../php/connect.php');
 
 //get user's events
-$daUsah = $_SESSION['eventsUser'];
 $queryDele="SELECT event FROM teams WHERE member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah'";
 
 $resultDele = mysqli_query($link, $queryDele);
@@ -130,7 +145,12 @@ while(list($event) = mysqli_fetch_array($resultDele)){
 }
 
 //closing stuff, remove event button
-$out = $out .  '</select></span><span><input type="submit" class="btn btn-danger" value="Remove"></span></form><br></div></div></div></div>';
+$out = $out .  '</select></span><span><input type="submit" class="btn btn-danger" value="Remove"></span></form><br></div>';
+
+$out = $out . "<script>$('#userModal').modal('show');</script>";
+
+$out = $out .  '</div></div></div>';
+
 echo $out;
 ?>
 						
