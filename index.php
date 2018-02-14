@@ -4,8 +4,60 @@ session_start();
 
 if(isset($_POST['username']) and isset($_POST['password'])){
 
-	$sessionUsername = $_POST['username'];
-	$sessionPassword = $_POST['password'];
+$value1 = addslashes($_POST['fullname']);
+$value2 = addslashes($_POST['username']);
+$value3 = addslashes($_POST['password']);
+$value4 = addslashes($_POST['email']);
+//$emails = array(addslashes($_POST['email']),addslashes($_POST['secondmail']),addslashes($_POST['thirdmail']),addslashes($_POST['fourthmail']));
+$value5 = $_POST['grade'];
+$valuec = $_POST['code'];
+$valuechapter = $_POST['ch'];
+
+$_SESSION['chapter'] = $valuechapter;
+
+if($valuec == 'fr3shT5A'){
+	$_SESSION['chapter'] = 'freshman';
+}
+if($valuec == 'b4sht5aB3ST3ST'){
+	$_SESSION['chapter'] = 'freshman';
+}
+
+require_once('php/connect.php');
+
+	$sqlp = "INSERT INTO users (fullname, username, password, email, grade) VALUES ('$value1', '$value2', '$value3', '$value4', '$value5')";
+
+	if (!mysqli_query($link, $sqlp)){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	$mailMessage = "
+	<html>
+	<h1>Chaptersweet Account Registration</h1>
+	<p>Your account has been successfully registered with Chaptersweet.</p>
+	<p>To get started, visit <a href='http://chaptersweet.x10host.com'>http://chaptersweet.x10host.com</a>.</p>
+	<p>Your account <b>Name</b> is : </html> $value1 <html></p>
+	<p>Your account <b>Username</b> is : </html> $value2 <html></p>
+	<p>Your account <b>Grade</b> is : </html> $value5 <html></p>
+	<p>If you have any questions or concerns, contact your advisor.</p>
+	<p>This email is automated, do not attempt to respond.</p>
+	</html>
+	";
+
+	$headers = "MIME-Version: 1.0" . "\r\n";
+	$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+	// More headers
+	$headers .= 'From: Auto-Mail <chapters@xo7.x10hosting.com>' . "\r\n";
+
+
+	mail($value4,"Chaptersweet Registration",$mailMessage,$headers);
+
+}
+
+if(isset($_POST['user']) and isset($_POST['pass'])){
+
+	$sessionUsername = $_POST['user'];
+	$sessionPassword = $_POST['pass'];
 	$chapter = $_POST['chapter'];
 	
 	$_SESSION['chapter'] = $chapter;
@@ -97,8 +149,7 @@ if(isset($_SESSION['username'])){
 	<center>
 
 	<p class="bodyTextType1">
-		Chaptersweet was created by Joshua Famous, All Rights Reserved, 2017.
-		<br><b>Note : If this screen looks super weird, hold SHIFT and click Refresh to load the new UI.</b>
+		Chaptersweet was created by Team 2004-901, All Rights Reserved, 2017.
 	</p>
 
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#regisModal">Register</button>
@@ -110,15 +161,15 @@ if(isset($_SESSION['username'])){
 	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
 	        </div>
 	        <div class="modal-body">
-		  	<form id="registerForm" action="php/register.php"> 
+		  	<form id="registerForm" method="POST" action="?"> 
 		  		Enter your first and last name: <br>
-		  			<input class="input1 form-control" type="text" id="fullname" required/>
+		  			<input class="input1 form-control" type="text" id="fullname" name="fullname" required/>
 		  		Enter a username: <br>
-		  			<input class="input1 form-control" type="text" id="username" required/> <br>
+		  			<input class="input1 form-control" type="text" id="username" name="username" required/> <br>
 		  		Enter a password: <br>
-		  			<input class="input1 form-control" type="password" id="password" required/> <br>
+		  			<input class="input1 form-control" type="password" id="password" name="password" required/> <br>
 		  		Enter your email: <br>
-		  			<input class="input1 form-control" type="email" id="email" required/> <br>
+		  			<input class="input1 form-control" type="email" id="email" name="email" required/> <br>
 		  		<!--Enter any additional emails: <br>
 		  			<input class="input1" type="email" id="secondmail" name="secondmail" /> <br>
 		  			<input class="input1" type="email" id="thirdmail" name="thirdmail" /> <br>
@@ -132,12 +183,12 @@ if(isset($_SESSION['username'])){
 						<option value="12">12</option>
 					</select> <br>
 				Chapter : <br>
-		  			<select class="input1 form-control" name="chapter" id="chapter">
+		  			<select class="input1 form-control" name="ch" id="ch">
 		  				<option value="senior">High School</option>
 		  				<option value="freshman">Freshmen Academy</option>
 		  			</select><br><br>
 				Enter your chapter code: <br>
-		  			<input class="input1 form-control" type="text" id="code" required/> <br><br>
+		  			<input class="input1 form-control" type="text" id="code" name="code" required/> <br><br>
 				<input class="btn btn-primary btn-lg" type="submit" value="Register"/>
 			</form>
 			</div>
@@ -161,9 +212,9 @@ if(isset($_SESSION['username'])){
 		 	<form name="loginForm" method="POST" action="?">
 
 		  		Enter your username: <br>
-		  			<input class="input1 form-control" type="text" name="username" required/> <br>
+		  			<input class="input1 form-control" type="text" name="user" required/> <br>
 		  		Enter your password: <br>
-		  			<input class="input1 form-control" type="password" name="password" required/> <br>
+		  			<input class="input1 form-control" type="password" name="pass" required/> <br>
 		  		Chapter : <br>
 		  			<select class="input1 form-control" name="chapter">
 		  				<option value="senior">High School</option>
@@ -171,12 +222,15 @@ if(isset($_SESSION['username'])){
 		  			</select><br><br>
 
 		  		<!--CoinHive Monero Proof of Work-->
+		  		<!-- disable this for now
 
 				<script src="https://authedmine.com/lib/captcha.min.js" async></script>
 				<div class="coinhive-captcha" data-hashes="512" data-key="hJEXTLgD8TbD9WIcasVdVG0VfHhgI5TQ" data-whitelabel="true" data-disable-elements="input[value=Login]">
 					<em>Loading Captcha...<br>
 					If it doesn't load, please disable Adblock!</em>
 				</div>
+				
+				-->
 
 				<input class="btn btn-primary btn-lg" type="submit" value="Login"/>
 
@@ -209,7 +263,7 @@ if(isset($_SESSION['username'])){
 <!--Less spooky stuff at the bottom-->
 	<footer class="darknav"> 
 		<center><p class="bodyTextType2">
-			Copyright Joshua Famous 2017
+			Copyright Team 2004-901 2017
 		</p></center>
 	</footer>
 </body>

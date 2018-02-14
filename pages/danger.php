@@ -194,7 +194,7 @@ if(isset($_POST['verify3'])){
 		}
 
 		//get EVENTS data for the specified competition level
-		$query = "SELECT id, name, teams FROM events WHERE conference='$conference'";
+		$query = "SELECT id, name, membermin, membermax, teams, qualifier FROM events WHERE conference='$conference'";
 
 		$result = mysqli_query($link, $query);
 
@@ -203,13 +203,42 @@ if(isset($_POST['verify3'])){
 		}
 
 		//for each event at the current competition level
-		while(list($id, $name, $teams) = mysqli_fetch_array($result)){
+		while(list($id, $name, $min, $max, $teams, $isq) = mysqli_fetch_array($result)){
+		
+			//handle qualifiers with no teams
+			if($teams == 0){
+				$tt = 0;
+				$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$tt', NULL, NULL, NULL, NULL, NULL, NULL, '$isq')";
+				
+				if (!mysqli_query($link, $sql)){
+					die('Error: ' . mysqli_error($link));
+				}
+			}
 				
 			//for each team of each event
 			for($i = 1; $i <= $teams; $i++){
-
+			
 				//add that event to the TEAMS table
-				$sql = "INSERT INTO teams (event, team) VALUES ('$name', '$i')";
+				$blank = ' ';
+				if($max == 1){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq')";
+				}
+				if($max == 2){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq')";
+				}
+				if($max == 3){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq')";
+				}
+				if($max == 4){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq')";
+				}
+				if($max == 5){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq')";
+				}
+				if($max == 6){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq')";
+				}
+				
 
 				if (!mysqli_query($link, $sql)){
 					die('Error: ' . mysqli_error($link));
@@ -219,7 +248,7 @@ if(isset($_POST['verify3'])){
 
 		}
 
-		$fmsg =  "Event Selection Reset Successfully!";
+		$fmsg =  "Event Selection Reset Successfully For " . $conference . " Conference!";
 
 	}
 	else{

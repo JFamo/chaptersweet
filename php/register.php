@@ -9,11 +9,14 @@ $value4 = addslashes($_POST['email']);
 //$emails = array(addslashes($_POST['email']),addslashes($_POST['secondmail']),addslashes($_POST['thirdmail']),addslashes($_POST['fourthmail']));
 $value5 = $_POST['grade'];
 $valuec = $_POST['code'];
-$valuechapter = $_POST['chapter'];
+$valuechapter = $_POST['ch'];
 
 $_SESSION['chapter'] = $valuechapter;
 
 if($valuec == 'fr3shT5A'){
+	$_SESSION['chapter'] = 'freshman';
+}
+if($valuec == 'b4sht5aB3ST3ST'){
 	$_SESSION['chapter'] = 'freshman';
 }
 
@@ -34,18 +37,18 @@ if(isSet($email3)){
 //$valueE = serialize($emails);
 
 //Check Chapter Code
-$codeSQL = "SELECT value FROM settings WHERE name='code'";
+//$codeSQL = "SELECT value FROM settings WHERE name='code'";
 
-$codeResult = mysqli_query($link, $codeSQL);
+//$codeResult = mysqli_query($link, $codeSQL);
 
-if (!$codeResult){
-	die('Error: ' . mysql_error($link));
-}
+//if (!$codeResult){
+//	die('Error: ' . mysql_error($link));
+//}
 
-list($chapterCode) = mysqli_fetch_array($codeResult);
+//list($chapterCode) = mysqli_fetch_array($codeResult);
 
 //if my code is correct
-if($chapterCode == $valuec){
+//if($chapterCode == $valuec){
 
 	$sql = "INSERT INTO users (fullname, username, password, email, grade) VALUES ('$value1', '$value2', '$value3', '$value4', '$value5')";
 
@@ -75,7 +78,7 @@ if($chapterCode == $valuec){
 
 	mail($value4,"Chaptersweet Registration",$mailMessage,$headers);
 
-}
+//}
 
 mysql_close($link);
 

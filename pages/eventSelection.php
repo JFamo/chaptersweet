@@ -22,6 +22,69 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $emailPerm = $perm;
 
+//get permission settings
+
+//INFO POSTING
+$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$officerPerm = $perm;
+
+//function for adding a team to an event
+if(isset($_POST['evt'])){
+
+	require('../php/connect.php');
+	
+	$name = $_POST['evt'];
+	$i = $_POST['num'];
+	$isq = 'yes';
+	
+	//get max and min members for this event
+		$query = "SELECT membermin, membermax FROM events WHERE name='$name'";
+
+		$result = mysqli_query($link, $query);
+
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		//for each event at the current competition level
+		list($min, $max) = mysqli_fetch_array($result);
+			
+				//add that event to the TEAMS table
+				$blank = ' ';
+				if($max == 1){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq')";
+				}
+				if($max == 2){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq')";
+				}
+				if($max == 3){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq')";
+				}
+				if($max == 4){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq')";
+				}
+				if($max == 5){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq')";
+				}
+				if($max == 6){
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq')";
+				}
+				
+
+				if (!mysqli_query($link, $sql)){
+					die('Error: ' . mysqli_error($link));
+				}
+}
+
 //functions for event signup
 if(isset($_POST['slot'])){
 

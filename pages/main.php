@@ -382,7 +382,9 @@ $blockedPages = $perm;
 				</p>
 				<center>
 				<br><br>
-				<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n3662/cf12/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cacf00/cpc000/pct/tcfff/fs100/szw320/szh135/tatTime%20Until%20Regionals/tac000/tptTime%20Since%20Regionals/tpc000/mac000/mpc000/iso2018-02-03T08:30:00" allowTransparency="true" frameborder="0" width="184" height="69"></iframe>
+				<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n198/cf12/cm0/cu5/ct0/cs0/ca0/co1/cr0/ss0/cacf00/cpc000/pct/tcfff/fs100/szw320/szh135/tatTime%20Until%20States/tac000/tptTime%20Since%20States/tpc000/iso2018-04-18T08:00:00" allowTransparency="true" frameborder="0" width="159" height="50"></iframe>
+
+
 				<br><br>
 				</center>
 			</div>
@@ -413,7 +415,7 @@ $blockedPages = $perm;
 						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "".$date ?></p>
-						<pre class="announcement" style="white-space: pre-wrap; word-wrap: break-word;">
+						<pre class="announcement" style="white-space: pre-wrap; word-wrap: normal;">
 						<p style="font-size:12px; font-family:tahoma; padding-top:0px; padding-left:5%; padding-right:5%; padding-bottom: 10px; ">
 <?php echo "".$body ?>
 						</p>
