@@ -82,7 +82,7 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 <head>
 	<!-- Bootstrap, cause it dabs -->
 	<link rel="stylesheet" href="../bootstrap-4.1.0/css/bootstrap.min.css">
-    <script src="../js/jquery-3.3.1.slim.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
 
