@@ -5,12 +5,13 @@ session_start();
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
+$chapter = $_SESSION['chapter'];
 
 //get permission settings
 require('../php/connect.php');
 
 //INFO POSTING
-$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+$query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -51,13 +52,20 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster, class) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster', '$class')";
+	$query = "INSERT INTO minutes (name, size, type, content, date, view, poster, class, chapter) VALUES ('$fileName', '$fileSize', '$fileType', '$content', now(), '$view', '$poster', '$class', '$chapter')";
 
 	$result = mysqli_query($link, $query);
 
 	if (!$result){
 		die('Error: ' . mysqli_error($link));
 	}
+	
+	$activityForm = "Uploaded Minutes File " . $fileName;
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$fullname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -206,7 +214,7 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 				require('../php/connect.php');
 
-				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='minutes'";
+				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='minutes' AND chapter='$chapter'";
 
 				$result = mysqli_query($link, $query);
 
@@ -225,7 +233,7 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 						$viewLevel = "all";
 
-						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel'";
+						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel' AND chapter='$chapter'";
 
 						$result2 = mysqli_query($link, $query2);
 

@@ -3,10 +3,12 @@ $outputVar;
 
 session_start();
 
+$chapter = $_SESSION['chapter'];
+
 require('../php/connect.php');
 
 //actually update events
-$query="SELECT name, date FROM changes";
+$query="SELECT name, date FROM changes WHERE chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -26,7 +28,7 @@ else{
 		//this record is old
 		if($currentDate > $dateCompare){
 			//delete it
-			$queryDel="DELETE FROM changes WHERE name='$name' AND date='$date'";
+			$queryDel="DELETE FROM changes WHERE name='$name' AND date='$date' AND chapter='$chapter'";
 			
 			$resultDel = mysqli_query($link, $queryDel);
 			

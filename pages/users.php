@@ -4,6 +4,7 @@ session_start();
 
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
+$chapter = $_SESSION['chapter'];
 
 //encase the whole page - KEEP NON-ADMINS OUT
 if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
@@ -12,7 +13,7 @@ if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
 require('../php/connect.php');
 
 //INFO POSTING
-$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+$query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -24,6 +25,20 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
 
+//EVENT POINTS for OFFICERS
+$query="SELECT value FROM settings WHERE name='eventpointsPermission' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$eventPointsPerm = $perm;
+
+
 //function to update points by grade
 if(isset($_POST['grade'])){
 
@@ -33,13 +48,21 @@ if(isset($_POST['grade'])){
 
 	require('../php/connect.php');
 
-		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='$grade'";
+		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='$grade' AND chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Added " . $points . " Event Points to Users in Grade " . $grade . " Successfully!";
+		
+		$activityForm = "Added " . $points . " Event Points to Grade " . $grade;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -54,13 +77,21 @@ if(isset($_POST['rank'])){
 
 	require('../php/connect.php');
 
-		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE rank='$rank'";
+		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE rank='$rank' AND chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Added " . $points . " Event Points to Users of Rank " . $rank . " Successfully!";
+		
+		$activityForm = "Added " . $points . " Event Points to Rank " . $rank;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -76,13 +107,13 @@ if(isset($_POST['group'])){
 	require('../php/connect.php');
 
 		if($group == "all"){
-			$sql = "UPDATE users SET eventpoints=eventpoints+'$points'";
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE chapter='$chapter'";
 		}
 		if($group == "upper"){
-			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='11' OR grade='12'";
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE (grade='11' OR grade='12') AND chapter='$chapter'";
 		}
 		if($group == "lower"){
-			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE grade='9' OR grade='10'";
+			$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE (grade='9' OR grade='10') AND chapter='$chapter'";
 		}
 
 		if (!mysqli_query($link, $sql)){
@@ -90,6 +121,14 @@ if(isset($_POST['group'])){
 		}
 		
 		$fmsg =  "Added " . $points . " Event Points to Users of Group " . ucfirst($group) . " Successfully!";
+		
+		$activityForm = "Added " . $points . " Event Points to Group " . ucfirst($group);
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -101,35 +140,44 @@ if(isset($_POST['eventDelete'])){
 	//file viewability
 	$event = $_POST['eventDelete'];
 	$user = $_POST['deleteEventUser'];
+        $blank = ' ';
 
 	require('../php/connect.php');
 
-		$sql = "UPDATE teams SET member1 = NULL WHERE member1='$user' AND event = '$event'";
+		$sql = "UPDATE teams SET member1 = '$blank' WHERE member1='$user' AND event = '$event' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql = "UPDATE teams SET member2 = NULL WHERE member2='$user' AND event = '$event'";
+		$sql = "UPDATE teams SET member2 = '$blank' WHERE member2='$user' AND event = '$event' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql = "UPDATE teams SET member3 = NULL WHERE member3='$user' AND event = '$event'";
+		$sql = "UPDATE teams SET member3 = '$blank' WHERE member3='$user' AND event = '$event' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql = "UPDATE teams SET member4 = NULL WHERE member4='$user' AND event = '$event'";
+		$sql = "UPDATE teams SET member4 = '$blank' WHERE member4='$user' AND event = '$event' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql = "UPDATE teams SET member5 = NULL WHERE member5='$user' AND event = '$event'";
+		$sql = "UPDATE teams SET member5 = '$blank' WHERE member5='$user' AND event = '$event' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql = "UPDATE teams SET member6 = NULL WHERE member6='$user' AND event = '$event'";
+		$sql = "UPDATE teams SET member6 = '$blank' WHERE member6='$user' AND event = '$event' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Removed " . $user . " from " . $event . " Successfully!";
+		
+		$activityForm = "Removed " . $user . " From Event " . $event;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -151,6 +199,14 @@ if(isset($_POST['pointsTo'])){
 		}
 		
 		$fmsg =  "Added " . $points . " Event Points to User with ID " . $user . " Successfully!";
+		
+		$activityForm = "Added " . $points . " Event Points to an Individual";
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -172,6 +228,14 @@ if(isset($_POST['pointsFrom'])){
 		}
 		
 		$fmsg =  "Removed " . $points . " Event Points to User with ID " . $user . " Successfully!";
+		
+		$activityForm = "Removed" . $points . " Event Points from an Individual";
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -186,13 +250,21 @@ if(isset($_POST['promoteUser'])){
 
 	require('../php/connect.php');
 
-		$sql = "UPDATE users SET rank='$newRank' WHERE fullname='$user'";
+		$sql = "UPDATE users SET rank='$newRank' WHERE fullname='$user' AND chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Changed " . $user . " to Rank " . ucfirst($newRank) . " Successfully!";
+		
+		$activityForm = "Changed " . $user. " to Rank " . ucfirst($newRank);
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -203,6 +275,7 @@ if(isset($_POST['deleteUser'])){
 
 	$user = $_POST['thisUser'];
 	$confirm = $_POST['confirmDeleteUser'];
+        $blank = ' ';
 
 	if($confirm == "yes"){
 
@@ -219,27 +292,27 @@ if(isset($_POST['deleteUser'])){
 
 		list($userFullname) = mysqli_fetch_array($result);
 
-		$sql2 = "UPDATE teams SET member1 = NULL WHERE member1='$userFullname'";
+		$sql2 = "UPDATE teams SET member1 = '$blank' WHERE member1='$userFullname' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql2)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql2 = "UPDATE teams SET member2 = NULL WHERE member2='$userFullname'";
+		$sql2 = "UPDATE teams SET member2 = '$blank' WHERE member2='$userFullname' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql2)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql2 = "UPDATE teams SET member3 = NULL WHERE member3='$userFullname'";
+		$sql2 = "UPDATE teams SET member3 = '$blank' WHERE member3='$userFullname' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql2)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql2 = "UPDATE teams SET member4 = NULL WHERE member4='$userFullname'";
+		$sql2 = "UPDATE teams SET member4 = '$blank' WHERE member4='$userFullname' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql2)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql2 = "UPDATE teams SET member5 = NULL WHERE member5='$userFullname'";
+		$sql2 = "UPDATE teams SET member5 = '$blank' WHERE member5='$userFullname' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql2)){
 			die('Error: ' . mysqli_error($link));
 		}
-		$sql2 = "UPDATE teams SET member6 = NULL WHERE member6='$userFullname'";
+		$sql2 = "UPDATE teams SET member6 = '$blank' WHERE member6='$userFullname' AND chapter='$chapter'";
 		if (!mysqli_query($link, $sql2)){
 			die('Error: ' . mysqli_error($link));
 		}
@@ -251,7 +324,7 @@ if(isset($_POST['deleteUser'])){
 		}
 		
 		$fmsg =  "Deleted User with ID " . $user . " Successfully!";
-
+		
 	mysqli_close($link);
 
 	}
@@ -267,16 +340,19 @@ if(isset($_POST['obligationChange'])){
 	$user = $_POST['thisUser'];
 	$newValue = $_POST['newValue'];
 	$obligation = $_POST['obligation'];
+	$oblignum = $_POST['num'];
+	
+	$newOblig = substr($obligation, 0, ($oblignum*2)) . $newValue . substr($obligation, ($oblignum * 2) + 2);
 
 	require('../php/connect.php');
 
-		$sql = "UPDATE users SET $obligation='$newValue' WHERE fullname='$user'";
+		$sql = "UPDATE users SET obligation='$newOblig' WHERE fullname='$user' AND chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
-		$fmsg =  "Changed " . $user . " for " . $obligation . " to " . $newValue . "Successfully!";
+		$fmsg =  "Changed " . $user . " to " . $newValue . "Successfully!";
 
 	mysqli_close($link);
 
@@ -292,13 +368,27 @@ if(isset($_POST['obligationName'])){
 
 	require('../php/connect.php');
 
-		$sql = "ALTER TABLE users ADD COLUMN $name VARCHAR(10) NOT NULL DEFAULT '$defaultValue'";
+		$sql = "INSERT INTO obligations (name, chapter) VALUES ('$name', '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$sql = "UPDATE users SET obligation = CONCAT(obligation, '$defaultValue') WHERE chapter = '$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Added Obligation " . $name. " Successfully!";
+		
+		$activityForm = "Added Obligation " . $name;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -310,14 +400,42 @@ if(isset($_POST['deleteObligation'])){
 	$name = $_POST['deleteObligation'];
 
 	require('../php/connect.php');
+	
+		$sql = "SELECT * FROM obligations WHERE chapter = '$chapter' ORDER BY id ASC";
+	
+		$result = mysqli_query($link, $sql);
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+		$q = 0;
+		while($row = mysqli_fetch_array($result)) {
+			if($row['name'] == $name){
+				$thisNum = $q;
+			}
+			$q ++;
+		}
 
-		$sql = "ALTER TABLE users DROP COLUMN $name";
+		$sql = "DELETE FROM obligations WHERE name='$name'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$sql = "UPDATE users SET obligation = CONCAT(SUBSTRING(obligation, 1, '$thisNum' * 2), SUBSTRING(obligation, ('$thisNum' * 2) + 3)) WHERE chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 		
 		$fmsg =  "Deleted Obligation " . $name. " Successfully!";
+		
+		$activityForm = "Deleted Obligation " . $name;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -457,7 +575,334 @@ if(isset($_POST['deleteObligation'])){
 	?>
 				<!--User Table-->
 				<center>
-				<?php if($rank == "admin" || $rank == "adviser"){ ?>
+				<!--Summary-->
+				<div class="adminDataSection" style="margin-bottom:15px;">
+				<p class="userDashSectionHeader" style="padding-left:0px;">Summary</p>
+				<div class="basicSpanDiv">
+
+					<?php
+
+					require("../php/connect.php");
+
+					//get number of users
+					$query="SELECT id FROM users WHERE chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Total Users : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of advisers
+					$query="SELECT id FROM users WHERE rank='adviser' AND chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Advisers : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of officers
+					$query="SELECT id FROM users WHERE rank='officer' AND chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Officers : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of members
+					$query="SELECT id FROM users WHERE rank='member' AND chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Members : <b>" . $numUsers . "</b></p></span>";
+
+					?>
+
+				</div>
+				<div class="basicSpanDiv">
+
+					<?php
+
+					require("../php/connect.php");
+
+					//get number of 9th graders
+					$query="SELECT id FROM users WHERE grade='9' AND chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Freshmen : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of 10th graders
+					$query="SELECT id FROM users WHERE grade='10' AND chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Sophomores : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of 11th graders
+					$query="SELECT id FROM users WHERE grade='11' AND chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Juniors : <b>" . $numUsers . "</b></p></span>";
+
+					//get number of 12th graders
+					$query="SELECT id FROM users WHERE grade='12' AND chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					$numUsers = mysqli_num_rows($result);
+
+					echo "<span><p class='bodyTextType1'>Seniors : <b>" . $numUsers . "</b></p></span>";
+
+					mysqli_close($link);
+
+					?>
+
+				</div>
+				<div class="basicSpanDiv">
+
+					<?php
+
+					require("../php/connect.php");
+
+					//get total balance
+					$query="SELECT SUM(balance) FROM users WHERE chapter='$chapter'";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}
+
+					list($cumBalance) = mysqli_fetch_array($result);
+
+					echo "<span><p class='bodyTextType1'>Cumulative Balance : <b>" . $cumBalance . "</b></p></span>";
+
+					mysqli_close($link);
+
+					?>
+
+				</div>
+				</div>
+				<div class="adminDataSection" style="margin-bottom:15px; overflow:auto;">
+				<br>
+				<p class="userDashSectionHeader" style="padding-left:0px;">User Info</p>
+				<br>
+				<input class="form-control" id="myInput" type="text" placeholder="Search..">
+				<script>
+				$(document).ready(function(){
+				  $("#myInput").on("keyup", function() {
+				    var value = $(this).val().toLowerCase();
+				    $("#usersTable tr").filter(function() {
+				      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				    });
+				  });
+				});
+				</script>
+				<br>
+				<table class="usersTable" id="usersTable" cellspacing="0" cellpadding="0" style="overflow:auto; margin-left:10px;">
+					<tr>
+					
+						<td style="width:250px; height:30px;"><b>Name</b></td>
+						<td style="width:80px; height:30px;"><b>Grade</b></td>
+						<td style="width:100px; height:30px;"><b>Rank</b></td>
+						<td style="width:200px; height:30px;"><b>Email</b></td>
+						<td style="width:80px; height:30px;"><b>Events</b></td>
+						<td style="width:80px; height:30px;"><b>Event Points</b></td>
+						<td style="width:80px; height:30px;"><b>Balance</b></td>
+						<td style="width:80px; height:30px;"><b>Options</b></td>
+					
+						<?php
+						
+						require('../php/connect.php');
+						
+						//get the user columns
+						$query="SELECT * FROM obligations WHERE chapter='$chapter'";
+		
+						$result = mysqli_query($link, $query);
+		
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+						
+						$numberOfObligations = mysqli_num_rows($result);
+						
+						while($row = mysqli_fetch_array($result)) {
+						   	echo "<td style='width:100px; height:30px;'><b>" . ucfirst($row['name']) . "</b></td>";
+						}
+						
+						?>
+
+					</tr>
+				<?php
+
+				require('../php/connect.php');
+
+				//get user details
+				$query="SELECT * FROM users WHERE chapter='$chapter' ORDER BY fullname";
+				$result = mysqli_query($link, $query);
+				if (!$result){
+					die('Error: ' . mysqli_error($link));
+				}
+
+				if(mysqli_num_rows($result) == 0){
+					echo "No Users Found!<br>";
+				}
+				else{
+					while($resultArray = mysqli_fetch_array($result)){
+
+						$fullname = $resultArray['fullname'];
+						$grade = $resultArray['grade'];
+						$thisrank = $resultArray['rank'];
+						$eventpoints = $resultArray['eventpoints'];
+						$thisemail = $resultArray['email'];
+						$thisbalance = $resultArray['balance'];
+						$oblig = $resultArray['obligation'];
+
+						if($thisrank != "admin"){
+
+						?>
+
+						<tr class="userRow">
+
+						<td style="width:250px; height:30px;"><?php echo "".$fullname ?></td>
+						<td style="width:60px; height:30px;"><?php if($thisrank != "adviser"){ echo "".$grade; } ?></td>
+						<td style="width:100px; height:30px;"><?php echo "".$thisrank ?></td>
+						<td style="width:200px; height:30px;"><?php echo "".$thisemail ?></td>
+						<td style="width:80px; height:30px;"><?php if($thisrank != "adviser"){
+							require('../php/connect.php');
+							//get user's events
+							$eventsQuery="SELECT event FROM teams WHERE (member1='$fullname' OR member2='$fullname' OR member3='$fullname' OR member4='$fullname' OR member5='$fullname' OR member6='$fullname') AND chapter='$chapter'";
+							$eventsResult = mysqli_query($link, $eventsQuery);
+							if (!$eventsResult){
+								die('Error: ' . mysqli_error($link));
+							}
+							$numEvents = mysqli_num_rows($eventsResult);
+							if($numEvents < 3 || $numEvents > 6){ echo "<p style='color:red;'>"; } 
+							echo $numEvents;
+							if($numEvents < 3 || $numEvents > 6){ echo "</p>"; }
+							mysqli_close($link);
+							}
+						?></td>
+						<td style="width:80px; height:30px;"><?php if($thisrank != "adviser"){ echo "".$eventpoints; } ?></td>
+						<td style="width:80px; height:30px;"><?php echo "".$thisbalance ?></td>
+						<td style="width:80px; height:30px;">
+							<form method="post" style="float:left; padding-right:5px;">
+								<input type="hidden" id="viewEvents" name="viewEvents" value="<?php echo addslashes($fullname) ?>">
+                                                                <input type="hidden" id="viewEventsRank" name="viewEventsRank" value="<?php echo $thisrank ?>">
+								<input type="submit" name="viewUser" class="btn btn-primary" onclick="" value="User Options">
+							</form>
+							<!-- 
+							<?php if(($thisrank != "admin" && $thisrank != "adviser") && ($rank == "admin" || $rank == "adviser")){ ?>
+							<form method="post" style="float:left; padding-right:5px; padding-bottom:10px;">
+								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+								<input type="hidden" name="newRank" value="<?php 
+									if($thisrank=='member'){ echo 'officer'; }
+									if($thisrank=='officer'){ echo 'member'; } 
+								?>" />
+								<input type="submit" name="promoteUser" class="btn btn-primary" value="Make <?php 
+									if($thisrank=='member'){ echo 'Officer'; }
+									if($thisrank=='officer'){ echo 'Member'; } 
+								?>" />
+							</form>
+							<br>
+							<?php } ?> -->
+						</td>
+
+						<?php
+
+						if($thisrank != "adviser"){
+
+							for($i = 0; $i < $numberOfObligations; $i ++){ ?>
+								<td style="width:100px; height:30px;">
+									<form method="post" target="#hideFrame">
+										<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
+										<input type="hidden" name="num" value="<?php echo $i ?>" />
+										<input type="hidden" name="obligation" value="<?php echo $oblig ?>" />
+										<input type="hidden" name="newValue" value="<?php
+											$thisval = substr($oblig, ($i * 2), 2);
+											if($thisval=='ye'){ echo 'no'; }
+											if($thisval=='no'){ echo 'ye'; } 
+										?>" />
+										<input type="submit" class="<?php
+											if($thisval=='ye'){ echo 'btn btn-success'; }
+											if($thisval=='no'){ echo 'btn btn-danger'; } 
+										?>" name="obligationChange" value="<?php 
+											if($thisval=='ye'){ echo 'Yes'; }
+											if($thisval=='no'){ echo 'No'; } 
+										?>" />
+									</form>
+								</td>
+								<?php
+							}
+
+						}
+
+						?>
+
+						</tr>
+
+						<?php
+
+						}
+					}
+				}
+				?>
+				</table>
+
+				<br>
+				<br>
+
+				</div>
+
+<!-- User Info Modal -->
+						<div class="modal fade" id="userModal" role="dialog">
+					    
+						</div>
+				<?php if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $eventPointsPerm == "yes")){ ?>
 				<!--Points-->
 				<div class="adminDataSection" style="margin-bottom:15px;">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Assign Event Points</p><br>
@@ -529,345 +974,6 @@ if(isset($_POST['deleteObligation'])){
 				<br>
 				</div>
 				<?php } ?>
-				<!--Summary-->
-				<div class="adminDataSection" style="margin-bottom:15px;">
-				<p class="userDashSectionHeader" style="padding-left:0px;">Summary</p>
-				<div class="basicSpanDiv">
-
-					<?php
-
-					require("../php/connect.php");
-
-					//get number of users
-					$query="SELECT id FROM users";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Total Users : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of advisers
-					$query="SELECT id FROM users WHERE rank='adviser'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Advisers : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of officers
-					$query="SELECT id FROM users WHERE rank='officer'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Officers : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of members
-					$query="SELECT id FROM users WHERE rank='member'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Members : <b>" . $numUsers . "</b></p></span>";
-
-					?>
-
-				</div>
-				<div class="basicSpanDiv">
-
-					<?php
-
-					require("../php/connect.php");
-
-					//get number of 9th graders
-					$query="SELECT id FROM users WHERE grade='9'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Freshmen : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of 10th graders
-					$query="SELECT id FROM users WHERE grade='10'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Sophomores : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of 11th graders
-					$query="SELECT id FROM users WHERE grade='11'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Juniors : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of 12th graders
-					$query="SELECT id FROM users WHERE grade='12'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Seniors : <b>" . $numUsers . "</b></p></span>";
-
-					mysqli_close($link);
-
-					?>
-
-				</div>
-				<div class="basicSpanDiv">
-
-					<?php
-
-					require("../php/connect.php");
-
-					//get total balance
-					$query="SELECT SUM(balance) FROM users";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					list($cumBalance) = mysqli_fetch_array($result);
-
-					echo "<span><p class='bodyTextType1'>Cumulative Balance : <b>" . $cumBalance . "</b></p></span>";
-
-					mysqli_close($link);
-
-					?>
-
-				</div>
-				</div>
-				<div class="adminDataSection" style="margin-bottom:15px; overflow:auto;">
-				<br>
-				<p class="userDashSectionHeader" style="padding-left:0px;">User Info</p>
-				<br>
-				<input class="form-control" id="myInput" type="text" placeholder="Search..">
-				<script>
-				$(document).ready(function(){
-				  $("#myInput").on("keyup", function() {
-				    var value = $(this).val().toLowerCase();
-				    $("#usersTable tr").filter(function() {
-				      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-				    });
-				  });
-				});
-				</script>
-				<br>
-				<table class="usersTable" id="usersTable" cellspacing="0" cellpadding="0" style="overflow:auto; margin-left:10px;">
-					<tr>
-					
-						<td style="width:250px; height:30px;"><b>Name</b></td>
-						<td style="width:80px; height:30px;"><b>Grade</b></td>
-						<td style="width:100px; height:30px;"><b>Rank</b></td>
-						<td style="width:200px; height:30px;"><b>Email</b></td>
-						<td style="width:80px; height:30px;"><b>Events</b></td>
-						<td style="width:80px; height:30px;"><b>Event Points</b></td>
-						<td style="width:80px; height:30px;"><b>Balance</b></td>
-						<td style="width:80px; height:30px;"><b>Options</b></td>
-					
-						<?php
-						
-						require('../php/connect.php');
-						
-						//get the user columns
-						$query="DESCRIBE users";
-		
-						$result = mysqli_query($link, $query);
-		
-						if (!$result){
-							die('Error: ' . mysqli_error($link));
-						}
-						
-						while($row = mysqli_fetch_array($result)) {
-							if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
-						   		echo "<td style='width:100px; height:30px;'><b>" . ucfirst($row['Field']) . "</b></td>";
-						   	}
-						}
-						
-						?>
-
-					</tr>
-				<?php
-
-				require('../php/connect.php');
-
-				//get user details
-				$query="SELECT * FROM users ORDER BY fullname";
-				$result = mysqli_query($link, $query);
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}
-
-				//figure out which fields are obligations
-				$obligationsArray = array();
-				$num_fields = mysqli_num_fields($result);
-				$fields = mysqli_fetch_fields($result);
-				//for each field
-				while($thisField = mysqli_fetch_field($result)){
-					$thisFieldName = $thisField->name;
-					//if the field is not one of the standard user columns
-					if(!($thisFieldName == 'id' || $thisFieldName == 'fullname' || $thisFieldName == 'username' || $thisFieldName == 'password' || $thisFieldName == 'email' || $thisFieldName == 'grade' || $thisFieldName == 'rank' || $thisFieldName == 'eventpoints' || $thisFieldName == 'balance')){
-
-						array_push($obligationsArray, $thisFieldName);
-
-					}
-				}
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Users Found!<br>";
-				}
-				else{
-					while($resultArray = mysqli_fetch_array($result)){
-
-						$fullname = $resultArray['fullname'];
-						$grade = $resultArray['grade'];
-						$thisrank = $resultArray['rank'];
-						$eventpoints = $resultArray['eventpoints'];
-						$thisemail = $resultArray['email'];
-						$thisbalance = $resultArray['balance'];
-
-						if($thisrank != "admin"){
-
-						?>
-
-						<tr class="userRow">
-
-						<td style="width:250px; height:30px;"><?php echo "".$fullname ?></td>
-						<td style="width:60px; height:30px;"><?php if($thisrank != "adviser"){ echo "".$grade; } ?></td>
-						<td style="width:100px; height:30px;"><?php echo "".$thisrank ?></td>
-						<td style="width:200px; height:30px;"><?php echo "".$thisemail ?></td>
-						<td style="width:80px; height:30px;"><?php if($thisrank != "adviser"){
-							require('../php/connect.php');
-							//get user's events
-							$eventsQuery="SELECT event FROM teams WHERE member1='$fullname' OR member2='$fullname' OR member3='$fullname' OR member4='$fullname' OR member5='$fullname' OR member6='$fullname'";
-							$eventsResult = mysqli_query($link, $eventsQuery);
-							if (!$eventsResult){
-								die('Error: ' . mysqli_error($link));
-							}
-							$numEvents = mysqli_num_rows($eventsResult);
-							if($numEvents < 3 || $numEvents > 6){ echo "<p style='color:red;'>"; } 
-							echo $numEvents;
-							if($numEvents < 3 || $numEvents > 6){ echo "</p>"; }
-							mysqli_close($link);
-							}
-						?></td>
-						<td style="width:80px; height:30px;"><?php if($thisrank != "adviser"){ echo "".$eventpoints; } ?></td>
-						<td style="width:80px; height:30px;"><?php echo "".$thisbalance ?></td>
-						<td style="width:80px; height:30px;">
-							<form method="post" style="float:left; padding-right:5px;">
-								<input type="hidden" id="viewEvents" name="viewEvents" value="<?php echo addslashes($fullname) ?>">
-                                                                <input type="hidden" id="viewEventsRank" name="viewEventsRank" value="<?php echo $thisrank ?>">
-								<input type="submit" name="viewUser" class="btn btn-primary" onclick="" value="User Options">
-							</form>
-							<!-- 
-							<?php if(($thisrank != "admin" && $thisrank != "adviser") && ($rank == "admin" || $rank == "adviser")){ ?>
-							<form method="post" style="float:left; padding-right:5px; padding-bottom:10px;">
-								<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
-								<input type="hidden" name="newRank" value="<?php 
-									if($thisrank=='member'){ echo 'officer'; }
-									if($thisrank=='officer'){ echo 'member'; } 
-								?>" />
-								<input type="submit" name="promoteUser" class="btn btn-primary" value="Make <?php 
-									if($thisrank=='member'){ echo 'Officer'; }
-									if($thisrank=='officer'){ echo 'Member'; } 
-								?>" />
-							</form>
-							<br>
-							<?php } ?> -->
-						</td>
-
-						<?php
-
-						if($thisrank != "adviser"){
-
-							foreach($obligationsArray as $obligation){ ?>
-								<td style="width:100px; height:30px;">
-									<form method="post" target="#hideFrame">
-										<input type="hidden" name="thisUser" value="<?php echo addslashes($fullname) ?>" />
-										<input type="hidden" name="obligation" value="<?php echo $obligation ?>" />
-										<input type="hidden" name="newValue" value="<?php
-											if($resultArray[$obligation]=='yes'){ echo 'no'; }
-											if($resultArray[$obligation]=='no'){ echo 'yes'; } 
-										?>" />
-										<input type="submit" class="<?php
-											if($resultArray[$obligation]=='yes'){ echo 'btn btn-success'; }
-											if($resultArray[$obligation]=='no'){ echo 'btn btn-danger'; } 
-										?>" name="obligationChange" value="<?php 
-											echo ucfirst($resultArray[$obligation]);
-										?>" />
-									</form>
-								</td>
-								<?php
-							}
-
-						}
-
-						?>
-
-						</tr>
-
-						<?php
-
-						}
-					}
-				}
-				?>
-				</table>
-
-				<br>
-				<br>
-
-				</div>
-
-<!-- User Info Modal -->
-						<div class="modal fade" id="userModal" role="dialog">
-					    
-						</div>
-
 				<!--Obligations-->
 				<div class="adminDataSection" style="margin-bottom:15px;">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Obligations</p>
@@ -879,7 +985,7 @@ if(isset($_POST['deleteObligation'])){
 						Default: 
 						<select id="default" name="default">
 							<option value="no">Incomplete</option>
-							<option value="yes">Complete</option>
+							<option value="ye">Complete</option>
 						</select>
 						</span>
 						<span>
@@ -902,7 +1008,7 @@ if(isset($_POST['deleteObligation'])){
 							require('../php/connect.php');
 							
 							//get the user columns
-							$query="DESCRIBE users";
+							$query="SELECT * FROM obligations WHERE chapter='$chapter'";
 			
 							$result = mysqli_query($link, $query);
 			
@@ -911,12 +1017,10 @@ if(isset($_POST['deleteObligation'])){
 							}
 							
 							while($row = mysqli_fetch_array($result)) {
-								$obligName = $row['Field'];
-								if(!($row['Field'] == 'id' || $row['Field'] == 'fullname' || $row['Field'] == 'username' || $row['Field'] == 'password' || $row['Field'] == 'email' || $row['Field'] == 'grade' || $row['Field'] == 'rank' || $row['Field'] == 'eventpoints' || $row['Field'] == 'balance')){
+								$obligName = $row['name'];
 									?>
 									<option value="<?php echo $obligName; ?>"><?php echo $obligName; ?></option>
 									<?php
-							   	}
 							}
 							
 							?>
@@ -929,140 +1033,6 @@ if(isset($_POST['deleteObligation'])){
 					<br>
 				</div>
 				
-				<?php if($rank == "admin" || $rank == "adviser"){ ?>
-				<!--User Management-->
-				<div class="adminDataSection">
-				<p class="userDashSectionHeader" style="padding-left:0px;">User Management</p><br>
-				
-					<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">
-						<span>
-						<b>Assign User Event Points</b>
-						</span>
-						<span>To :
-						<!--Give each user as an option-->
-						<select id="pointsTo" name="pointsTo">
-							<?php
-	
-							require('../php/connect.php');
-	
-							$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
-	
-							$result = mysqli_query($link, $query);
-	
-							if (!$result){
-								die('Error: ' . mysqli_error($link));
-							}	
-	
-							while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
-								if($personrank != "admin"){
-								?>
-	
-								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
-								
-								<?php
-								}
-							}
-									
-							mysqli_close($link);
-	
-							?>
-						</select></span>
-						<span>
-						How Many Points :
-						<input type="number" id="points" name="points">
-						</span>
-						<span>
-						<input type="submit" class="btn btn-primary" value="Assign Points">
-						</span>
-					</form>
-					<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">
-						<span>
-						<b>Remove User Event Points</b>
-						</span>
-						<span>From :
-						<!--Give each user as an option-->
-						<select id="pointsFrom" name="pointsFrom">
-							<?php
-	
-							require('../php/connect.php');
-	
-							$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
-	
-							$result = mysqli_query($link, $query);
-	
-							if (!$result){
-								die('Error: ' . mysqli_error($link));
-							}	
-	
-							while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
-								if($personrank != "admin"){
-								?>
-	
-								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
-								
-								<?php
-								}
-							}
-									
-							mysqli_close($link);
-	
-							?>
-						</select></span>
-						<span>
-						How Many Points :
-						<input type="number" id="points" name="points">
-						</span>
-						<span>
-						<input type="submit" class="btn btn-danger" value="Remove Points">
-						</span>
-					</form>
-					<form class="basicSpanDiv" method="post" id="deleteUserForm" style="width:100%; height:40px; padding-top:15px;">
-						<span>
-						<b>Delete Account</b>
-						</span>
-						<span>User :
-						<!--Give each user as an option-->
-						<select id="thisUser" name="thisUser">
-							<?php
-	
-							require('../php/connect.php');
-	
-							$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
-	
-							$result = mysqli_query($link, $query);
-	
-							if (!$result){
-								die('Error: ' . mysqli_error($link));
-							}	
-	
-							while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
-								if($personrank != "admin" && $personrank != "adviser"){
-								?>
-	
-								<option value="<?php echo $id ?>"><?php echo $personname ?></option>
-								
-								<?php
-								}
-							}
-									
-							mysqli_close($link);
-	
-							?>
-						</select></span>
-						<span>
-						Are You Sure? :
-						<select id="confirmDeleteUser" name="confirmDeleteUser">
-								<option value="no">No</option>
-								<option value="yes">Yes</option>
-						</select>
-						</span>
-						<span>
-						<input type="submit" name="deleteUser" class="btn btn-danger" value="Delete Account" />
-						</span>
-					</form>
-					<br>
-				</div>
-				<?php } ?>
 				</center>
 
 			</div>

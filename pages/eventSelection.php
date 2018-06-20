@@ -6,11 +6,12 @@ session_start();
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
+$chapter = $_SESSION['chapter'];
 
 //EMAIL PERMISSION
 require('../php/connect.php');
 
-$query="SELECT value FROM settings WHERE name='officerEmailPermission'";
+$query="SELECT value FROM settings WHERE name='officerEmailPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -25,7 +26,7 @@ $emailPerm = $perm;
 //get permission settings
 
 //INFO POSTING
-$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+$query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -61,22 +62,22 @@ if(isset($_POST['evt'])){
 				//add that event to the TEAMS table
 				$blank = ' ';
 				if($max == 1){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq', '$chapter')";
 				}
 				if($max == 2){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq', '$chapter')";
 				}
 				if($max == 3){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq', '$chapter')";
 				}
 				if($max == 4){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq', '$chapter')";
 				}
 				if($max == 5){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq', '$chapter')";
 				}
 				if($max == 6){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq', '$chapter')";
 				}
 				
 
@@ -91,7 +92,7 @@ if(isset($_POST['slot'])){
 	require('../php/connect.php');
 
 		//get user's eventpoints
-		$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname'";
+		$pointsquery="SELECT eventpoints FROM users WHERE username='$username' AND fullname='$fullname' AND chapter='$chapter'";
 
 		$pointsresult = mysqli_query($link,$pointsquery);
 
@@ -118,7 +119,7 @@ if(isset($_POST['slot'])){
 				$alreadyInEvent = "no";
 
 				//check if user is already in that event
-				$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name'";
+				$checkEventSql = "SELECT member1, member2, member3, member4, member5, member6 FROM teams WHERE event='$name' AND chapter='$chapter'";
 
 				$checkEventResult = mysqli_query($link,$checkEventSql);
 
@@ -137,23 +138,31 @@ if(isset($_POST['slot'])){
 				if($alreadyInEvent == "no"){
 
 					//add the user to that team
-					$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team'";
+					$sql = "UPDATE teams SET $memberColumn='$fullname' WHERE event='$name' AND team='$team' AND chapter='$chapter'";
 
 					if (!mysqli_query($link,$sql)){
 						die('Error: ' . mysqli_error($link));
 					}
 					
 					//add the team to the changes table
-					$sql = "INSERT INTO changes (event, team, slot, name, date) VALUES ('$name', '$team', '$slot', '$fullname', now())";
+					$sql = "INSERT INTO changes (event, team, slot, name, date, chapter) VALUES ('$name', '$team', '$slot', '$fullname', now(), '$chapter')";
 
 					if (!mysqli_query($link,$sql)){
+						die('Error: ' . mysqli_error($link));
+					}
+					
+					//add to the activity log
+					$activityForm = "Added Event " . $name;
+					$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$fullname', '$activityForm', now(), '$chapter')";
+			
+					if (!mysqli_query($link, $sql)){
 						die('Error: ' . mysqli_error($link));
 					}
 
 					//decrease event points
 					$newPoints = $eventpoints - 1;
 
-					$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname'";
+					$eventSql = "UPDATE users SET eventpoints='$newPoints' WHERE username='$username' AND fullname='$fullname' AND chapter='$chapter'";
 
 					if (!mysqli_query($link,$eventSql)){
 						die('Error: ' . mysqli_error($link));
@@ -274,7 +283,7 @@ if(isset($_POST['slot'])){
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		</button>
-  		<p>Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team. Each red cell represents the minimum required members for a team.</p>
+  		<p>Here you can for available event slots. Event names are listed, and below each name are slots available for that event. Each row represents an available team, and each cell in that row is a spot on that team. Each blue cell represents the minimum required members for a team. A team of red cells represents a qualifier team.</p>
 	</div>
 					<?php
 					if($rank == "admin" || $rank == "officer" || $rank == "adviser"){

@@ -1,16 +1,9 @@
 <?php
-session_start();
-if($_SESSION['chapter'] == 'freshman'){
-	//define database name for freshmen
-	define('DB_NAME', 'chapters_chapterfresh');
-}
-else{
-	//define database name for non-freshmen
-	define('DB_NAME', 'chapters_chaptersweet');
-}
+//define database name for non-freshmen
+define('DB_NAME', 'chaptersweet');
 //access via root user
 //TODO - make a seperate user for this program
-define('DB_USER', 'chapters_root');
+define('DB_USER', 'root');
 //password (super secret)
 //~~~NOTE TO SELF~~~ change this before uploading to github
 //dont want any

@@ -4,6 +4,7 @@ session_start();
 
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
+$chapter = $_SESSION['chapter'];
 
 //encase the whole page - KEEP NON-ADMINS OUT
 if($rank == "admin" || $rank == "adviser"){
@@ -11,7 +12,7 @@ if($rank == "admin" || $rank == "adviser"){
 //functions for clearing members
 if(isset($_POST['verify'])){
 
-	//file viewability
+	//variables
 	$verify = $_POST['verify'];
 	$rankClear = "member";
 
@@ -19,7 +20,7 @@ if(isset($_POST['verify'])){
 
 	if($verify == "yes"){
 
-		$sql = "DELETE FROM users WHERE rank='$rankClear'";
+		$sql = "DELETE FROM users WHERE rank='$rankClear' AND chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
@@ -48,7 +49,7 @@ if(isset($_POST['verify2'])){
 
 	if($verify == "yes"){
 
-		$sql = "DELETE FROM minutes";
+		$sql = "DELETE FROM minutes WHERE chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
@@ -77,7 +78,7 @@ if(isset($_POST['verify4'])){
 
 	if($verify == "yes"){
 
-		$sql = "DELETE FROM announcements";
+		$sql = "DELETE FROM announcements WHERE chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
@@ -106,7 +107,7 @@ if(isset($_POST['verify5'])){
 
 	if($verify == "yes"){
 
-		$sql = "DELETE FROM transactions";
+		$sql = "DELETE FROM transactions WHERE chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
@@ -135,7 +136,7 @@ if(isset($_POST['verify6'])){
 
 	if($verify == "yes"){
 
-		$sql = "UPDATE users SET eventpoints=0";
+		$sql = "UPDATE users SET eventpoints=0 WHERE chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
@@ -147,6 +148,50 @@ if(isset($_POST['verify6'])){
 	else{
 
 		$fmsg =  "Event Points Data Failed to Clear!";
+
+	}
+
+	mysqli_close($link);
+
+}
+
+//functions for resetting event mins
+if(isset($_POST['verify7'])){
+
+	//verification
+	$verify = $_POST['verify7'];
+
+	require('../php/connect.php');
+
+	if($verify == "yes"){
+	
+		$conference = $_SESSION['conference'];
+
+		//get EVENTS data for the specified competition level
+		$query = "SELECT name, membermin FROM events WHERE conference='$conference'";
+
+		$result = mysqli_query($link, $query);
+
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		//for each event at the current competition level
+		while(list($name, $min) = mysqli_fetch_array($result)){
+		
+			$sql = "UPDATE teams SET min='$min' WHERE event='$name' AND chapter='$chapter'";
+				
+			if (!mysqli_query($link, $sql)){
+				die('Error: ' . mysqli_error($link));
+			}
+		}
+		
+		$fmsg =  "Event Minimums Reset Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Event Minimums Reset was not Verified!";
 
 	}
 
@@ -166,32 +211,32 @@ if(isset($_POST['verify3'])){
 	if($verify == "yes"){
 
 		//update the conference
-		$sql = "UPDATE settings SET value='$conference' WHERE name='conference'";
+		$sql = "UPDATE settings SET value='$conference' WHERE name='conference' AND chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 
 		//clear TEAMS table
-		$sql = "DELETE FROM teams";
+		$sql = "DELETE FROM teams WHERE chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 
 		//clear TASKS table
-		$sql = "DELETE FROM tasks";
+		$sql = "DELETE FROM tasks WHERE chapter='$chapter'";
 
 		if (!mysqli_query($link, $sql)){
 			die('Error: ' . mysqli_error($link));
 		}
 
 		//reset TEAMS id
-		$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
+		//$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
 
-		if (!mysqli_query($link, $sql)){
-			die('Error: ' . mysqli_error($link));
-		}
+		//if (!mysqli_query($link, $sql)){
+		//	die('Error: ' . mysqli_error($link));
+		//}
 
 		//get EVENTS data for the specified competition level
 		$query = "SELECT id, name, membermin, membermax, teams, qualifier FROM events WHERE conference='$conference'";
@@ -208,7 +253,7 @@ if(isset($_POST['verify3'])){
 			//handle qualifiers with no teams
 			if($teams == 0){
 				$tt = 0;
-				$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$tt', NULL, NULL, NULL, NULL, NULL, NULL, '$isq')";
+				$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$tt', NULL, NULL, NULL, NULL, NULL, NULL, '$isq', '$chapter')";
 				
 				if (!mysqli_query($link, $sql)){
 					die('Error: ' . mysqli_error($link));
@@ -221,22 +266,22 @@ if(isset($_POST['verify3'])){
 				//add that event to the TEAMS table
 				$blank = ' ';
 				if($max == 1){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq', '$min', '$chapter')";
 				}
 				if($max == 2){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq', '$min', '$chapter')";
 				}
 				if($max == 3){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq', '$min', '$chapter')";
 				}
 				if($max == 4){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq', '$min', '$chapter')";
 				}
 				if($max == 5){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq', '$min', '$chapter')";
 				}
 				if($max == 6){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq', '$min', '$chapter')";
 				}
 				
 
@@ -268,14 +313,25 @@ if(isset($_POST['chapterCode'])){
 	$newCode = $_POST['chapterCode'];
 
 	require('../php/connect.php');
-
-	$sql = "UPDATE settings SET value='$newCode' WHERE name='code'";
-
-	if (!mysqli_query($link, $sql)){
-		die('Error: ' . mysqli_error($link));
-	}
 	
-	$fmsg =  "Chapter Code Updated!";
+	$sql = "SELECT id FROM chapters WHERE code='$newCode'";
+	$result = mysqli_query($link, $sql);
+	if(mysqli_num_rows($result) == 0){
+
+		$sql = "UPDATE chapters SET code='$newCode' WHERE id='$chapter'";
+	
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Chapter Code Updated!";
+	
+	}
+	else{
+	
+		$fmsg =  "That Code is Already in Use!";
+	
+	}
 
 	mysqli_close($link);
 
@@ -289,7 +345,7 @@ if(isset($_POST['officerInfoPerm'])){
 
 	require('../php/connect.php');
 
-	$sql = "UPDATE settings SET value='$level' WHERE name='officerInfoPermission'";
+	$sql = "UPDATE settings SET value='$level' WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 	if (!mysqli_query($link, $sql)){
 		die('Error: ' . mysqli_error($link));
@@ -301,7 +357,7 @@ if(isset($_POST['officerInfoPerm'])){
 
 }
 
-//function for updating Officer Info Permission Setting
+//function for updating Officer Email Permission Setting
 if(isset($_POST['officerEmailPerm'])){
 
 	//file viewability
@@ -309,7 +365,7 @@ if(isset($_POST['officerEmailPerm'])){
 
 	require('../php/connect.php');
 
-	$sql = "UPDATE settings SET value='$level' WHERE name='officerEmailPermission'";
+	$sql = "UPDATE settings SET value='$level' WHERE name='officerEmailPermission' AND chapter='$chapter'";
 
 	if (!mysqli_query($link, $sql)){
 		die('Error: ' . mysqli_error($link));
@@ -329,13 +385,33 @@ if(isset($_POST['blockedPages'])){
 
 	require('../php/connect.php');
 
-	$sql = "UPDATE settings SET value='$level' WHERE name='blockPages'";
+	$sql = "UPDATE settings SET value='$level' WHERE name='blockPages' AND chapter='$chapter'";
 
 	if (!mysqli_query($link, $sql)){
 		die('Error: ' . mysqli_error($link));
 	}
 	
 	$fmsg =  "Blocked Pages Updated!";
+
+	mysqli_close($link);
+
+}
+
+//function for updating Officer Email Permission Setting
+if(isset($_POST['eventPerm'])){
+
+	//file viewability
+	$level = $_POST['eventPerm'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$level' WHERE name='eventpointsPermission' AND chapter='$chapter'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Officer Permissions Updated!";
 
 	mysqli_close($link);
 
@@ -473,7 +549,7 @@ if(isset($_POST['blockedPages'])){
 						//get permission settings
 						require('../php/connect.php');
 
-						$queryC="SELECT value FROM settings WHERE name='code'";
+						$queryC="SELECT code FROM chapters WHERE id='$chapter'";
 
 						$resultC = mysqli_query($link, $queryC);
 
@@ -527,7 +603,7 @@ if(isset($_POST['blockedPages'])){
 						//get permission settings
 						require('../php/connect.php');
 
-						$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+						$query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 						$result = mysqli_query($link, $query);
 
@@ -561,7 +637,7 @@ if(isset($_POST['blockedPages'])){
 						//get permission settings
 						require('../php/connect.php');
 
-						$query="SELECT value FROM settings WHERE name='officerEmailPermission'";
+						$query="SELECT value FROM settings WHERE name='officerEmailPermission' AND chapter='$chapter'";
 
 						$result = mysqli_query($link, $query);
 
@@ -597,7 +673,7 @@ if(isset($_POST['blockedPages'])){
 						//get permission settings
 						require('../php/connect.php');
 
-						$query="SELECT value FROM settings WHERE name='blockPages'";
+						$query="SELECT value FROM settings WHERE name='blockPages' AND chapter='$chapter'";
 
 						$result = mysqli_query($link, $query);
 
@@ -608,6 +684,40 @@ if(isset($_POST['blockedPages'])){
 						//save the result
 						list($perm) = mysqli_fetch_array($result);
 						$blockPages = $perm;
+					?>
+					<br>
+					
+					<!--officer eventpoints setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permission to Give Event Points</b>
+							<br>
+							<p class="description">Can officers give groups/individuals event points?</p>
+						</span>
+						<span>
+							Permission:
+							<select id="eventPerm" name="eventPerm" onchange="this.form.submit()">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='eventpointsPermission' AND chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$eventpointsPermission = $perm;
 					?>
 					<br>
 
@@ -677,6 +787,25 @@ if(isset($_POST['blockedPages'])){
 						</span>
 						<span>
 							<input type="submit" class="btn btn-danger" value="Reset Data">
+						</span>
+					</form>
+					<br>
+					<!--update team mins tab-->
+					<form class="basicSpanForm" style="width:100%;" method="post" id="updateMinForm">
+						<span>
+							<b>Update Event Minimums</b>
+						</span>
+						<span>
+						</span>
+						<span>
+							Are You Sure? :
+							<select id="verify3" name="verify7">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+						<span>
+							<input type="submit" class="btn btn-danger" value="Update Mins">
 						</span>
 					</form>
 					<br>
@@ -754,7 +883,7 @@ if(isset($_POST['blockedPages'])){
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
-	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode)); ?> );
+	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode).",".json_encode($eventpointsPermission)); ?> );
 </script>
 
 </html>

@@ -5,6 +5,7 @@ session_start();
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
+$chapter = $_SESSION['chapter'];
 
 //get permission settings
 require('../php/connect.php');
@@ -21,6 +22,27 @@ if (!$result){
 //save the result
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
+
+//post scores
+if(isset($_POST['scoreValue'])){
+
+	//variables assignment
+	$testNum = $_POST['testNumber'];
+	$scoreVal = $_POST['scoreValue'];
+	$myName = addslashes($fullname);
+
+	require('../php/connect.php');
+
+	$query = "INSERT INTO scores (fullname, test, score, chapter, date) VALUES ('$myName', '$testNum', '$scoreVal', '$chapter', now())";
+
+	$result = mysqli_query($link,$query);
+
+	if (!$result){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	mysqli_close($link);
+}
 
 ?>
 
@@ -123,7 +145,6 @@ $officerPerm = $perm;
 		<p class="display-4" style="padding-left:20px;">
 			Parliamentarian
 		</p>
-		<center>
 <!--Spooky stuff closer to the middle-->
 
 			<?php
@@ -141,34 +162,69 @@ $officerPerm = $perm;
 				}
 			?>
 
-				<!--PARLI PRO-->
-				<b><p class="bodyTextType1">Helpful Guides : </p></b>
-				<a href="https://docs.google.com/presentation/d/19JnTf9YjODwRgyt2N4jIxER_rYEQZaEyjZtwk_zvyRs/edit?usp=sharing">State Guide</a><br>
-				<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Basics.pptx">National Beginner Guide</a><br>
-				<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Advanced.pptx">National Advanced Guide</a><br>
+			<!--TESTS-->
+			<!--parli assist-->
+			<div class="row">
+	
+				<div class="col-sm-10" id="content" style="padding-left:5%; padding-right:5%; padding-top:2.5%; padding-bottom: 2.5%">
 
-				<b><p class="bodyTextType1">Practice Tests : </p></b>
-				<a href="http://www.300questions.org/" target="_blank">300 Questions</a><br>
-				<a href="https://drive.google.com/file/d/0B0djtG22WOS_aEhsVWZLT0xocDg/view?usp=sharing" target="_blank">Dunbar Tests</a><br>
-				<a href="https://play.kahoot.it/#/k/4873a3ed-9128-4e76-adc4-70600afffa75" target="_blank">Josh's 2017 Kahoot</a><br>
-
-			</center>
+					<center>
+					<form id="createForm">
+					  <div class="form-group">
+					    <label for="numQuestions">Number of Questions</label>
+					    <input style="width:200px;" type="number" class="form-control" id="numQuestions" aria-describedby="numberHelp" value="10">
+					  </div>
+					  <div class="form-group">
+					    <label for="difficulty">Difficulty Level</label>
+					    <select style="width:200px;" class="form-control" id="difficulty">
+					    	<option value="beginner">Beginner</option>
+					    	<option value="simple">Simple</option>
+					    	<option value="average">Average</option>
+					    	<option value="challenging">Challenging</option>
+					    	<option value="chapter">Chapter Team (50 questions)</option>
+					    	<option value="benchmark1">Beginner Benchmark</option>
+					    	<option value="benchmark2">Dunbar Benchmark</option>
+					    </select>
+					  </div>
+					</form>
+					<form id="scoreForm" style="display:none;" method="post">
+						<input type="number" id="scoreValue" name="scoreValue">
+						<input type="number" id="testNumber" name="testNumber">
+					</form>
+					<button id="generateButton" class="btn btn-primary" onclick="generate()">Generate Test</button>
+					</center>
+	
+				</div>
+				
+				<div class="col-sm-2">
+					<center>
+					<!--PARLI PRO-->
+					<b><p class="bodyTextType1">Helpful Guides</p></b>
+					<a href="https://docs.google.com/presentation/d/19JnTf9YjODwRgyt2N4jIxER_rYEQZaEyjZtwk_zvyRs/edit?usp=sharing">State Guide</a><br>
+					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Basics.pptx">National Beginner Guide</a><br>
+					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Advanced.pptx">National Advanced Guide</a><br>
+	
+					<b><p class="bodyTextType1">Practice Tests</p></b>
+					<a href="http://www.300questions.org/" target="_blank">300 Questions</a><br>
+					<a href="https://drive.google.com/file/d/0B0djtG22WOS_aEhsVWZLT0xocDg/view?usp=sharing" target="_blank">Dunbar Tests</a><br>
+					</center>
+				</div>
+			</div>
 		</div>
-	</center>
 	</div>
-	</div>
-	</div>
+</div>
 
 <!--Spooky stuff at the bottom-->
-		<footer class="darknav">
-			<center><p class="bodyTextType2">
-				Copyright Joshua Famous 2017
-			</p></center>
-		</footer>
+	<footer class="darknav">
+		<center><p class="bodyTextType2">
+			Copyright &#x1f171;oshua &#x1f171;amous 2017
+		</p></center>
+	</footer>
 		
 </body>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
+<script src="../js/parli.js"></script>
 
 </html>

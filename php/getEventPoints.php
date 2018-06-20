@@ -6,9 +6,10 @@ require('../php/connect.php');
 
 $sessionUser = $_SESSION['username'];
 $sessionName = $_SESSION['fullname'];
+$chapter = $_SESSION['chapter'];
 
 //get user's eventpoints
-$pointsquery="SELECT eventpoints FROM users WHERE username='$sessionUser'";
+$pointsquery="SELECT eventpoints FROM users WHERE username='$sessionUser' AND chapter='$chapter'";
 
 $pointsresult = mysqli_query($link, $pointsquery);
 

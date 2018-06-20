@@ -34,7 +34,7 @@ function submitValidateForm(frm){
          //show error message - incomplete form
          window.alert("Invalid Submission!");
       }
-      //don't refresh
+      //do not refresh
       return false;
 }
 
@@ -285,7 +285,7 @@ $('input[class="noCheckBox"]').click(function(event) {
 });
 
 //function to update Settings on Admin Page
-function updateSettings(infoPerm, emailPerm, blockPages, chapterCode){
+function updateSettings(infoPerm, emailPerm, blockPages, chapterCode, eventpointsPerm){
 
   var officerInfoPerm = document.getElementById('officerInfoPerm');
   officerInfoPerm.value = infoPerm;
@@ -298,6 +298,9 @@ function updateSettings(infoPerm, emailPerm, blockPages, chapterCode){
 
   var cc = document.getElementById('chapterCode');
   cc.value = chapterCode;
+
+  var evtp = document.getElementById('eventPerm');
+  evtp.value = eventpointsPerm;
 
 }
 

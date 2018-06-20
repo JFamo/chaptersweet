@@ -1,9 +1,13 @@
 <?php
 
+session_start();
+
+$chapter = $_SESSION['chapter'];
+
 require_once('connect.php');
 
 //get users
-$query="SELECT fullname, email FROM users";
+$query="SELECT fullname, email FROM users WHERE chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 

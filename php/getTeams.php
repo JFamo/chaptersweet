@@ -9,9 +9,10 @@ $sessionUser = $_SESSION['username'];
 $sessionName = $_SESSION['fullname'];
 $conference = $_SESSION['conference'];
 $rank = $_SESSION['rank'];
+$chapter = $_SESSION['chapter'];
 
 //actually update events
-$query="SELECT event, team, member1, member2, member3, member4, member5, member6, qualifier FROM teams ORDER BY event ASC";
+$query="SELECT event, team, member1, member2, member3, member4, member5, member6, qualifier, min FROM teams WHERE chapter='$chapter' ORDER BY event ASC";
 
 $result = mysqli_query($link, $query);
 
@@ -30,7 +31,7 @@ else{
 	$previousNum = 0;
 
 	//for each database row
-	while(list($name, $team, $m1, $m2, $m3, $m4, $m5, $m6, $isq) = mysqli_fetch_array($result)){
+	while(list($name, $team, $m1, $m2, $m3, $m4, $m5, $m6, $isq, $min) = mysqli_fetch_array($result)){
 
 		if($name != $previousEvent){
 		
@@ -74,14 +75,14 @@ else{
 				if($isq == 'yes'){
 					$cellColor = "#ce8ea1";
 				}
-				//if($q <= $membermin){
-					//if($isq == 'yes'){
-						//$cellColor = "#e21d58";
-					//}
-					//else{
-						//$cellColor = "#1d69e2";
-					//}
-				//}
+				if($q <= $min){
+					if($isq == 'yes'){
+						$cellColor = "#e21d58";
+					}
+					else{
+						$cellColor = "#1d69e2";
+					}
+				}
 				
 				//this is what shows up in each event slot
 				switch($q){

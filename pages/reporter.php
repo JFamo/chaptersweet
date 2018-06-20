@@ -5,12 +5,13 @@ session_start();
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
+$chapter = $_SESSION['chapter'];
 
 //get permission settings
 require('../php/connect.php');
 
 //INFO POSTING
-$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+$query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -23,7 +24,7 @@ list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
 
 //EMAIL PERM
-$query="SELECT value FROM settings WHERE name='officerEmailPermission'";
+$query="SELECT value FROM settings WHERE name='officerEmailPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -46,7 +47,7 @@ if(isset($_POST['body'])){
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO announcements (title, body, poster, date) VALUES ('$articleTitle', '$articleBody', '$articlePoster', now())";
+	$query = "INSERT INTO announcements (title, body, poster, date, chapter) VALUES ('$articleTitle', '$articleBody', '$articlePoster', now(), '$chapter')";
 
 	$result = mysqli_query($link, $query);
 
@@ -58,7 +59,7 @@ if(isset($_POST['body'])){
 	if($doMail == "yes"){
 
 		//get users
-		$query="SELECT fullname, email FROM users";
+		$query="SELECT fullname, email FROM users WHERE chapter='$chapter'";
 
 		$result = mysqli_query($link, $query);
 
@@ -92,7 +93,16 @@ $articleBody
 			mail($email,"TSA Chapter Announcement",$mailMessage,$headers);
 
 		}
+		$activityForm = "Wrote and Emailed Announcement " . $articleTitle;
+	}
+	else{
+		$activityForm = "Wrote but Did Not Email Announcement " . $articleTitle;
+	}
+	
+	$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$fullname', '$activityForm', now(), '$chapter')";
 
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
 	}
 
 	mysqli_close($link);

@@ -6,12 +6,13 @@ $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $grade = $_SESSION['grade'];
 $name = $_SESSION['fullname'];
+$chapter = $_SESSION['chapter'];
 
 //get permission settings
 require('../php/connect.php');
 
 //INFO POSTING
-$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+$query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -23,6 +24,73 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
 
+if(isset($_POST['dropEvent'])){
+
+	//variables assignment
+	$event= addslashes($_POST['thisEvent']);
+	$user = addslashes($_SESSION['fullname']);
+	$team = addslashes($_POST['thisTeam']);
+	$verify = $_POST['verify'];
+	$blank = ' ';
+	
+	if($verify == 'yes'){
+
+		require('../php/connect.php');
+	
+			$sql = "UPDATE teams SET member1 = '$blank' WHERE member1='$user' AND event = '$event' AND chapter='$chapter'";
+			if (!mysqli_query($link, $sql)){
+				die('Error: ' . mysqli_error($link));
+			}
+			$sql = "UPDATE teams SET member2 = '$blank' WHERE member2='$user' AND event = '$event' AND chapter='$chapter'";
+			if (!mysqli_query($link, $sql)){
+				die('Error: ' . mysqli_error($link));
+			}
+			$sql = "UPDATE teams SET member3 = '$blank' WHERE member3='$user' AND event = '$event' AND chapter='$chapter'";
+			if (!mysqli_query($link, $sql)){
+				die('Error: ' . mysqli_error($link));
+			}
+			$sql = "UPDATE teams SET member4 = '$blank' WHERE member4='$user' AND event = '$event' AND chapter='$chapter'";
+			if (!mysqli_query($link, $sql)){
+				die('Error: ' . mysqli_error($link));
+			}
+			$sql = "UPDATE teams SET member5 = '$blank' WHERE member5='$user' AND event = '$event' AND chapter='$chapter'";
+			if (!mysqli_query($link, $sql)){
+				die('Error: ' . mysqli_error($link));
+			}
+			$sql = "UPDATE teams SET member6 = '$blank' WHERE member6='$user' AND event = '$event' AND chapter='$chapter'";
+			if (!mysqli_query($link, $sql)){
+				die('Error: ' . mysqli_error($link));
+			}
+	
+		//post variables
+		$points = 1;
+
+		$sql = "UPDATE users SET eventpoints=eventpoints+'$points' WHERE fullname='$user' AND chapter='$chapter'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$activityForm = "Dropped Event " . $event;
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$user', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		mysqli_close($link);
+	
+		$fmsg =  "<div class='alert alert-success alert-dismissable'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Event " . $event . " Dropped Successfully!</div>";
+	
+	}
+	else{
+	
+		$fmsg =  "<div class='alert alert-danger alert-dismissable'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Failed to Drop Event! Not Verified!</div>";
+	
+	}
+
+}
+
 if(isset($_POST['newTask'])){
 
 	//variables assignment
@@ -33,7 +101,7 @@ if(isset($_POST['newTask'])){
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO tasks (user, event, task, team) VALUES ('$taskUser', '$taskEvent', '$taskName', '$taskTeam')";
+	$query = "INSERT INTO tasks (user, event, task, team, chapter) VALUES ('$taskUser', '$taskEvent', '$taskName', '$taskTeam', '$chapter')";
 
 	$result = mysqli_query($link,$query);
 
@@ -43,7 +111,30 @@ if(isset($_POST['newTask'])){
 
 	mysqli_close($link);
 
-	$fmsg =  "Task '".$taskName."' Added Successfully!";
+	$fmsg =  "<div class='alert alert-success alert-dismissable'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Task " . $taskName . " Added Successfully!</div>";
+
+}
+
+if(isset($_POST['dropTask'])){
+
+	//variables assignment
+	$taskName = addslashes($_POST['name']);
+	$taskEvent = addslashes($_POST['thisEvent']);
+	$taskTeam = addslashes($_POST['thisTeam']);
+
+	require('../php/connect.php');
+
+	$query = "DELETE FROM tasks WHERE chapter='$chapter' AND task='$taskName' AND team='$taskTeam' AND event='$taskEvent'";
+
+	$result = mysqli_query($link,$query);
+
+	if (!$result){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	mysqli_close($link);
+
+	$fmsg =  "<div class='alert alert-success alert-dismissable'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Task " . $taskName . " Deleted Successfully!</div>";
 
 }
 
@@ -65,7 +156,7 @@ if(isset($_POST['task'])){
 
 	require('../php/connect.php');
 
-	$query = "UPDATE tasks SET done='$setdone' WHERE team='$taskTeam' AND event='$taskEvent' AND task='$taskName'";
+	$query = "UPDATE tasks SET done='$setdone' WHERE team='$taskTeam' AND event='$taskEvent' AND task='$taskName' AND chapter='$chapter'";
 
 	$result = mysqli_query($link,$query);
 
@@ -77,11 +168,25 @@ if(isset($_POST['task'])){
 
 }
 
+if(isset($_POST['clearlog'])){
+	require('../php/connect.php');
+
+	$query = "DELETE FROM activity WHERE chapter='$chapter'";
+
+	$result = mysqli_query($link,$query);
+
+	if (!$result){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	mysqli_close($link);
+}
+
 //get permission settings
 require('../php/connect.php');
 
 //BLOCKED PAGES
-$query="SELECT value FROM settings WHERE name='blockPages'";
+$query="SELECT value FROM settings WHERE name='blockPages' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -205,6 +310,59 @@ $blockedPages = $perm;
 
 			<div class="container-fluid">
 			<div class="row no-gutter" style="margin: 0; padding-top:15px; padding-bottom:15px;">
+			<?php if($rank == 'admin' || $rank == 'adviser'){ ?>
+			<div class="col-sm-12" style="padding:0; text-align:left;">
+				<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
+				<form method="post" style="float:right; padding-right:10px; padding-top:10px;">
+					<input type="submit" name="clearlog" class="btn btn-danger" value="Clear">
+				</form>
+				<p class="userDashSectionHeader">
+					Activity Log
+				</p>
+				<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-3">
+						<b><p class="bodyTextType1">User</p></b>
+					</div>
+					<div class="col-sm-6">
+						<b><p class="bodyTextType1">Activity</p></b>
+					</div>
+					<div class="col-sm-3">
+						<b><p class="bodyTextType1">Date</p></b>
+					</div>
+				</div>
+				
+				<?php>
+				require('../php/connect.php');
+
+				//get activity log
+				$query="SELECT user, activity, date FROM activity WHERE chapter='$chapter' ORDER BY date DESC";
+				
+				$result = mysqli_query($link,$query);
+
+				if (!$result){
+					die('Error: ' . mysqli_error($link));
+				}
+
+				//check for users with no events
+				if(mysqli_num_rows($result) == 0){
+					echo "<center><p style='font-family:tahoma; font-size:14px; padding-top:10px; padding-bottom:10px;'><b>No New Activity</b></p></center>";
+				}
+
+				while(list($us, $ac, $dt) = mysqli_fetch_array($result)){
+					echo '<div class="row"><div class="col-sm-3">';
+					echo $us;
+					echo '</div><div class="col-sm-6">';
+					echo $ac;
+					echo '</div><div class="col-sm-3">';
+					echo $dt;
+					echo '</div></div><br>';
+				}
+				?>
+				</div>
+				</div>
+			</div>
+			<?php } ?>
 			<div class="col-sm-6" style="padding:0; text-align:left;">
 			<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
 				<p class="userDashSectionHeader">
@@ -218,7 +376,7 @@ $blockedPages = $perm;
 
 						//get user's balance
 						//I copied this from email so variable names are weird
-						$emailquery="SELECT balance FROM users WHERE username='$username' AND fullname='$name'";
+						$emailquery="SELECT balance FROM users WHERE username='$username' AND fullname='$name' AND chapter='$chapter'";
 
 						$emailresult = mysqli_query($link,$emailquery);
 
@@ -238,7 +396,7 @@ $blockedPages = $perm;
 						require('../php/connect.php');
 
 						//get user's email
-						$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name'";
+						$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name' AND chapter='$chapter'";
 
 						$emailresult = mysqli_query($link,$emailquery);
 
@@ -280,7 +438,7 @@ $blockedPages = $perm;
 					require('../php/connect.php');
 
 					//get user's events
-					$query="SELECT event, team FROM teams WHERE member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name'";
+					$query="SELECT event, team FROM teams WHERE (member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name')  AND chapter='$chapter'";
 
 					$result = mysqli_query($link,$query);
 
@@ -312,14 +470,51 @@ $blockedPages = $perm;
 						}
 
 						echo "<td style='width:225px; position:relative;'>
-							<p style='font-family:tahoma; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>" ?>
+							<p style='font-family:tahoma; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>"; ?>
 							<a style="cursor:pointer;" class="text-primary" data-placement="bottom" title="Create a New Task" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
 									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
 									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
 									Task Name:<input type="text" id="name" name="name" style="width:125px" required />
 									<br>
 									<input type="submit" value="Create" name="newTask" style="font-family:tahoma;" id="newTask"/>
-								</form>'>New Task+</a>
+								</form>'>New Task</a>
+							<br>
+							<a style="cursor:pointer;" class="text-danger" data-placement="bottom" title="Delete Task" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
+									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
+									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
+									Which Task?:<select id="name" name="name" style="width:125px" required>
+                                                                        	<?php 	$checkName = addslashes($_SESSION["fullname"]);
+											$checkEvent = addslashes($event);
+
+											//get users tasks
+											$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent' AND chapter='$chapter'";
+
+											$taskResult = mysqli_query($link,$taskQuery);
+
+											if (!$taskResult){
+												die('Error: ' . mysqli_error($link));
+											}
+
+											//for each task
+											while(list($id, $task, $done) = mysqli_fetch_array($taskResult)){
+												echo '<option value="' . $task . '">' . $task . '</option>';
+                                                                        		}
+                                                                        		?>
+                                                                        </select>
+									<br>
+									<input type="submit" value="Drop" name="dropTask" style="font-family:tahoma;" id="dropTask"/>
+								</form>'>Delete Task</a>
+							<br>
+							<a style="cursor:pointer;" class="text-danger" data-placement="bottom" title="Drop <?php echo $event ?>" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
+									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
+									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
+									Are You Sure?:<select id="verify" name="verify" style="width:125px" required>
+                                                                        	<option value="no">No</option>
+                                                                        	<option value="yes">Yes</option>
+                                                                        </select>
+									<br>
+									<input type="submit" value="Drop" name="dropEvent" style="font-family:tahoma;" id="dropEvent"/>
+								</form>'>Drop Event</a>
 						<?php 
 
 						//event tasks
@@ -332,7 +527,7 @@ $blockedPages = $perm;
 						$checkEvent = addslashes($event);
 
 						//get user's tasks
-						$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent'";
+						$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent' AND chapter='$chapter'";
 
 						$taskResult = mysqli_query($link,$taskQuery);
 
@@ -382,7 +577,7 @@ $blockedPages = $perm;
 				</p>
 				<center>
 				<br><br>
-				<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n198/cf12/cm0/cu5/ct0/cs0/ca0/co1/cr0/ss0/cacf00/cpc000/pct/tcfff/fs100/szw320/szh135/tatTime%20Until%20States/tac000/tptTime%20Since%20States/tpc000/iso2018-04-18T08:00:00" allowTransparency="true" frameborder="0" width="159" height="50"></iframe>
+				<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n25/cf107/cm0/cu5/ct0/cs0/ca0/cr0/ss0/cacf00/cpc000/pcfff/tc66c/fs100/szw320/szh135/tatTime%20Until%20Nationals/tac000/tptTime%20Since%20Nationals/tpc000/mac000/mpc000/iso2018-06-22T00:00:00" allowTransparency="true" frameborder="0" width="320" height="135"></iframe>
 
 
 				<br><br>
@@ -397,7 +592,7 @@ $blockedPages = $perm;
 
 				require('../php/connect.php');
 
-				$query="SELECT * FROM announcements ORDER BY id DESC";
+				$query="SELECT * FROM announcements WHERE chapter='$chapter' ORDER BY id DESC";
 
 				$result = mysqli_query($link,$query);
 

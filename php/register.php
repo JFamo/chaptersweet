@@ -1,5 +1,17 @@
 <?php
 
+
+
+
+
+//NOTE - I DONT EVEN USE THIS FILE ANYMORE, IDK WHY IM SAVING IT
+
+
+
+
+
+
+
 session_start();
 
 $value1 = addslashes($_POST['fullname']);

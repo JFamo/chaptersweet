@@ -5,12 +5,13 @@ session_start();
 $username = $_SESSION['username'];
 $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
+$chapter = $_SESSION['chapter'];
 
 //get permission settings
 require('../php/connect.php');
 
 //INFO POSTING
-$query="SELECT value FROM settings WHERE name='officerInfoPermission'";
+$query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -26,8 +27,9 @@ $officerPerm = $perm;
 function getChapterBalance()
 {
 	$returnValue = 0;
+	$chapter = $_SESSION['chapter'];
 	require('../php/connect.php');
-	$transQ = "SELECT personto, personfrom, description, amount, date FROM transactions";
+	$transQ = "SELECT personto, personfrom, description, amount, date FROM transactions WHERE chapter='$chapter'";
 	$transR = mysqli_query($link, $transQ);
 	if (!$transR){
 		die('Error: ' . mysqli_error($link));
@@ -57,7 +59,7 @@ if(isset($_POST['amount'])){
 	//get real name of person to
 	if($personto != "expense" && $personto != "chapter"){
 
-		$nameQuery = "SELECT fullname FROM users WHERE id='$personto'";
+		$nameQuery = "SELECT fullname FROM users WHERE id='$personto' AND chapter='$chapter'";
 
 		$nameResult = mysqli_query($link, $nameQuery);
 
@@ -78,7 +80,7 @@ if(isset($_POST['amount'])){
 	//get real name of person from
 	if($personfrom != "income" && $personfrom != "chapter"){
 
-		$nameQuery = "SELECT fullname FROM users WHERE id='$personfrom'";
+		$nameQuery = "SELECT fullname FROM users WHERE id='$personfrom' AND chapter='$chapter'";
 
 		$nameResult = mysqli_query($link, $nameQuery);
 
@@ -97,7 +99,7 @@ if(isset($_POST['amount'])){
 	}
 
 	//make the transaction
-	$query = "INSERT INTO transactions (personto, personfrom, description, amount, date) VALUES ('$realNameTo', '$realNameFrom', '$description', '$amount', now())";
+	$query = "INSERT INTO transactions (personto, personfrom, description, amount, date, chapter) VALUES ('$realNameTo', '$realNameFrom', '$description', '$amount', now(), '$chapter')";
 
 	$result = mysqli_query($link, $query);
 
@@ -108,7 +110,7 @@ if(isset($_POST['amount'])){
 	//update balances
 	if($personto != "expense" && $personto != "chapter"){
 
-		$query2 = "UPDATE users SET balance=balance+'$amount' WHERE id='$personto'";
+		$query2 = "UPDATE users SET balance=balance+'$amount' WHERE id='$personto' AND chapter='$chapter'";
 
 		$result2 = mysqli_query($link, $query2);
 
@@ -119,7 +121,7 @@ if(isset($_POST['amount'])){
 	}
 	if($personfrom != "income" && $personfrom != "chapter"){
 
-		$query3 = "UPDATE users SET balance=balance-'$amount' WHERE id='$personfrom'";
+		$query3 = "UPDATE users SET balance=balance-'$amount' WHERE id='$personfrom' AND chapter='$chapter'";
 
 		$result3 = mysqli_query($link, $query3);
 
@@ -128,6 +130,13 @@ if(isset($_POST['amount'])){
 		}
 
 	}
+	
+	$activityForm = "Transacted " . $amount . " from " . $personfrom . " to " . $personto;
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$fullname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
 
 	mysqli_close($link);
 
@@ -270,7 +279,7 @@ if(isset($_POST['amount'])){
 				$incomeSumM = 0.00;
 				$expenseSumM = 0.00;
 			
-				$catsQ = "SELECT personto, personfrom, description, amount, date FROM transactions";
+				$catsQ = "SELECT personto, personfrom, description, amount, date FROM transactions WHERE chapter='$chapter'";
 				$catsR = mysqli_query($link, $catsQ);
 				if (!$catsR){
 					die('Error: ' . mysqli_error($link));
@@ -385,7 +394,7 @@ if(isset($_POST['amount'])){
 				//get total user balance
 				require('../php/connect.php');
 
-				$query="SELECT SUM(balance) FROM users";
+				$query="SELECT SUM(balance) FROM users WHERE chapter='$chapter'";
 
 				$result = mysqli_query($link, $query);
 
@@ -432,7 +441,7 @@ if(isset($_POST['amount'])){
 
 						require('../php/connect.php');
 
-						$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
+						$query="SELECT id, fullname, rank FROM users WHERE chapter='$chapter' ORDER BY fullname ASC";
 
 						$result = mysqli_query($link, $query);
 
@@ -463,7 +472,7 @@ if(isset($_POST['amount'])){
 
 						require('../php/connect.php');
 
-						$query="SELECT id, fullname, rank FROM users ORDER BY fullname ASC";
+						$query="SELECT id, fullname, rank FROM users WHERE chapter='$chapter' ORDER BY fullname ASC";
 
 						$result = mysqli_query($link, $query);
 
@@ -502,7 +511,7 @@ if(isset($_POST['amount'])){
 
 				require('../php/connect.php');
 
-				$query="SELECT * FROM transactions ORDER BY id DESC";
+				$query="SELECT * FROM transactions WHERE chapter='$chapter' ORDER BY id DESC";
 
 				$result = mysqli_query($link, $query);
 

@@ -3,6 +3,38 @@ session_start();
 $rank = $_SESSION['rank'];
 $daUsah = $_SESSION['eventsUser'];
 $thisrank = $_SESSION['eventsUserRank'];
+$chapter = $_SESSION['chapter'];
+
+//get events for removal
+require('../php/connect.php');
+
+//EVENT POINTS for OFFICERS
+$query="SELECT value FROM settings WHERE name='eventpointsPermission' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$eventPointsPerm = $perm;
+
+//get user's events
+$queryid="SELECT id FROM users WHERE fullname='$daUsah' AND chapter='$chapter'";
+
+$resultid = mysqli_query($link, $queryid);
+
+if (!$resultid){
+	die('Error: ' . mysqli_error($link));
+}
+
+//show each event as option	
+while(list($hold) = mysqli_fetch_array($resultid)){
+	$daID = $hold;
+}
+
 $out = "";
 $out = $out .  '<div class="modal-dialog modal-lg">';
 $out = $out .  '<div class="modal-content">';
@@ -35,7 +67,7 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 	require('../php/connect.php');
 
 	//get user's events
-	$queryEve="SELECT event, team FROM teams WHERE member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah'";
+	$queryEve="SELECT event, team FROM teams WHERE (member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah') AND chapter='$chapter'";
 
 	$resultEve = mysqli_query($link, $queryEve);
 
@@ -75,7 +107,7 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 		$checkEvent = addslashes($event);
 
 		//get user's tasks
-		$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent'";
+		$taskQuery="SELECT id, task, done FROM tasks WHERE team='$team' AND event='$checkEvent' AND chapter='$chapter'";
 
 		$taskResult = mysqli_query($link, $taskQuery);
 
@@ -131,7 +163,7 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 require('../php/connect.php');
 
 //get user's events
-$queryDele="SELECT event FROM teams WHERE member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah'";
+$queryDele="SELECT event FROM teams WHERE (member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah') AND chapter='$chapter'";
 
 $resultDele = mysqli_query($link, $queryDele);
 
@@ -146,6 +178,58 @@ while(list($event) = mysqli_fetch_array($resultDele)){
 
 //closing stuff, remove event button
 $out = $out .  '</select></span><span><input type="submit" class="btn btn-danger" value="Remove"></span></form><br></div>';
+
+if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $eventPointsPerm == "yes")){
+	$out = $out .  '<div class="adminDataSection">';
+	$out = $out .  '<p class="userDashSectionHeader" style="padding-left:0px;">User Management</p><br>';
+				
+	$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+		$out = $out .  '<span>';
+			$out = $out .  '<b>Assign User Event Points</b>';
+		$out = $out .  '</span>';
+			$out = $out .  "<input type='hidden' name='pointsTo' value='" . $daID . "'>";
+		$out = $out .  '<span>';
+			$out = $out .  'How Many Points :';
+			$out = $out .  '<input type="number" id="points" name="points">';
+		$out = $out .  '</span>';
+		$out = $out .  '<span>';
+			$out = $out .  '<input type="submit" class="btn btn-primary" value="Assign Points">';
+		$out = $out .  '</span>';
+	$out = $out .  '</form>';
+	$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+		$out = $out .  '<span>';
+			$out = $out .  '<b>Remove User Event Points</b>';
+		$out = $out .  '</span>';
+			$out = $out .  "<input type='hidden' name='pointsFrom' value='" . $daID . "'>";
+		$out = $out .  '<span>';
+			$out = $out .  'How Many Points :';
+			$out = $out .  '<input type="number" id="points" name="points">';
+		$out = $out .  '</span>';
+		$out = $out .  '<span>';
+			$out = $out .  '<input type="submit" class="btn btn-danger" value="Remove Points">';
+		$out = $out .  '</span>';
+	$out = $out .  '</form>';
+}
+if($rank == "admin" || $rank == "adviser"){
+	$out = $out .  '<form class="basicSpanDiv" method="post" id="deleteUserForm" style="width:100%; height:40px; padding-top:15px;">';
+		$out = $out .  '<span>';
+			$out = $out .  '<b>Delete Account</b>';
+		$out = $out .  '</span>';
+			$out = $out .  "<input type='hidden' name='thisUser' id='thisUser' value='" . $daID . "'>";
+		$out = $out .  '<span>';
+		$out = $out .  'Are You Sure? :';
+			$out = $out .  '<select id="confirmDeleteUser" name="confirmDeleteUser">';
+				$out = $out .  '<option value="no">No</option>';
+				$out = $out .  '<option value="yes">Yes</option>';
+			$out = $out .  '</select>';
+		$out = $out .  '</span>';
+		$out = $out .  '<span>';
+			$out = $out .  '<input type="submit" name="deleteUser" class="btn btn-danger" value="Delete Account" />';
+		$out = $out .  '</span>';
+	$out = $out .  '</form>';
+	$out = $out .  '<br>';
+	$out = $out .  '</div>';
+}
 
 $out = $out . "<script>$('#userModal').modal('show');</script>";
 
