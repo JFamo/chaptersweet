@@ -20,6 +20,10 @@ if (!$result){
 	die('Error: ' . mysqli_error($link));
 }
 
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$officerPerm = $perm;
+
 //MY CONFERENCE ID
 $query="SELECT idnumber FROM users WHERE username='$username' AND chapter='$chapter'";
 
@@ -30,10 +34,6 @@ list($myid) = mysqli_fetch_array($result);
 if (!$result){
 	die('Error: ' . mysqli_error($link));
 }
-
-//save the result
-list($perm) = mysqli_fetch_array($result);
-$officerPerm = $perm;
 
 if(isset($_POST['dropEvent'])){
 
