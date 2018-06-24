@@ -20,6 +20,17 @@ if (!$result){
 	die('Error: ' . mysqli_error($link));
 }
 
+//MY CONFERENCE ID
+$query="SELECT idnumber FROM users WHERE username='$username' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+list($myid) = mysqli_fetch_array($result);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
 //save the result
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
@@ -182,6 +193,22 @@ if(isset($_POST['clearlog'])){
 	mysqli_close($link);
 }
 
+if(isset($_POST['activityid'])){
+	require('../php/connect.php');
+
+	$thisid = $_POST['activityid'];
+
+	$query = "DELETE FROM activity WHERE id='$thisid' AND chapter='$chapter'";
+
+	$result = mysqli_query($link,$query);
+
+	if (!$result){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	mysqli_close($link);
+}
+
 //get permission settings
 require('../php/connect.php');
 
@@ -304,7 +331,7 @@ $blockedPages = $perm;
 		</div>
 		<div style="padding-right:0; padding-left:0; background-color:#efefef;" class="col-sm-10">
 		<p class="display-4" style="padding-left:20px;">
-			My Dashboard
+			Hello, <?php echo(substr($name, 0, strpos($name," "))); ?>
 		</p>
 		<center>
 
@@ -324,19 +351,21 @@ $blockedPages = $perm;
 					<div class="col-sm-3">
 						<b><p class="bodyTextType1">User</p></b>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<b><p class="bodyTextType1">Activity</p></b>
 					</div>
 					<div class="col-sm-3">
 						<b><p class="bodyTextType1">Date</p></b>
 					</div>
+					<div class="col-sm-1">
+					</div>
 				</div>
 				
-				<?php>
+				<?php
 				require('../php/connect.php');
 
 				//get activity log
-				$query="SELECT user, activity, date FROM activity WHERE chapter='$chapter' ORDER BY date DESC";
+				$query="SELECT id, user, activity, date FROM activity WHERE chapter='$chapter' ORDER BY date DESC";
 				
 				$result = mysqli_query($link,$query);
 
@@ -349,13 +378,15 @@ $blockedPages = $perm;
 					echo "<center><p style='font-family:tahoma; font-size:14px; padding-top:10px; padding-bottom:10px;'><b>No New Activity</b></p></center>";
 				}
 
-				while(list($us, $ac, $dt) = mysqli_fetch_array($result)){
+				while(list($id, $us, $ac, $dt) = mysqli_fetch_array($result)){
 					echo '<div class="row"><div class="col-sm-3">';
 					echo $us;
-					echo '</div><div class="col-sm-6">';
+					echo '</div><div class="col-sm-5">';
 					echo $ac;
 					echo '</div><div class="col-sm-3">';
 					echo $dt;
+					echo '</div><div class="col-sm-1">';
+					echo '<form method="post"><input type="hidden" name="activityid" value="' . $id . '";><input type="submit" class="close btn btn-link" value="&times";></form>';
 					echo '</div></div><br>';
 				}
 				?>
@@ -369,7 +400,7 @@ $blockedPages = $perm;
 					My Account
 				</p>
 				<p class="bodyTextType1">
-					<b>Full Name:</b> <?php echo $name ?>
+					<b>ID Number:</b> <?php echo $myid ?>
 					<br><br>
 					<b>Balance:</b> <?php 
 						require('../php/connect.php');
@@ -438,7 +469,7 @@ $blockedPages = $perm;
 					require('../php/connect.php');
 
 					//get user's events
-					$query="SELECT event, team FROM teams WHERE (member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name')  AND chapter='$chapter'";
+					$query="SELECT event, team, teamid FROM teams WHERE (member1='$name' OR member2='$name' OR member3='$name' OR member4='$name' OR member5='$name' OR member6='$name')  AND chapter='$chapter'";
 
 					$result = mysqli_query($link,$query);
 
@@ -458,7 +489,7 @@ $blockedPages = $perm;
 					echo "<table>";
 					echo "<tr style='height: 225px; vertical-align: top;'>";
 
-					while(list($event, $team) = mysqli_fetch_array($result)){
+					while(list($event, $team, $teamid) = mysqli_fetch_array($result)){
 
 						$doEventNewline += 1;
 
@@ -470,7 +501,8 @@ $blockedPages = $perm;
 						}
 
 						echo "<td style='width:225px; position:relative;'>
-							<p style='font-family:tahoma; font-size:14px; padding-top:15px;'><b>" . $event . "</b></p>"; ?>
+							<p style='font-family:tahoma; font-size:14px; padding-top:15px; margin-bottom:0px;'><b>" . $event . "</b></p>
+							<p style='font-style:italic; font-size:10px; margin-top:0px; margin-bottom:5px;'>" . $teamid . "</p>"; ?>
 							<a style="cursor:pointer;" class="text-primary" data-placement="bottom" title="Create a New Task" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
 									<input type="hidden" name="thisEvent" id="thisEvent" value="<?php echo $event ?>" />
 									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
@@ -629,14 +661,14 @@ $blockedPages = $perm;
 		</div>
 		</center>
 		</div>
-	</div>
 <!--Less spooky stuff at the bottom-->
 	<footer class="darknav">
 		<center><p class="bodyTextType2">
-			Copyright Joshua Famous 2017
+			Copyright T1285 2018
 		</p></center>
 		<script src="../js/scripts.js" type="text/javascript"></script>
 	</footer>
+	</div>
 </body>
 
 </html>

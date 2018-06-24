@@ -287,7 +287,7 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 <!--Spooky stuff at the bottom-->
 		<footer class="darknav">
 			<center><p class="bodyTextType2">
-				Copyright Joshua Famous 2017
+				Copyright T1285 2018
 			</p></center>
 		</footer>
 		

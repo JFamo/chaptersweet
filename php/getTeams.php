@@ -64,7 +64,7 @@ else{
 		
 		if($team > 0){
 
-			$outputVar = $outputVar . '<tr><td style="min-width:100px;">Group '.$team;
+			$outputVar = $outputVar . '<tr><td style="min-width:80px; padding-left:10px;">Group '.$team;
 		
 		}
 

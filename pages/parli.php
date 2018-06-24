@@ -217,7 +217,7 @@ if(isset($_POST['scoreValue'])){
 <!--Spooky stuff at the bottom-->
 	<footer class="darknav">
 		<center><p class="bodyTextType2">
-			Copyright &#x1f171;oshua &#x1f171;amous 2017
+			Copyright &#x1f171;1285 2018
 		</p></center>
 	</footer>
 		

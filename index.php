@@ -128,13 +128,13 @@ if(isset($_POST['user']) and isset($_POST['pass'])){
 	if($count == 1){
 
 		//fetch the rank of that user
-		$query2 = "SELECT fullname, rank, grade, eventpoints FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
+		$query2 = "SELECT fullname, rank, grade, eventpoints, idnumber FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
 		$result2 = mysqli_query($link, $query2);
 		if (!$result2){
 			die('Error: ' . mysqli_error($link));
 		}
 
-		list($fullnameValue, $rankValue, $gradeValue, $eventPointsValue) = mysqli_fetch_array($result2);
+		list($fullnameValue, $rankValue, $gradeValue, $eventPointsValue, $idnumber) = mysqli_fetch_array($result2);
 
 		$_SESSION['username'] = $sessionUsername;
 		$_SESSION['rank'] = $rankValue;
@@ -312,7 +312,7 @@ if(isset($_SESSION['username'])){
 	<center>
 
 	<p class="bodyTextType1">
-		Chaptersweet was created by Team 2004-901, All Rights Reserved, 2018.
+		Chaptersweet was created by Team T1285, All Rights Reserved, 2018.
 	</p>
 
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#regisModal">Register</button>
@@ -465,7 +465,7 @@ if(isset($_SESSION['username'])){
 <!--Less spooky stuff at the bottom-->
 	<footer class="darknav" style="height:8vh;"> 
 		<center><p class="bodyTextType2">
-			Copyright Team 2004-901 2018
+			Copyright Team T1285 2018
 		</p></center>
 	</footer>
 </body>

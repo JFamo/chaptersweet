@@ -270,6 +270,34 @@ if(isset($_POST['promoteUser'])){
 
 }
 
+//function to change user ID
+if(isset($_POST['idname'])){
+
+	$user = $_POST['idname'];
+	$newNum = $_POST['idnum'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET idnumber='$newNum' WHERE id='$user' AND chapter='$chapter'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Changed " . $user . " to ID " . $newNum . " Successfully!";
+		
+		$activityForm = "Changed " . $user. " to ID " . $newNum;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+
+	mysqli_close($link);
+
+}
+
 //function to delete user
 if(isset($_POST['deleteUser'])){
 
@@ -1044,11 +1072,11 @@ if(isset($_POST['deleteObligation'])){
 <!--Spooky stuff at the bottom-->
 		<footer class="darknav">
 			<center><p class="bodyTextType2">
-				Copyright Joshua Famous 2017
+				Copyright T1285 2018
 			</p></center>
 		<?php if(isset($_POST['viewUser'])){
 			$_SESSION['eventsUser'] = $_POST['viewEvents'];
-                        $_SESSION['eventsUserRank'] = $_POST['viewEventsRank'];
+            $_SESSION['eventsUserRank'] = $_POST['viewEventsRank'];
 			$_POST['viewUser'] = null; ?>
 			<script type="text/javascript">
 			    	$("#userModal").load("../php/userModal.php");

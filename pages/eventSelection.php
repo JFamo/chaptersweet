@@ -62,22 +62,22 @@ if(isset($_POST['evt'])){
 				//add that event to the TEAMS table
 				$blank = ' ';
 				if($max == 1){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter, min) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq', '$chapter', '$min')";
 				}
 				if($max == 2){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter, min) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq', '$chapter', '$min')";
 				}
 				if($max == 3){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter, min) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq', '$chapter', '$min')";
 				}
 				if($max == 4){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter, min) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq', '$chapter', '$min')";
 				}
 				if($max == 5){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter, min) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq', '$chapter', '$min')";
 				}
 				if($max == 6){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, chapter, min) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq', '$chapter', '$min')";
 				}
 				
 
@@ -338,7 +338,7 @@ if(isset($_POST['slot'])){
 <!--Spooky stuff at the bottom-->
 	<footer class="darknav">
 		<center><p class="bodyTextType2">
-			Copyright Joshua Famous 2017
+			Copyright T1285 2018
 		</p></center>
 	</footer>
 </body>

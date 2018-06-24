@@ -8,6 +8,18 @@ $chapter = $_SESSION['chapter'];
 //get events for removal
 require('../php/connect.php');
 
+//current ID
+$query="SELECT idnumber FROM users WHERE fullname='$daUsah' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($idnumber) = mysqli_fetch_array($result);
+
 //EVENT POINTS for OFFICERS
 $query="SELECT value FROM settings WHERE name='eventpointsPermission' AND chapter='$chapter'";
 
@@ -40,23 +52,49 @@ $out = $out .  '<div class="modal-dialog modal-lg">';
 $out = $out .  '<div class="modal-content">';
 $out = $out .  '<div class="modal-header">';
 $out = $out .  '<h4 class="modal-title">' . $_SESSION['eventsUser'] . '</h4>';
-//promote
-	if(($thisrank != "admin" && $thisrank != "adviser") && ($rank == "admin" || $rank == "adviser")){
-	$out = $out . '<form method="post" style="float:left; padding-right:5px; margin-left:20px; padding-bottom:10px;">';
-	$out = $out . '<input type="hidden" name="thisUser" value="' . addslashes($daUsah) . '" />';
-	$out = $out . '<input type="hidden" name="newRank" value="';
-	if($thisrank=='member'){ $out = $out . 'officer'; }
-	if($thisrank=='officer'){ $out = $out . 'member'; }
-	$out = $out . '"/>';
-	$out = $out . '<input type="submit" name="promoteUser" class="btn btn-primary" value="Make ';
-	if($thisrank=='member'){ $out = $out . 'Officer'; }
-	if($thisrank=='officer'){ $out = $out . 'Member'; } 
-	$out = $out . '" />';
-	$out = $out . '</form><br>';
-	}
 $out = $out .  '<button type="button" id="closeModalButton" class="close" data-dismiss="modal">&times;</button>';
 $out = $out .  '</div>';
 $out = $out .  '<div class="modal-body">';
+//account info
+if($rank == "admin" || $rank == "adviser"){
+	$out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bottom:15px;">';
+	$out = $out .  '<p class="userDashSectionHeader" style="padding-left:0px;">Account Information</p><br>';
+	//set id
+	$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+		$out = $out .  '<span>';
+			$out = $out .  '<b>Set Individual ID</b>';
+		$out = $out .  '</span>';
+			$out = $out .  "<input type='hidden' name='idname' value='" . $daID . "'>";
+		$out = $out .  '<span>';
+			$out = $out .  '<input type="number" id="idnum" name="idnum" value="' . $idnumber . '">';
+		$out = $out .  '</span>';
+		$out = $out .  '<span>';
+			$out = $out .  '<input type="submit" class="btn btn-primary" value="Set ID">';
+		$out = $out .  '</span>';
+	$out = $out .  '</form>';
+	//set rank
+	if($thisrank != "admin" && $thisrank != "adviser"){
+		$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+			$out = $out .  '<span>';
+				$out = $out .  '<b>Set Rank</b>';
+			$out = $out .  '</span>';
+				$out = $out .  "<input type='hidden' name='thisUser' value='" . addslashes($daUsah) . "'>";
+			$out = $out .  '<span>';
+				$out = $out . '<input type="hidden" name="newRank" value="';
+				if($thisrank=='member'){ $out = $out . 'officer'; }
+				if($thisrank=='officer'){ $out = $out . 'member'; }
+				$out = $out . '"/>';
+			$out = $out .  '</span>';
+			$out = $out .  '<span>';
+				$out = $out . '<input type="submit" name="promoteUser" class="btn btn-primary" value="Make ';
+				if($thisrank=='member'){ $out = $out . 'Officer'; }
+				if($thisrank=='officer'){ $out = $out . 'Member'; } 
+				$out = $out . '" />';
+			$out = $out .  '</span>';
+		$out = $out .  '</form>';
+	}
+	$out = $out .  '</div>';
+}
 //user's events
 $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bottom:15px;">';
 	
