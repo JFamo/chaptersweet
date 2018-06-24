@@ -7,6 +7,8 @@ $rank = $_SESSION['rank'];
 $fullname = $_SESSION['fullname'];
 $chapter = $_SESSION['chapter'];
 
+$resumeReady = false;
+
 //get permission settings
 require('../php/connect.php');
 
@@ -57,6 +59,11 @@ if(isset($_POST['qualid'])){
 	}
 
 	mysqli_close($link);
+}
+
+if(isset($_POST['leapevent'])){
+	$_SESSION['leapevent'] = $_POST['leapevent'];
+	header("Location:http://localhost/chaptersweet/php/resume_individual.php");
 }
 
 ?>
@@ -207,8 +214,59 @@ if(isset($_POST['qualid'])){
 						</form>
 					</div>
 					<div class="adminDataSection" style="margin-bottom:15px; padding-bottom: 10px;">
-						<p class="userDashSectionHeader" style="padding-left:0px;">Generate a Resume</p>
+						<p class="userDashSectionHeader" style="padding-left:0px; margin-bottom: 5px;">Generate a Resume</p>
+						<form method="post" id="generateResumeForm" style="width:100%; padding-top:15px;">
+							<small>Which event is this resume for?</small><br>
+							<select id="default" name="leapevent" style="margin-top:10px; margin-bottom: 10px;" required>
+								<?php
+								//display each event as option
+								require('../php/connect.php');
 
+								//get user's events
+								$queryDele="SELECT event FROM teams WHERE (member1='$fullname' OR member2='$fullname' OR member3='$fullname' OR member4='$fullname' OR member5='$fullname' OR member6='$fullname') AND chapter='$chapter'";
+
+								$resultDele = mysqli_query($link, $queryDele);
+
+								if (!$resultDele){
+									die('Error: ' . mysqli_error($link));
+								}
+
+								//show each event as option	
+								while(list($event) = mysqli_fetch_array($resultDele)){
+									echo '<option value="' . $event . '"">' . $event . '</option>';
+								}
+								?>
+							</select><br>
+							<small>Include a leadership experience specific to a competitive event here. Do not include Be/Know/Do in parenthesis.</small><br>
+							<label class="radio-inline"><input style="min-width:30px;" value="1" type="radio" name="leapexp1type" required>Be</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="2" type="radio" name="leapexp1type" required>Know</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="3" type="radio" name="leapexp1type" required>Do</label>
+							<br>
+							<textarea form="generateResumeForm" cols="50" rows="3" name="leapexp1" required></textarea>
+							<br>
+							<small>Include a leadership experience specific to a competitive event here. Do not include Be/Know/Do in parenthesis.</small><br>
+							<label class="radio-inline"><input style="min-width:30px;" value="1" type="radio" name="leapexp2type" required>Be</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="2" type="radio" name="leapexp2type" required>Know</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="3" type="radio" name="leapexp2type" required>Do</label>
+							<br>
+							<textarea form="generateResumeForm" cols="50" rows="3" name="leapexp2" required></textarea>
+							<br>
+							<small>Include a leadership experience specific to a competitive event here. Do not include Be/Know/Do in parenthesis.</small><br>
+							<label class="radio-inline"><input style="min-width:30px;" value="1" type="radio" name="leapexp3type" required>Be</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="2" type="radio" name="leapexp3type" required>Know</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="3" type="radio" name="leapexp3type" required>Do</label>
+							<br>
+							<textarea form="generateResumeForm" cols="50" rows="3" name="leapexp3" required></textarea>
+							<br>
+							<small>Include a leadership experience specific to a competitive event here. Do not include Be/Know/Do in parenthesis.</small><br>
+							<label class="radio-inline"><input style="min-width:30px;" value="1" type="radio" name="leapexp4type" required>Be</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="2" type="radio" name="leapexp4type" required>Know</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="3" type="radio" name="leapexp4type" required>Do</label>
+							<br>
+							<textarea form="generateResumeForm" cols="50" rows="3" name="leapexp4" required></textarea>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Generate">
+						</form>
 					</div>
 					<div class="adminDataSection" style="margin-bottom:15px;">
 						<p class="userDashSectionHeader" style="padding-left:0px;">View My Qualifications</p>
