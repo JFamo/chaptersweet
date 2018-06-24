@@ -283,6 +283,13 @@ $blockedPages = $perm;
 			   <?php
 				}
 				?>
+				<?php
+				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+				?>
+			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
+			   <?php
+				}
+				?>
 	          	   <?php
 				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
@@ -304,20 +311,14 @@ $blockedPages = $perm;
 			    <?php
 				 }
 				 ?>
-                           <?php
+                 <?php
 				 if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				 ?>
 			    <li class="nav-item"><a class="nav-link" href="parli.php">Parliamentarian</a></li>
 			    <?php
 				 }
 				 ?>
-			   <?php
-				if(!($blockedPages == "events" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
-				?>
-			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
-			   <?php
-				}
-				?>
+				<li class="nav-item"><a class="nav-link" href="leap.php">LEAP Resume</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "adviser"){
 				?>

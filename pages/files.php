@@ -130,8 +130,9 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 			   <?php
 				}
 				?>
-	          	   <?php
-				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
+	          	<li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>   
+	          	<?php
+					if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
 			   <li class="nav-item"><a class="nav-link" href="secretary.php">Secretary</a></li>
 			   <?php
@@ -158,7 +159,8 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 			    <?php
 				 }
 				 ?>
-			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
+			   
+			   <li class="nav-item"><a class="nav-link" href="leap.php">LEAP Resume</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "adviser"){
 				?>

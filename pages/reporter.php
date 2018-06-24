@@ -168,7 +168,8 @@ $articleBody
 			   <?php
 				}
 				?>
-	          	   <?php
+	          	<li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>   
+	          	<?php
 				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
 			   <li class="nav-item"><a class="nav-link" href="secretary.php">Secretary</a></li>
@@ -196,7 +197,8 @@ $articleBody
 			    <?php
 				 }
 				 ?>
-			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
+			   
+			   <li class="nav-item"><a class="nav-link" href="leap.php">LEAP Resume</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "adviser"){
 				?>
@@ -249,7 +251,7 @@ $articleBody
 					</select>
 					<br><br>
 					<?php } ?>
-					<input class="submitButton" name="upload" type="submit" class="box" id="upload" value="Post">
+					<input class="btn btn-primary" name="upload" type="submit" class="box" id="upload" value="Post">
 				</form>
 
 			</center>

@@ -23,17 +23,32 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
 
-//post scores
-if(isset($_POST['scoreValue'])){
+if(isset($_POST['qualValue'])){
 
 	//variables assignment
-	$testNum = $_POST['testNumber'];
-	$scoreVal = $_POST['scoreValue'];
-	$myName = addslashes($fullname);
+	$thisvalue = addslashes($_POST['qualValue']);
+	$thistype = addslashes($_POST['qualType']);
+	$thisbkd = addslashes($_POST['qualBkd']);
 
 	require('../php/connect.php');
 
-	$query = "INSERT INTO scores (fullname, test, score, chapter, date) VALUES ('$myName', '$testNum', '$scoreVal', '$chapter', now())";
+	$query = "INSERT INTO leap (username, type, value, bkd, chapter) VALUES ('$username', '$thistype', '$thisvalue', '$thisbkd', '$chapter')";
+
+	$result = mysqli_query($link,$query);
+
+	if (!$result){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	mysqli_close($link);
+}
+
+if(isset($_POST['qualid'])){
+	require('../php/connect.php');
+
+	$thisid = $_POST['qualid'];
+
+	$query = "DELETE FROM leap WHERE id='$thisid' AND chapter='$chapter'";
 
 	$result = mysqli_query($link,$query);
 
@@ -126,12 +141,12 @@ if(isset($_POST['scoreValue'])){
                            <?php
 				 if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				 ?>
-			    <li class="nav-item active"><a class="nav-link" href="#">Parliamentarian</a></li>
+			    <li class="nav-item"><a class="nav-link" href="parli.php">Parliamentarian</a></li>
 			    <?php
 				 }
 				 ?>
 			   
-			   <li class="nav-item"><a class="nav-link" href="leap.php">LEAP Resume</a></li>
+			   <li class="nav-item active"><a class="nav-link" href="#">LEAP Resume</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "adviser"){
 				?>
@@ -145,7 +160,7 @@ if(isset($_POST['scoreValue'])){
 		</div>
 		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; overflow:hidden; background-color:#efefef;" class="col-sm-10">
 		<p class="display-4" style="padding-left:20px;">
-			Parliamentarian
+			LEAP Resume
 		</p>
 <!--Spooky stuff closer to the middle-->
 
@@ -168,47 +183,96 @@ if(isset($_POST['scoreValue'])){
 			<!--parli assist-->
 			<div class="row">
 	
-				<div class="col-sm-10" id="content" style="padding-left:5%; padding-right:5%; padding-top:2.5%; padding-bottom: 2.5%">
+				<div class="col-10" id="content" style="padding-left:5%; padding-right:5%; padding-top:2.5%; padding-bottom: 2.5%">
 
 					<center>
-					<form id="createForm">
-					  <div class="form-group">
-					    <label for="numQuestions">Number of Questions</label>
-					    <input style="width:200px;" type="number" class="form-control" id="numQuestions" aria-describedby="numberHelp" value="10">
-					  </div>
-					  <div class="form-group">
-					    <label for="difficulty">Difficulty Level</label>
-					    <select style="width:200px;" class="form-control" id="difficulty">
-					    	<option value="beginner">Beginner</option>
-					    	<option value="simple">Simple</option>
-					    	<option value="average">Average</option>
-					    	<option value="challenging">Challenging</option>
-					    	<option value="chapter">Chapter Team (50 questions)</option>
-					    	<option value="benchmark1">Beginner Benchmark</option>
-					    	<option value="benchmark2">Dunbar Benchmark</option>
-					    </select>
-					  </div>
-					</form>
-					<form id="scoreForm" style="display:none;" method="post">
-						<input type="number" id="scoreValue" name="scoreValue">
-						<input type="number" id="testNumber" name="testNumber">
-					</form>
-					<button id="generateButton" class="btn btn-primary" onclick="generate()">Generate Test</button>
+					<div class="adminDataSection" style="margin-bottom:15px; padding-bottom: 10px;">
+						<p class="userDashSectionHeader" style="padding-left:0px;">Update My Qualifications</p>
+						<form method="post" id="addQualificationForm" style="width:100%; padding-top:15px;">
+							<b>Add New Qualification</b><br>
+							<select id="default" name="qualType" style="margin-top:10px; margin-bottom: 10px;">
+								<option value="1">Leadership Roles</option>
+								<option value="2">Community Service / Volunteer Experience</option>
+								<option value="3">Leadership Development / Training</option>
+								<option value="4">College / Career Planning</option>
+							</select><br>
+							<label class="radio-inline"><input style="min-width:30px;" value="1" type="radio" name="qualBkd">Be</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="2" type="radio" name="qualBkd">Know</label>
+							<label class="radio-inline"><input style="min-width:30px;" value="3" type="radio" name="qualBkd">Do</label>
+							<br>
+							<small>Write your qualification here. Do not include Be/Know/Do in parenthesis.</small><br>
+							<textarea form="addQualificationForm" cols="50" rows="3" name="qualValue"></textarea>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Add">
+						</form>
+					</div>
+					<div class="adminDataSection" style="margin-bottom:15px; padding-bottom: 10px;">
+						<p class="userDashSectionHeader" style="padding-left:0px;">Generate a Resume</p>
+
+					</div>
+					<div class="adminDataSection" style="margin-bottom:15px;">
+						<p class="userDashSectionHeader" style="padding-left:0px;">View My Qualifications</p>
+						<?php
+							require('../php/connect.php');
+
+							$query = "SELECT id,type,bkd,value FROM leap WHERE username='$username' AND chapter='$chapter'";
+
+							$result = mysqli_query($link,$query);
+
+							if (!$result){
+								die('Error: ' . mysqli_error($link));
+							}
+
+							while(list($id,$type,$bkd,$value) = mysqli_fetch_array($result)){
+								echo "<div class='row'><div class='col-1'></div><div class='col-10'>";
+								if($type == 1){
+									echo "Leadership Roles";
+								}
+								else if($type == 2){
+									echo "Community Service / Volunteer Experience";
+								}
+								else if($type == 3){
+									echo "Leadership Development / Training";
+								}
+								else {
+									echo "College / Career Planning";
+								}
+								echo "<br>";
+								echo $value;
+								echo " (";
+								if($bkd == 1){
+									echo "Be";
+								}
+								else if($bkd == 2){
+									echo "Know";
+								}
+								else {
+									echo "Do";
+								}
+								echo ")";
+								echo "</div><div class='col-1'>";
+								echo '<form method="post"><input type="hidden" name="qualid" value="' . $id . '";><input type="submit" class="close btn btn-link" value="&times";></form>';
+								echo "</div></div>";
+								echo "<br>";
+							}
+
+							mysqli_close($link);
+						?>
+					</div>
 					</center>
 	
 				</div>
 				
-				<div class="col-sm-2">
+				<div class="col-2">
 					<center>
 					<!--PARLI PRO-->
-					<b><p class="bodyTextType1">Helpful Guides</p></b>
-					<a href="https://docs.google.com/presentation/d/19JnTf9YjODwRgyt2N4jIxER_rYEQZaEyjZtwk_zvyRs/edit?usp=sharing">State Guide</a><br>
-					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Basics.pptx">National Beginner Guide</a><br>
-					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Advanced.pptx">National Advanced Guide</a><br>
+					<b><p class="bodyTextType1">LEAP Templates</p></b>
+					<a href="http://tsaweb.org/sites/default/files/leap_resume_temp_ind.pdf">Individual</a><br>
+					<a href="http://www.tsaweb.org/sites/default/files/leap_resume_temp_team.pdf">Team</a><br>
 	
-					<b><p class="bodyTextType1">Practice Tests</p></b>
-					<a href="http://www.300questions.org/" target="_blank">300 Questions</a><br>
-					<a href="https://drive.google.com/file/d/0B0djtG22WOS_aEhsVWZLT0xocDg/view?usp=sharing" target="_blank">Dunbar Tests</a><br>
+					<b><p class="bodyTextType1">LEAP Guides</p></b>
+					<a href="http://www.tsaweb.org/sites/default/files/leap_resume_ind_guide.pdf" target="_blank">Individual</a><br>
+					<a href="http://www.tsaweb.org/sites/default/files/leap_resume_team_guide.pdf" target="_blank">Team</a><br>
 					</center>
 				</div>
 			</div>
@@ -219,7 +283,7 @@ if(isset($_POST['scoreValue'])){
 <!--Spooky stuff at the bottom-->
 	<footer class="darknav">
 		<center><p class="bodyTextType2">
-			Copyright &#x1f171;1285 2018
+			Copyright T1285 2018
 		</p></center>
 	</footer>
 		

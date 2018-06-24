@@ -10,6 +10,28 @@ $chapter = $_SESSION['chapter'];
 //get permission settings
 require('../php/connect.php');
 
+//function to get chapter balance
+function getChapterBalance()
+{
+	$returnValue = 0;
+	$chapter = $_SESSION['chapter'];
+	require('../php/connect.php');
+	$transQ = "SELECT personto, personfrom, description, amount, date FROM transactions WHERE chapter='$chapter'";
+	$transR = mysqli_query($link, $transQ);
+	if (!$transR){
+		die('Error: ' . mysqli_error($link));
+	}
+	while($row = mysqli_fetch_array($transR)){
+		if($row['personto'] == 'Chapter'){
+			$returnValue += $row['amount'];
+		}
+		if($row['personfrom'] == 'Chapter'){
+			$returnValue -= $row['amount'];
+		}
+	}
+	return $returnValue;
+}
+
 //INFO POSTING
 $query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
@@ -179,7 +201,8 @@ if(isset($_POST['amount'])){
 			   <?php
 				}
 				?>
-	          	   <?php
+	          	<li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>   
+	          	<?php
 				if(!($blockedPages == "info" || $blockedPages == "all") || $rank == "admin" || $rank == "adviser"){
 				?>
 			   <li class="nav-item"><a class="nav-link" href="secretary.php">Secretary</a></li>
@@ -207,7 +230,8 @@ if(isset($_POST['amount'])){
 			    <?php
 				 }
 				 ?>
-			   <li class="nav-item"><a class="nav-link" href="eventSelection.php">Event Selection</a></li>
+				<li class="nav-item"><a class="nav-link" href="leap.php">LEAP Resume</a></li>
+			   	
 			   <?php
 				if($rank == "admin" || $rank == "adviser"){
 				?>
@@ -241,6 +265,8 @@ if(isset($_POST['amount'])){
 				}
 			?>
 				<a class="text-primary" id="downloadlink" href="../php/ledger.php">Download Ledger</a><br><br>
+
+				<p style="display:none;" id='auditText'></p>
 				
 				<!--<script>
 				var textFile = null;
