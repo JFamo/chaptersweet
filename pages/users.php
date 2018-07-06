@@ -480,6 +480,7 @@ if(isset($_POST['deleteObligation'])){
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 	<title>
 		Chapter Sweet
 	</title>
@@ -568,7 +569,7 @@ if(isset($_POST['deleteObligation'])){
 			  </div>
 			</nav>
 		</div>
-		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; background-color:#efefef;" class="col-sm-10">
+		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; background-color:#EDF5F8;" class="col-sm-10">
 
 <!--Description-->
 	<p class="display-4" style="padding-left:20px;">
@@ -590,14 +591,6 @@ if(isset($_POST['deleteObligation'])){
 				}
 				else{
 				?>
-	<div style="margin: 15px 15px 15px 15px;" class="alert alert-success" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		    <span aria-hidden="true">&times;</span>
-		</button>
-  		<p>Here advisers can review user information, check user event progress, manage user accounts, and get a summary of the chapter.
-		The summary box shows a general overview of member distribution.<br>
-		The user info box shows important information about users, as well as providing options to manage them.</p>
-	</div>
 	<?php
 		}
 	?>
@@ -849,7 +842,7 @@ if(isset($_POST['deleteObligation'])){
 								die('Error: ' . mysqli_error($link));
 							}
 							$numEvents = mysqli_num_rows($eventsResult);
-							if($numEvents < 3 || $numEvents > 6){ echo "<p style='color:red;'>"; } 
+							if($numEvents < 3 || $numEvents > 6){ echo "<p style='margin: 0px 0px 0px 0px; color:red;'>"; } 
 							echo $numEvents;
 							if($numEvents < 3 || $numEvents > 6){ echo "</p>"; }
 							mysqli_close($link);

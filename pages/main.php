@@ -238,6 +238,7 @@ $blockedPages = $perm;
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 	<title>
 		Chapter Sweet
 	</title>
@@ -330,7 +331,7 @@ $blockedPages = $perm;
 			  </div>
 			</nav>
 		</div>
-		<div style="padding-right:0; padding-left:0; background-color:#efefef;" class="col-sm-10">
+		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; background-color:#EDF5F8;" class="col-sm-10">
 		<p class="display-4" style="padding-left:20px;">
 			Hello, <?php echo(substr($name, 0, strpos($name," "))); ?>
 		</p>
@@ -640,7 +641,7 @@ $blockedPages = $perm;
 					while(list($id, $title, $body, $poster, $date) = mysqli_fetch_array($result)){
 						?>
 
-						<p style="font-weight: bold; font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
+						<p style="font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "".$date ?></p>
 						<pre class="announcement" style="white-space: pre-wrap; word-wrap: normal;">

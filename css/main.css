@@ -1,6 +1,7 @@
 *{
 	margin: 0;
 	padding: 0;
+	font-family: 'Raleway', sans-serif;
 }
 
 /**Generic Color Class**/
@@ -11,7 +12,7 @@
 }
 
 .darknav{
-	background-color:#205cbc;
+	background-color:#1c73ff;
 }
 
 .paddy{
@@ -324,7 +325,6 @@ div.panel {
 }
 
 .userDashSectionHeader{
-	font-weight: bold; 
 	font-family:tahoma; 
 	font-size:30px; 
 	padding-left:20px; 
