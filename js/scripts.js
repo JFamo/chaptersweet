@@ -311,9 +311,18 @@ function openNav() {
 }
 
 function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("mySidenav").style.width = "0px";
     document.getElementById("pageBody").style.marginLeft = "0";
     document.getElementById("openNavButton").style.paddingLeft = "0";
+}
+
+function toggleNav(){
+  if(document.getElementById("mySidenav").style.width == "0px"){
+    openNav();
+  }
+  else{
+    closeNav();
+  }
 }
 
 //enable popovers

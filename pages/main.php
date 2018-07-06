@@ -249,7 +249,7 @@ $blockedPages = $perm;
 <!--Spooky bar at the top-->
 		<nav class="navbar navbar-dark darknav navbar-expand-sm">
 	  	<div class="container-fluid">
-		    <span id="openNavButton" style="font-size:30px;cursor:pointer;color:white;padding-right:30px;" onclick="openNav()">&#9776;</span>
+		    <span id="openNavButton" style="font-size:30px;cursor:pointer;color:white;padding-right:30px;" onclick="toggleNav()">&#9776;</span>
 		    <div class="ml-auto navbar-nav">
 		    	<a class="nav-item nav-link active" href="../php/logout.php">Logout</a>
 		    </div>
@@ -333,9 +333,50 @@ $blockedPages = $perm;
 			</nav>
 		</div>
 		<div id="pageBody">
-		<p class="display-4" style="padding-left:20px;">
-			Hello, <?php echo(substr($name, 0, strpos($name," "))); ?>
-		</p>
+			<div class="row">
+				<div class="col-10">
+					<p class="display-4" style="padding-left:20px;">
+						Hello, <?php echo(substr($name, 0, strpos($name," "))); ?>
+					</p>
+				</div>
+				<div class="col-2">
+					<button type="button" class="btn btn-link openHelpModal" data-toggle="modal" data-target="#helpModal">
+					  Help
+					</button>
+
+					<!-- Help modal -->
+					<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalTitle" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="helpModalTitle">About Your Dashboard</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        Your dashboard provides many options to help manage your account and status within your events and chapter.
+					        <hr>
+					        <b>Activity Log</b><br>
+					        If you are an adviser, you will see at the top of your page an activity log with recent activity from your chapter. This log fills with activities each time someone in your chapter performs a significant function. The 'Clear' button in the top right will remove all entries from the log. There is no way to undo this or to retrieve cleared information. Alternatively, the 'X' icons next to each entry can be used to remove individual entries. It is recommended to keep your log cleared for ease of use. If you have acknowleged some action as legitimate and unharmful, you should probably delete it.
+					        <hr>
+					        <b>My Account</b><br>
+					        Your account section contains helpful information about your account. Your ID number is your TSA ID number for the present conference. It is set by your adviser on the 'My Chapter' page, under 'User Options'. Your balance is your current fundraising account balance. Contact your adviser or treasurer if you find this information inaccurate - it is set by your chapter officers/adviser on the 'Treasurer' page. Your grade and email are those you entered during registration. If these are inaccurate, contact your adviser to have your account deleted and re-created. Your rank is your current administrative level in your chapter. If you are a member, you have basic permissions. An officer has advanced permissions, which are determined by your adviser within the 'Adviser Settings' page. An adviser is the highest rank in a chapter, reserved for the account which created the chapter.
+					        <hr>
+					        <b>My Next Conference</b><br>
+					        In this window is a countdown to your next conference, counting down until a time determined by your adviser. Be proactive!
+					        <hr>
+					        <b>My Events</b><br>
+					        This section contains a listing of all of your events. These are pulled from the 'Event Selection' page. If you wish to add more events, see the 'Event Selection' page. If you have signed up for events you do not wish to be in, click the 'Drop Event' button, choose 'Yes' to confirm, and click 'Drop'. Advisers can see when you pick up or drop events. Tasks are also available on this section; they are to-do's shared with your whole team. Click 'New Task' to create one, and enter a short description of that task (5-20 characters). It will then appear under that event and to your whole team. Clicking the checkbox will mark a task as done, as will un-checking it mark that task as incomplete. Advisers can see your tasks and whether or not they are complete, which is a valuable tool for advisers to monitor their chapter's event progress. The 'Delete Task' option allows deleting tasks. Select the desired task to delete in the dropdown, and click 'Delete'. 
+					        <hr>
+					        <b>Announcements</b><br>
+					        This section is a listing of announcements from both chapter officers (primarily the reporter) and your adviser. Announcements are written on the 'Reporter' page.
+					      </div>
+					    </div>
+					  </div>
+					</div>
+				</div>
+			</div>
 		<center>
 
 			<div class="container-fluid">
@@ -511,7 +552,7 @@ $blockedPages = $perm;
 									<input type="hidden" name="thisTeam" id="thisTeam" value="<?php echo $team ?>" />
 									Task Name:<input type="text" id="name" name="name" style="width:125px" required />
 									<br>
-									<input type="submit" value="Create" name="newTask" style="font-family:tahoma;" id="newTask"/>
+									<input type="submit" value="Create" class="btn btn-link" name="newTask" style="font-family:tahoma;" id="newTask"/>
 								</form>'>New Task</a>
 							<br>
 							<a style="cursor:pointer;" class="text-danger" data-placement="bottom" title="Delete Task" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
@@ -537,7 +578,7 @@ $blockedPages = $perm;
                                                                         		?>
                                                                         </select>
 									<br>
-									<input type="submit" value="Drop" name="dropTask" style="font-family:tahoma;" id="dropTask"/>
+									<input type="submit" value="Delete" class="btn btn-link text-danger" name="dropTask" style="font-family:tahoma;" id="dropTask"/>
 								</form>'>Delete Task</a>
 							<br>
 							<a style="cursor:pointer;" class="text-danger" data-placement="bottom" title="Drop <?php echo $event ?>" data-html=true data-toggle="popover" data-content='<form method="post" style="font-family:tahoma;">
@@ -548,7 +589,7 @@ $blockedPages = $perm;
                                                                         	<option value="yes">Yes</option>
                                                                         </select>
 									<br>
-									<input type="submit" value="Drop" name="dropEvent" style="font-family:tahoma;" id="dropEvent"/>
+									<input type="submit" value="Drop" class="btn btn-link text-danger" name="dropEvent" style="font-family:tahoma;" id="dropEvent"/>
 								</form>'>Drop Event</a>
 						<?php 
 
@@ -641,7 +682,7 @@ $blockedPages = $perm;
 				else{
 					while(list($id, $title, $body, $poster, $date) = mysqli_fetch_array($result)){
 						?>
-
+						<div class="announcementDiv">
 						<p style="font-family:tahoma; font-size:24px; padding-left:5%; padding-top:10px;"><?php echo "".$title ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "By : ".$poster ?></p>
 						<p style="font-size:14px; font-family:tahoma; padding-left:5%; padding-top:10px;"><?php echo "".$date ?></p>
@@ -650,6 +691,7 @@ $blockedPages = $perm;
 <?php echo "".$body ?>
 						</p>
 						</pre>
+						</div>
 						
 						<?php
 					}
