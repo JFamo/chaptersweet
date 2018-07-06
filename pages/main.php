@@ -442,55 +442,102 @@ $blockedPages = $perm;
 			</div>
 			<?php } ?>
 			<div class="col-sm-6" style="padding:0; text-align:left;">
-			<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
+			<div style="height:auto; min-height:0px; margin-bottom:15px; padding-left:20px;" class="userDashSection">
 				<p class="userDashSectionHeader">
 					My Account
 				</p>
-				<p class="bodyTextType1">
-					<b>ID Number:</b> <?php echo $myid ?>
-					<br><br>
-					<b>Balance:</b> <?php 
-						require('../php/connect.php');
+				<div class="row">
+					<div class="col-4">
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							ID Number
+						</p>
+						<p style="font-size:50px; padding-top: 0; margin-top: 0;">
+							<?php echo $myid ?>
+						</p>
+					</div>
+					<div class="col-4">
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							Balance
+						</p>
+						<p style="font-size:50px; padding-top: 0; margin-top: 0;">
+							<?php 
+							require('../php/connect.php');
 
-						//get user's balance
-						//I copied this from email so variable names are weird
-						$emailquery="SELECT balance FROM users WHERE username='$username' AND fullname='$name' AND chapter='$chapter'";
+							//get user's balance
+							//I copied this from email so variable names are weird
+							$emailquery="SELECT balance FROM users WHERE username='$username' AND fullname='$name' AND chapter='$chapter'";
 
-						$emailresult = mysqli_query($link,$emailquery);
+							$emailresult = mysqli_query($link,$emailquery);
 
-						if (!$emailresult){
-							die('Error: ' . mysqli_error($link));
-						}
+							if (!$emailresult){
+								die('Error: ' . mysqli_error($link));
+							}
 
-						list($email) = mysqli_fetch_array($emailresult); 
+							list($email) = mysqli_fetch_array($emailresult); 
 
-						echo $email;
+							echo "$".$email;
 
-						?>
-					<br><br>
-					<b>Grade:</b> <?php echo $grade ?>
-					<br><br>
-					<b>Email:</b> <?php 
-						require('../php/connect.php');
+							?>
+						</p>
+					</div>
+					<div class="col-4" >
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							Grade
+						</p>
+						<p style="font-size:50px; padding-top: 0; margin-top: 0;">
+							<?php echo $grade ?>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							Email
+						</p>
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
+							<?php 
+							require('../php/connect.php');
 
-						//get user's email
-						$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name' AND chapter='$chapter'";
+							//get user's email
+							$emailquery="SELECT email FROM users WHERE username='$username' AND fullname='$name' AND chapter='$chapter'";
 
-						$emailresult = mysqli_query($link,$emailquery);
+							$emailresult = mysqli_query($link,$emailquery);
 
-						if (!$emailresult){
-							die('Error: ' . mysqli_error($link));
-						}
+							if (!$emailresult){
+								die('Error: ' . mysqli_error($link));
+							}
 
-						list($email) = mysqli_fetch_array($emailresult); 
+							list($email) = mysqli_fetch_array($emailresult); 
 
-						//$email = unserialize($email);
-						echo $email;
+							//$email = unserialize($email);
+							echo $email;
 
-						?>
-					<br><br>
-					<b>Rank:</b> <?php echo ucwords($rank) ?>
-				</p>
+							?>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-8">
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							Name
+						</p>
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
+							<?php 
+							
+							echo $_SESSION['fullname'];
+
+							?>
+						</p>
+					</div>
+					<div class="col-4">
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							Rank
+						</p>
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
+							<?php echo ucwords($rank) ?>
+						</p>
+					</div>
+				</div>
 			</div>
 			<div style="height:auto; min-height:0px;" class="userDashSection">
 			<div style="padding-left: 20px;">
