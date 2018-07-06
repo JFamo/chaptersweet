@@ -384,82 +384,24 @@ $blockedPages = $perm;
 
 			<div class="container-fluid">
 			<div class="row no-gutter" style="margin: 0; padding-bottom:15px;">
-			<?php if($rank == 'admin' || $rank == 'adviser'){ ?>
-			<div class="col-sm-12" style="padding:0; text-align:left;">
-				<div style="height:auto; min-height:0px; margin-bottom:15px; min-width:97.5%;" class="userDashSection">
-				<form method="post" style="float:right; padding-right:10px; padding-top:10px;">
-					<input type="submit" name="clearlog" class="btn btn-danger" value="Clear">
-				</form>
-				<p class="userDashSectionHeader">
-					Activity Log
-				</p>
-				<div class="container-fluid">
-				<div class="row">
-					<div class="col-sm-3">
-						<b><p class="bodyTextType1">User</p></b>
-					</div>
-					<div class="col-sm-5">
-						<b><p class="bodyTextType1">Activity</p></b>
-					</div>
-					<div class="col-sm-3">
-						<b><p class="bodyTextType1">Date</p></b>
-					</div>
-					<div class="col-sm-1">
-					</div>
-				</div>
-				
-				<?php
-				require('../php/connect.php');
-
-				//get activity log
-				$query="SELECT id, user, activity, date FROM activity WHERE chapter='$chapter' ORDER BY date DESC";
-				
-				$result = mysqli_query($link,$query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}
-
-				//check for users with no events
-				if(mysqli_num_rows($result) == 0){
-					echo "<center><p style='font-family:tahoma; font-size:14px; padding-top:10px; padding-bottom:10px;'><b>No New Activity</b></p></center>";
-				}
-
-				while(list($id, $us, $ac, $dt) = mysqli_fetch_array($result)){
-					echo '<div class="row"><div class="col-sm-3">';
-					echo $us;
-					echo '</div><div class="col-sm-5">';
-					echo $ac;
-					echo '</div><div class="col-sm-3">';
-					echo $dt;
-					echo '</div><div class="col-sm-1">';
-					echo '<form method="post"><input type="hidden" name="activityid" value="' . $id . '";><input type="submit" class="close btn btn-link" value="&times";></form>';
-					echo '</div></div><br>';
-				}
-				?>
-				</div>
-				</div>
-			</div>
-			<?php } ?>
-			<div class="col-sm-6" style="padding:0; text-align:left;">
-			<div style="height:auto; min-height:0px; margin-bottom:15px; padding-left:20px;" class="userDashSection">
+			<div style="height:auto; min-height:0px; margin-bottom:15px; overflow:hidden; min-width:97.5%;" class="userDashSection">
 				<p class="userDashSectionHeader">
 					My Account
 				</p>
-				<div class="row">
-					<div class="col-4">
+				<div class="row" style="padding-left:20px;">
+					<div class="col-sm-3">
 						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
-							ID Number
+							ID Number <img src="../imgs/acc-id.png" height="20px" width="20px">
 						</p>
-						<p style="font-size:50px; padding-top: 0; margin-top: 0;">
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
 							<?php echo $myid ?>
 						</p>
 					</div>
-					<div class="col-4">
+					<div class="col-sm-3">
 						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
-							Balance
+							Balance <img src="../imgs/acc-balance.png" height="20px" width="20px">
 						</p>
-						<p style="font-size:50px; padding-top: 0; margin-top: 0;">
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
 							<?php 
 							require('../php/connect.php');
 
@@ -480,19 +422,39 @@ $blockedPages = $perm;
 							?>
 						</p>
 					</div>
-					<div class="col-4" >
+					<div class="col-sm-3" >
 						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
-							Grade
+							Grade <img src="../imgs/acc-grade.png" height="20px" width="20px">
 						</p>
-						<p style="font-size:50px; padding-top: 0; margin-top: 0;">
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
 							<?php echo $grade ?>
 						</p>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
+					<div class="col-sm-3">
 						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
-							Email
+							Rank <img src="../imgs/acc-rank.png" height="20px" width="20px">
+						</p>
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
+							<?php echo ucwords($rank) ?>
+						</p>
+					</div>
+				</div>
+				<div class="row"  style="padding-left:20px;">
+					<div class="col-sm-4">
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							Name <img src="../imgs/acc-name.png" height="20px" width="20px">
+						</p>
+						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
+							<?php 
+							
+							echo $_SESSION['fullname'];
+
+							?>
+						</p>
+					</div>
+					<div class="col-sm-8">
+						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
+							Email <img src="../imgs/acc-email.png" height="20px" width="20px">
 						</p>
 						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
 							<?php 
@@ -516,34 +478,13 @@ $blockedPages = $perm;
 						</p>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-8">
-						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
-							Name
-						</p>
-						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
-							<?php 
-							
-							echo $_SESSION['fullname'];
-
-							?>
-						</p>
-					</div>
-					<div class="col-4">
-						<p style="padding-bottom: 0; margin-bottom: 0; font-size:14px;">
-							Rank
-						</p>
-						<p style="font-size:35px; padding-top: 0; margin-top: 0;">
-							<?php echo ucwords($rank) ?>
-						</p>
-					</div>
-				</div>
 			</div>
-			<div style="height:auto; min-height:0px;" class="userDashSection">
+			<div class="col-sm-6" style="padding:0; text-align:left;">
+			<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
+			<p class="userDashSectionHeader">
+				My Events
+			</p>
 			<div style="padding-left: 20px;">
-				<p class="userDashSectionHeader">
-					My Events
-				</p>
 				<?php
 				if(isset($fmsg)){
 				?>
@@ -581,7 +522,7 @@ $blockedPages = $perm;
 
 					//in a table, of course
 					echo "<table>";
-					echo "<tr style='height: 225px; vertical-align: top;'>";
+					echo "<tr style='height: auto; vertical-align: top;'>";
 
 					while(list($event, $team, $teamid) = mysqli_fetch_array($result)){
 
@@ -695,6 +636,61 @@ $blockedPages = $perm;
 				?>
 			</div>
 			</div>
+			<?php if($rank == 'admin' || $rank == 'adviser'){ ?>
+			<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
+				<form method="post" style="float:right; padding-right:10px; padding-top:10px;">
+					<input type="submit" name="clearlog" class="btn btn-danger" value="Clear">
+				</form>
+				<p class="userDashSectionHeader">
+					Activity Log
+				</p>
+				<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-3">
+						<b><p class="bodyTextType1">User</p></b>
+					</div>
+					<div class="col-sm-5">
+						<b><p class="bodyTextType1">Activity</p></b>
+					</div>
+					<div class="col-sm-3">
+						<b><p class="bodyTextType1">Date</p></b>
+					</div>
+					<div class="col-sm-1">
+					</div>
+				</div>
+				
+				<?php
+				require('../php/connect.php');
+
+				//get activity log
+				$query="SELECT id, user, activity, date FROM activity WHERE chapter='$chapter' ORDER BY date DESC";
+				
+				$result = mysqli_query($link,$query);
+
+				if (!$result){
+					die('Error: ' . mysqli_error($link));
+				}
+
+				//check for users with no events
+				if(mysqli_num_rows($result) == 0){
+					echo "<center><p style='font-family:tahoma; font-size:14px; padding-top:10px; padding-bottom:10px;'><b>No New Activity</b></p></center>";
+				}
+
+				while(list($id, $us, $ac, $dt) = mysqli_fetch_array($result)){
+					echo '<div class="row"><div class="col-sm-3">';
+					echo $us;
+					echo '</div><div class="col-sm-5">';
+					echo $ac;
+					echo '</div><div class="col-sm-3">';
+					echo $dt;
+					echo '</div><div class="col-sm-1">';
+					echo '<form method="post"><input type="hidden" name="activityid" value="' . $id . '";><input type="submit" class="close btn btn-link" value="&times";></form>';
+					echo '</div></div><br>';
+				}
+				?>
+				</div>
+			</div>
+			<?php } ?>
 			</div>
 			<div class="col-sm-6" style="padding:0; text-align:left;">
 			<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
@@ -703,7 +699,8 @@ $blockedPages = $perm;
 				</p>
 				<center>
 				<br><br>
-				<iframe src="http://free.timeanddate.com/countdown/i60zitdg/n25/cf107/cm0/cu5/ct0/cs0/ca0/cr0/ss0/cacf00/cpc000/pcfff/tc66c/fs100/szw320/szh135/tatTime%20Until%20Nationals/tac000/tptTime%20Since%20Nationals/tpc000/mac000/mpc000/iso2018-06-22T00:00:00" allowTransparency="true" frameborder="0" width="320" height="135"></iframe>
+				<iframe src="http://free.timeanddate.com/countdown/i6bdo5e4/n4561/cf100/cm0/cu5/ct0/cs0/ca0/cr0/ss0/cacf00/cpc000/pcfff/tc66c/fs100/szw320/szh135/tatTime%20Until%20School%20Starts/tac000/tptTime%20Since%20School%20Started/tpc000/mac000/mpc000/iso2018-08-28T07:45:00" allowTransparency="true" frameborder="0" width="320" height="135"></iframe>
+
 
 
 				<br><br>
