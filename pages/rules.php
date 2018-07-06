@@ -254,7 +254,7 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 				
 				<div class="adminDataSection">
 					<p class="userDashSectionHeader" style="padding-left:0px;">Browse</p>
-					<table style="width:80%; height:80%;">
+					<table style="width:90%; height:80%;">
 
 					<?php
 

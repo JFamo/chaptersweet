@@ -226,87 +226,100 @@ if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 			?>
 
 				<?php if(($rank == "officer" && ($officerPerm == "all" || $officerPerm == "minutesFiles" || $officerPerm == "minutesAnnouncements" || $officerPerm == "minutes")) || $rank == "admin" || $rank == "adviser"){ ?>
-					<form method="post" enctype="multipart/form-data" class="fileForm darknav">
-						<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-						<span><input style="font-size:16px; border:1px solid black;" name="userfile" type="file" id="userfile"></span>
-						<span>Who Can View :
-						<select id="view" name="view">
-							<option value="all">All</option>
-							<option value="officer">Officers Only</option>
-						</select></span>
-						<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="uploadMinutes" type="submit" class="box" id="uploadMinutes" value="Upload"></span>
-					</form>
+					<div class="adminDataSection">
+						<p class="userDashSectionHeader" style="padding-left:0px;">Upload</p>
+						<form method="post" enctype="multipart/form-data" class="fileForm">
+						  <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+						  <div class="form-row">
+						    <div class="col-4">
+						      <input style="font-size:16px;" name="userfile" type="file" id="userfile">
+						    </div>
+						    <div class="col-4">
+						        <small>Who Can View :</small>
+								<select id="view" name="view" class="form-control form-control-sm">
+									<option value="all">All</option>
+									<option value="officer">Officers Only</option>
+								</select>
+						    </div>
+						    <div class="col-4">
+						    <input name="uploadMinutes" type="submit" class="btn btn-primary" id="uploadMinutes" value="Upload">
+						    </div>
+						  </div>
+						</form>
+					</div>
 				<?php } ?>
 
 				<br>
-				<br>
+				
+				<div class="adminDataSection">
+					<p class="userDashSectionHeader" style="padding-left:0px;">Browse</p>
+					<table style="width:90%; height:80%;">
 
-				<table style="width:80%; height:80%;">
+					<?php
 
-				<?php
+					require('../php/connect.php');
 
-				require('../php/connect.php');
+					$query="SELECT id, name, date, view, poster FROM minutes WHERE class='minutes' AND chapter='$chapter'";
 
-				$query="SELECT id, name, date, view, poster FROM minutes WHERE class='minutes' AND chapter='$chapter'";
+					$result = mysqli_query($link, $query);
 
-				$result = mysqli_query($link, $query);
-
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}
-
-				$doMemberSkip = 0;
-
-				if(mysqli_num_rows($result) == 0){
-					echo "No Minutes Found!<br>";
-				}
-				else{
-					//FOR MEMBERS - check if all available files are hidden
-					if($rank == "member"){
-
-						$viewLevel = "all";
-
-						$query2="SELECT id, view FROM minutes WHERE view='$viewLevel' AND chapter='$chapter'";
-
-						$result2 = mysqli_query($link, $query2);
-
-						if (!$result2){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						if(mysqli_num_rows($result2) == 0){
-							$doMemberSkip = 1;
-						}
-
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
 					}
 
-					if($doMemberSkip == 1){
-							echo "No Minutes Found!<br>";
+					$doMemberSkip = 0;
+
+					if(mysqli_num_rows($result) == 0){
+						echo "No Minutes Found!<br>";
 					}
 					else{
-						while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
-							if(($view == "officer" && ($rank == "officer" || $rank == "admin" || $rank == "adviser")) || ($view == "all")){
-								?>
-							<tr>
-							<td><a class="minutesLink text-primary" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left;"><?php echo "".$name ?></a></td>
-							<?php
-							if($view == "officer"){ ?>
-									<td><p style="float:left;">Private</p></td>
-								<?php } ?>
-							<td><p style="float:right;"><?php echo "".$date ?></p></td>
-							<td><p style="float:right;"><?php echo "".$poster ?></p></td>
-							</tr>
-							<?php
+						//FOR MEMBERS - check if all available files are hidden
+						if($rank == "member"){
+
+							$viewLevel = "all";
+
+							$query2="SELECT id, view FROM minutes WHERE view='$viewLevel' AND chapter='$chapter'";
+
+							$result2 = mysqli_query($link, $query2);
+
+							if (!$result2){
+								die('Error: ' . mysqli_error($link));
+							}
+
+							if(mysqli_num_rows($result2) == 0){
+								$doMemberSkip = 1;
+							}
+
+						}
+
+						if($doMemberSkip == 1){
+								echo "No Minutes Found!<br>";
+						}
+						else{
+							while(list($id, $name, $date, $view, $poster) = mysqli_fetch_array($result)){
+								if(($view == "officer" && ($rank == "officer" || $rank == "admin" || $rank == "adviser")) || ($view == "all")){
+									?>
+								<tr>
+								<td><a class="minutesLink text-primary" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left;"><?php echo "".$name ?></a></td>
+								<?php
+								if($view == "officer"){ ?>
+										<td><p style="float:left;">Private</p></td>
+									<?php } ?>
+								<td><p style="float:right;"><?php echo "".$date ?></p></td>
+								<td><p style="float:right;"><?php echo "".$poster ?></p></td>
+								</tr>
+								<?php
+								}
 							}
 						}
 					}
-				}
-						
-				mysqli_close($link);
+							
+					mysqli_close($link);
 
-				?>
+					?>
 
-				</table>
+					</table>
+				</div>
 				
 			</center>
 
