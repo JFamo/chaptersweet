@@ -304,7 +304,10 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 									<?php
 										if($view == "officer"){
 									?>
-										<p style="float:left;">&#x1F512;</p>
+										<p id="privateTooltip" style="float:left;cursor:default;" data-toggle="tooltip" data-placement="bottom" title="Available to Officers Only">&#x1F512;</p>
+										<script>
+											$('#privateTooltip').tooltip();
+										</script>
 									<?php } ?>
 									<a class="text-primary minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left;"><?php echo "".$name ?></a>
 								</td>
