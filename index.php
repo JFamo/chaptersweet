@@ -312,7 +312,7 @@ if(isset($_SESSION['username'])){
 	<center>
 
 	<p class="bodyTextType1">
-		Chaptersweet was created by Team T1285, All Rights Reserved, 2018.
+		Chaptersweet was created by Joshua Famous, All Rights Reserved, 2018.
 	</p>
 
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#regisModal">Register</button>
@@ -465,7 +465,7 @@ if(isset($_SESSION['username'])){
 <!--Less spooky stuff at the bottom-->
 	<footer class="darknav" style="height:8vh;"> 
 		<center><p class="bodyTextType2">
-			Copyright Team T1285 2018
+			Copyright Joshua Famous 2018
 		</p></center>
 	</footer>
 </body>

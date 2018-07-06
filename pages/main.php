@@ -262,7 +262,7 @@ $blockedPages = $perm;
 			<nav style="width:100%;" class="navbar navbar-dark darknav">
 			  <div class="container" style="padding-left:0px;">
 			  <ul class="nav navbar-nav align-top">
-			   <a class="navbar-brand icon" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
+			   <a class="navbar-brand icon" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 2){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
 			   <li class="nav-item active"><a class="nav-link" href="#">Dashboard</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
@@ -711,7 +711,7 @@ $blockedPages = $perm;
 <!--Less spooky stuff at the bottom-->
 	<footer class="darknav">
 		<center><p class="bodyTextType2">
-			Copyright T1285 2018
+			Copyright Joshua Famous 2018
 		</p></center>
 		<script src="../js/scripts.js" type="text/javascript"></script>
 	</footer>

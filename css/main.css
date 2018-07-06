@@ -28,6 +28,7 @@
 	padding-top:15px; 
 	padding-bottom:15px;
 	margin-left:250px;
+	min-height:100vh;
 }
 
 #openNavButton{
