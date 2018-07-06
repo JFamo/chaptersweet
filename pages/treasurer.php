@@ -32,6 +32,44 @@ function getChapterBalance()
 	return $returnValue;
 }
 
+//function to get chapter total expenses
+function getChapterExpenses()
+{
+	$returnValue = 0;
+	$chapter = $_SESSION['chapter'];
+	require('../php/connect.php');
+	$transQ = "SELECT personfrom, amount FROM transactions WHERE chapter='$chapter'";
+	$transR = mysqli_query($link, $transQ);
+	if (!$transR){
+		die('Error: ' . mysqli_error($link));
+	}
+	while($row = mysqli_fetch_array($transR)){
+		if($row['personfrom'] == 'Chapter'){
+			$returnValue += $row['amount'];
+		}
+	}
+	return $returnValue;
+}
+
+//function to get chapter total income
+function getChapterIncome()
+{
+	$returnValue = 0;
+	$chapter = $_SESSION['chapter'];
+	require('../php/connect.php');
+	$transQ = "SELECT personto, amount FROM transactions WHERE chapter='$chapter'";
+	$transR = mysqli_query($link, $transQ);
+	if (!$transR){
+		die('Error: ' . mysqli_error($link));
+	}
+	while($row = mysqli_fetch_array($transR)){
+		if($row['personto'] == 'Chapter'){
+			$returnValue += $row['amount'];
+		}
+	}
+	return $returnValue;
+}
+
 //INFO POSTING
 $query="SELECT value FROM settings WHERE name='officerInfoPermission' AND chapter='$chapter'";
 
@@ -295,7 +333,6 @@ if(isset($_POST['amount'])){
 				<?php
 				}
 			?>
-				<a class="text-primary" id="downloadlink" href="../php/ledger.php">Download Ledger</a><br><br>
 
 				<p style="display:none;" id='auditText'></p>
 				
@@ -464,6 +501,36 @@ if(isset($_POST['amount'])){
 							<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Balance</p>
 							<p class="text-primary" style="font-size:30px; padding-top:10px; margin-bottom:0px;"><?php echo "$" . number_format((float)getChapterBalance(), 2, '.', ''); ?></p>
 							<p style="font-size:12px; padding-top:0px; padding-bottom: 15px;">Current Balance</p>
+						</div>
+					</div>
+				</div>
+
+				<br>
+
+				<div class="row" style="width:90%; padding:0; margin:0;">
+					<div class="col-4"  style="padding:0; margin:0; text-align:left;">
+						<div class="adminDataSection" style="padding-left:15px; float:left; width:95%;">
+							<p class="userDashSectionHeader" style="padding-left:0px;">Ledger</p>
+							<a style="font-size:20px; padding-bottom:0px; margin-bottom: 0px;" class="text-primary" id="downloadlink" href="../php/ledger.php">Download Ledger</a>
+							<p style="font-size:12px; padding-top:0px; padding-bottom: 15px;">as Excel Spreadsheet</p>
+						</div>
+					</div>
+					<div class="col-8"  style="padding:0; margin:0; text-align:left;">
+						<div class="adminDataSection" style="padding-left:15px; width:95%; float:right; padding-bottom: 20px;">
+							<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Account</p>
+							<div class="progress" style="width:95%">
+							  <div class="progress-bar bg-success" role="progressbar" aria-valuenow="<?php echo getChapterIncome(); ?>"
+							  aria-valuemin="0" aria-valuemax="<?php echo getChapterExpenses() + getChapterIncome(); ?>" style="width:<?php echo (getChapterIncome() / (getChapterExpenses() + getChapterIncome())) * 100; ?>%">
+							    Income ($<?php echo number_format((float)getChapterIncome(), 2, '.', ''); ?>)
+							  </div>
+							</div>
+							<br>
+							<div class="progress" style="width:95%">
+							  <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="<?php echo getChapterExpenses(); ?>"
+							  aria-valuemin="0" aria-valuemax="<?php echo getChapterExpenses() + getChapterIncome(); ?>" style="width:<?php echo (getChapterExpenses() / (getChapterExpenses() + getChapterIncome())) * 100; ?>%">
+							    Expenses ($<?php echo number_format((float)getChapterExpenses(), 2, '.', ''); ?>)
+							  </div>
+							</div>
 						</div>
 					</div>
 				</div>
