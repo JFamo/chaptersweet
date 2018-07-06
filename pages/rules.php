@@ -111,7 +111,7 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 			<nav style="width:100%;" class="navbar navbar-dark darknav">
 			  <div class="container" style="padding-left:0px;">
 			  <ul class="nav navbar-nav align-top">
-			   <a class="navbar-brand icon" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
+			   <a class="navbar-brand icon" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 2){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
 			   <li class="nav-item"><a class="nav-link" href="../index.php">Dashboard</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){

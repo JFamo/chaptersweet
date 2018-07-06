@@ -319,119 +319,201 @@ if(isset($_POST['amount'])){
 				document.getElementById('downloadlink').href = makeTextFile(auditTx);
 				</script>-->
 
-				<form method="post" class="fileForm darknav">
-					<span>$Amount : <input style="font-size:16px; border:1px solid black;" name="amount" type="number" id="amount" value="<?php echo isset($_POST['amount']) ? $_POST['amount'] : '' ?>"></span>
-					<span>From :
-					<!--Give each user as an option-->
-					<select id="personfrom" name="personfrom">
-						<option value="income">Income</option>
-						<option value="chapter">Chapter</option>
-						<?php
+				<div class="adminDataSection">
+					<p class="userDashSectionHeader" style="padding-left:0px;">Transact</p>
+					<form method="post" enctype="multipart/form-data" class="fileForm">
+					  <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+					  <div class="form-row">
+					    <div class="col-4">
+					      <small>$ Amount</small>
+					      <input name="amount" type="number" id="amount" value="<?php echo isset($_POST['amount']) ? $_POST['amount'] : '' ?>">
+					    </div>
+					    <div class="col-4">
+					        <small>From</small><br>
+							<!--Give each user as an option-->
+							<select id="personfrom" name="personfrom">
+								<option value="income">Income</option>
+								<option value="chapter">Chapter</option>
+								<?php
 
-						require('../php/connect.php');
+								require('../php/connect.php');
 
-						$query="SELECT id, fullname, rank FROM users WHERE chapter='$chapter' ORDER BY fullname ASC";
+								$query="SELECT id, fullname, rank FROM users WHERE chapter='$chapter' ORDER BY fullname ASC";
 
-						$result = mysqli_query($link, $query);
+								$result = mysqli_query($link, $query);
 
-						if (!$result){
-							die('Error: ' . mysqli_error($link));
-						}	
+								if (!$result){
+									die('Error: ' . mysqli_error($link));
+								}	
 
-						while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
-							if($personrank != "admin"){
-							?>
+								while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
+									if($personrank != "admin"){
+									?>
 
-							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
-							
-							<?php
-							}
-						}
-								
-						mysqli_close($link);
+									<option value="<?php echo $id ?>"><?php echo $personname ?></option>
+									
+									<?php
+									}
+								}
+										
+								mysqli_close($link);
 
-						?>
-					</select></span>
-					<span>To :
-					<!--Give each user as an option-->
-					<select id="personto" name="personto">
-						<option value="expense">Expense</option>
-						<option value="chapter">Chapter</option>
-						<?php
+								?>
+							</select>
+					    </div>
+					    <div class="col-4">
+					    	<small>To</small><br>
+					    	<!--Give each user as an option-->
+							<select id="personto" name="personto">
+								<option value="expense">Expense</option>
+								<option value="chapter">Chapter</option>
+								<?php
 
-						require('../php/connect.php');
+								require('../php/connect.php');
 
-						$query="SELECT id, fullname, rank FROM users WHERE chapter='$chapter' ORDER BY fullname ASC";
+								$query="SELECT id, fullname, rank FROM users WHERE chapter='$chapter' ORDER BY fullname ASC";
 
-						$result = mysqli_query($link, $query);
+								$result = mysqli_query($link, $query);
 
-						if (!$result){
-							die('Error: ' . mysqli_error($link));
-						}	
+								if (!$result){
+									die('Error: ' . mysqli_error($link));
+								}	
 
-						while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
-							if($personrank != "admin"){
-							?>
+								while(list($id, $personname, $personrank) = mysqli_fetch_array($result)){
+									if($personrank != "admin"){
+									?>
 
-							<option value="<?php echo $id ?>"><?php echo $personname ?></option>
-							
-							<?php
-							}
-						}
-								
-						mysqli_close($link);
+									<option value="<?php echo $id ?>"><?php echo $personname ?></option>
+									
+									<?php
+									}
+								}
+										
+								mysqli_close($link);
 
-						?>
-					</select></span>
-					<span>Description : 
-					<input style="font-size:14px; border:1px solid black;" name="description" type="text" id="description" value="<?php echo isset($_POST['description']) ? $_POST['description'] : '' ?>"></span>
-					<span><input class="submitButton" style="width:100px;height:30px;font-size:16px;" name="transact" type="submit" class="box" id="transact" value="Transact"></span>
-				</form>
+								?>
+							</select>
+					    </div>
+					  </div>
+					  <div class="form-row">
+						    <div class="col-8">
+						    	<small>Description</small>
+						    	<input name="description" style="width:100%;" type="text" id="description" value="<?php echo isset($_POST['description']) ? $_POST['description'] : '' ?>">
+						    </div>
+						    <div class="col-4">
+						    	<input name="transact" type="submit" class="btn btn-primary" id="transact" value="Transact">
+						    </div>
+					    </div>
+					</form>
+				</div>
+				
+				<br>
 
-				<br><br>
+				<div class="row" style="width:90%; padding:0; margin:0;">
+					<div class="col-8"  style="padding:0; margin:0; text-align:left;">
+						<div class="adminDataSection" style="padding-left:15px; width:95%; padding-bottom: 20px;">
+							<p class="userDashSectionHeader" style="padding-left:0px;">User Balance Quickview</p>
+								<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+								  <div class="carousel-inner">
+								    <?php
 
-				<b><p style="font-size:14px; font-family:tahoma; padding-top:10px;"><?php echo "Chapter Balance : $" . getChapterBalance(); ?></p></b>
+										require('../php/connect.php');
 
-				<table style="width:80%; height:80%;">
+										$query="SELECT id, fullname, rank, balance FROM users WHERE chapter='$chapter' ORDER BY fullname ASC";
 
-				<?php
+										$result = mysqli_query($link, $query);
 
-				//SECOND THING - TRANSACTIONS
+										if (!$result){
+											die('Error: ' . mysqli_error($link));
+										}
 
-				require('../php/connect.php');
+										$isfirst = true;
 
-				$query="SELECT * FROM transactions WHERE chapter='$chapter' ORDER BY id DESC";
+										while(list($id, $personname, $personrank, $personbalance) = mysqli_fetch_array($result)){
+											if($personrank != "admin"){
+											?>
+											<div class="carousel-item <?php if($isfirst){ echo "active"; } ?>">
+												<div class="innerCarouselText">
+												    <p><?php echo $personname ?></p>
+												    <p><?php echo "$".$personbalance ?></p>
+												</div>
+											</div>
 
-				$result = mysqli_query($link, $query);
+											<?php
+											$isfirst = false;
+											}
+										}
+												
+										mysqli_close($link);
 
-				if (!$result){
-					die('Error: ' . mysqli_error($link));
-				}		
+									?>
+								  </div>
+								  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+								    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								    <span class="sr-only">Previous</span>
+								  </a>
+								  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+								    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+								    <span class="sr-only">Next</span>
+								  </a>
+								</div>
+						</div>
+					</div>
+					<div class="col-4"  style="padding:0; margin:0; text-align:left;">
+						<div class="adminDataSection" style="padding-left:15px; float:right; width:95%;">
+							<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Balance</p>
+							<p class="text-primary" style="font-size:30px; padding-top:10px; margin-bottom:0px;"><?php echo "$" . number_format((float)getChapterBalance(), 2, '.', ''); ?></p>
+							<p style="font-size:12px; padding-top:0px; padding-bottom: 15px;">Current Balance</p>
+						</div>
+					</div>
+				</div>
 
-				if(mysqli_num_rows($result) == 0){
-					echo "No Transactions Found!<br>";
-				}
-				else{
-					while(list($id, $personto, $personfrom, $description, $amount, $date) = mysqli_fetch_array($result)){
-						?>
+				<br>
 
-						<tr>
-							<td><p style="font-size:14px; font-family:tahoma;"><?php echo "From : ".$personfrom ?></p></td>
-							<td><p style="font-size:14px; font-family:tahoma;"><?php echo "To : ".$personto ?></p></td>
-							<td><p style="font-size:14px; font-family:tahoma;"><?php echo "$".$amount ?></p></td>
-							<td><p style="font-size:14px; font-family:tahoma;"><?php echo "On : ".$date ?></p></td>
-						<td><p style="font-size:14px; font-family:tahoma;"><?php echo $description ?></p></td>
-						</tr>
-						
-						<?php
+				<div class="adminDataSection">
+					<p class="userDashSectionHeader" style="padding-left:0px;">Transaction History</p>
+
+					<table style="width:80%; height:80%;">
+
+					<?php
+
+					//SECOND THING - TRANSACTIONS
+
+					require('../php/connect.php');
+
+					$query="SELECT * FROM transactions WHERE chapter='$chapter' ORDER BY id DESC";
+
+					$result = mysqli_query($link, $query);
+
+					if (!$result){
+						die('Error: ' . mysqli_error($link));
+					}		
+
+					if(mysqli_num_rows($result) == 0){
+						echo "No Transactions Found!<br>";
 					}
-				}
-						
-				mysqli_close($link);
+					else{
+						while(list($id, $personto, $personfrom, $description, $amount, $date) = mysqli_fetch_array($result)){
+							?>
 
-				?>
+							<tr class="announcementDiv">
+								<td><p style="font-size:14px; font-family:tahoma;"><?php echo "From : ".$personfrom ?></p></td>
+								<td><p style="font-size:14px; font-family:tahoma;"><?php echo "To : ".$personto ?></p></td>
+								<td><p style="font-size:14px; font-family:tahoma;"><?php echo "$".$amount ?></p></td>
+								<td><p style="font-size:14px; font-family:tahoma;"><?php echo "On : ".$date ?></p></td>
+							<td><p style="font-size:14px; font-family:tahoma;"><?php echo $description ?></p></td>
+							</tr>
+							
+							<?php
+						}
+					}
+							
+					mysqli_close($link);
 
-				</table>
+					?>
+
+					</table>
+				</div>
 
 			</center>
 

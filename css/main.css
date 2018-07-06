@@ -547,3 +547,15 @@ div.panel {
     word-break: keep-all;
     word-wrap: break-word;
 }
+
+.innerCarouselText{
+	padding-left:100px;
+}
+
+.carousel-control-prev-icon {
+	background-image: url("../imgs/arrow_left.png");
+}
+
+.carousel-control-next-icon {
+  background-image: url("../imgs/arrow_right.png");
+}
