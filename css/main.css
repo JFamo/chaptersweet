@@ -30,8 +30,8 @@
 	background-color:#EDF5F8;
 	transition: margin-left .5s;
 	width:100%;
-	padding-right:2%; 
-	padding-left:2%; 
+	padding-right:0%; 
+	padding-left:0%; 
 	padding-top:15px; 
 	padding-bottom:15px;
 	margin-left:250px;
@@ -478,7 +478,7 @@ div.panel {
 }
 
 .adminDataSection{
-	width: 90%;
+	width: 97.5%;
 	border-radius:5px;
 	background-color:white;
 	transition: 0.5s all;

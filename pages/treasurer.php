@@ -449,7 +449,7 @@ if(isset($_POST['amount'])){
 				
 				<br>
 
-				<div class="row" style="width:90%; padding:0; margin:0;">
+				<div class="row" style="width:97.5%; padding:0; margin:0;">
 					<div class="col-8"  style="padding:0; margin:0; text-align:left;">
 						<div class="adminDataSection" style="padding-left:15px; width:97.5%; padding-bottom: 20px;">
 							<p class="userDashSectionHeader" style="padding-left:0px;">User Balance Quickview</p>
@@ -510,7 +510,7 @@ if(isset($_POST['amount'])){
 
 				<br>
 
-				<div class="row" style="width:90%; padding:0; margin:0;">
+				<div class="row" style="width:97.5%; padding:0; margin:0;">
 					<div class="col-4"  style="padding:0; margin:0; text-align:left;">
 						<div class="adminDataSection" style="padding-left:15px; float:left; width:97.5%;">
 							<p class="userDashSectionHeader" style="padding-left:0px;">Ledger</p>
