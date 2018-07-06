@@ -280,8 +280,11 @@ if(isset($_POST['slot'])){
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						Event Selection
+					</p>
+					<p class="" style="padding-left:20px;">
+						Real-Time <span class="text-primary">Event Signup</span>
 					</p>
 				</div>
 				<div class="col-2">

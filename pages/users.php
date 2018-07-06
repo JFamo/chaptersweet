@@ -573,8 +573,11 @@ if(isset($_POST['deleteObligation'])){
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						My Chapter
+					</p>
+					<p class="" style="padding-left:20px;">
+						An Overview of <span class="text-primary">Users</span>
 					</p>
 				</div>
 				<div class="col-2">

@@ -178,8 +178,11 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						Event Rules
+					</p>
+					<p class="" style="padding-left:20px;">
+						Competitive Event <span class="text-primary">Regulations</span>
 					</p>
 				</div>
 				<div class="col-2">

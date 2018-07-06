@@ -148,8 +148,11 @@ if(isset($_POST['scoreValue'])){
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						Parliamentarian
+					</p>
+					<p class="" style="padding-left:20px;">
+						Study Guides and Tests for <span class="text-primary">Chapter Team</span>
 					</p>
 				</div>
 				<div class="col-2">

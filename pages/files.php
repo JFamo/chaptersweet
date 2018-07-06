@@ -177,8 +177,11 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						Files
+					</p>
+					<p class="" style="padding-left:20px;">
+						Important TSA <span class="text-primary">Resources</span>
 					</p>
 				</div>
 				<div class="col-2">

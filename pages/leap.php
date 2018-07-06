@@ -170,8 +170,11 @@ if(isset($_POST['leapevent'])){
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						LEAP Resume
+					</p>
+					<p class="" style="padding-left:20px;">
+						Automatic Generation of <span class="text-primary">LEAP Resumes</span>
 					</p>
 				</div>
 				<div class="col-2">

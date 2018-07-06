@@ -286,8 +286,11 @@ if(isset($_POST['amount'])){
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						Finances
+					</p>
+					<p class="" style="padding-left:20px;">
+						Financial Information for the <span class="text-primary">Treasurer</span>
 					</p>
 				</div>
 				<div class="col-2">

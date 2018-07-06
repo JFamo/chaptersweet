@@ -215,8 +215,11 @@ $articleBody
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
+					<p class="pageHeader" style="padding-left:20px;">
 						Announcements
+					</p>
+					<p class="" style="padding-left:20px;">
+						Important Messages from the <span class="text-primary">Reporter</span>
 					</p>
 				</div>
 				<div class="col-2">
