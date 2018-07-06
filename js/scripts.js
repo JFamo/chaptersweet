@@ -304,6 +304,18 @@ function updateSettings(infoPerm, emailPerm, blockPages, chapterCode, eventpoint
 
 }
 
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("pageBody").style.marginLeft = "250px";
+    document.getElementById("openNavButton").style.paddingLeft = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("pageBody").style.marginLeft = "0";
+    document.getElementById("openNavButton").style.paddingLeft = "0";
+}
+
 //enable popovers
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover({container: 'body'});   

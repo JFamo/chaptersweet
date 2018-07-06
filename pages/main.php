@@ -249,7 +249,7 @@ $blockedPages = $perm;
 <!--Spooky bar at the top-->
 		<nav class="navbar navbar-dark darknav navbar-expand-sm">
 	  	<div class="container-fluid">
-		    <a class="navbar-brand" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
+		    <span id="openNavButton" style="font-size:30px;cursor:pointer;color:white;padding-right:30px;" onclick="openNav()">&#9776;</span>
 		    <div class="ml-auto navbar-nav">
 		    	<a class="nav-item nav-link active" href="../php/logout.php">Logout</a>
 		    </div>
@@ -258,10 +258,11 @@ $blockedPages = $perm;
 <!--Spooky stuff in the middle-->
 	<div class="container-fluid">
 		<div class="row">
-		<div style="padding-right:0; padding-left:0;" class="col-sm-2 darknav">
+		<div id="mySidenav" style="padding-right:0; padding-left:0;" class="sidenav darknav">
 			<nav style="width:100%;" class="navbar navbar-dark darknav">
-			  <div class="container">
+			  <div class="container" style="padding-left:0px;">
 			  <ul class="nav navbar-nav align-top">
+			   <a class="navbar-brand icon" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
 			   <li class="nav-item active"><a class="nav-link" href="#">Dashboard</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
@@ -331,7 +332,7 @@ $blockedPages = $perm;
 			  </div>
 			</nav>
 		</div>
-		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; background-color:#EDF5F8;" class="col-sm-10">
+		<div id="pageBody">
 		<p class="display-4" style="padding-left:20px;">
 			Hello, <?php echo(substr($name, 0, strpos($name," "))); ?>
 		</p>
@@ -663,6 +664,8 @@ $blockedPages = $perm;
 		</div>
 		</center>
 		</div>
+	</div>
+	</div>
 <!--Less spooky stuff at the bottom-->
 	<footer class="darknav">
 		<center><p class="bodyTextType2">
@@ -670,7 +673,6 @@ $blockedPages = $perm;
 		</p></center>
 		<script src="../js/scripts.js" type="text/javascript"></script>
 	</footer>
-	</div>
 </body>
 
 </html>

@@ -19,6 +19,20 @@
 	padding:5% 5% 5% 5%;
 }
 
+#pageBody{
+	background-color:#EDF5F8;
+	transition: margin-left .5s;
+	width:100%;
+	padding-right:2%; 
+	padding-left:2%; 
+	padding-top:15px; 
+	padding-bottom:15px;
+}
+
+#openNavButton{
+	transition: padding-left .5s;
+}
+
 .titleText{
 	color: white;
 	font-weight: bold;
@@ -52,6 +66,7 @@
 	font-family:tahoma;
 	font-style: italic;
 	color: white;
+	margin-bottom:0px;
 }
 
 
@@ -108,19 +123,9 @@ header{
 	text-decoration: none;
 }
 
-
-#contentPane{
-	width: 100%;
-	height: auto;
-	background-color: white;
-	padding-top: 20px; 
-	padding-bottom: 20px;
-	text-align: center;
-}
-
 footer{
 	width: 100%;
-	height: 40px;
+	height: 50px;
 }
 
 .invisiframe{
@@ -307,6 +312,33 @@ div.panel {
 	transform: scale(1);
 }
 
+.icon{
+	padding-bottom:20px;
+}
+
+.nav-item{
+	padding-left:20px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
 .userDashHeader{
 	height: 60px;
 }
@@ -322,6 +354,12 @@ div.panel {
 	height:auto;
 	border-radius: 5px;
 	background-color:white;
+	transition: 0.5s all;
+}
+
+.userDashSection:hover{
+	transform: scale(1.05);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .userDashSectionHeader{
@@ -430,6 +468,12 @@ div.panel {
 	width: 90%;
 	border-radius:5px;
 	background-color:white;
+	transition: 0.5s all;
+}
+
+.adminDataSection:hover{
+	transform: scale(1.05);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .userRow{
