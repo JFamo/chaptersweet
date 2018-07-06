@@ -451,7 +451,7 @@ if(isset($_POST['amount'])){
 
 				<div class="row" style="width:90%; padding:0; margin:0;">
 					<div class="col-8"  style="padding:0; margin:0; text-align:left;">
-						<div class="adminDataSection" style="padding-left:15px; width:95%; padding-bottom: 20px;">
+						<div class="adminDataSection" style="padding-left:15px; width:97.5%; padding-bottom: 20px;">
 							<p class="userDashSectionHeader" style="padding-left:0px;">User Balance Quickview</p>
 								<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 								  <div class="carousel-inner">
@@ -500,7 +500,7 @@ if(isset($_POST['amount'])){
 						</div>
 					</div>
 					<div class="col-4"  style="padding:0; margin:0; text-align:left;">
-						<div class="adminDataSection" style="padding-left:15px; float:right; width:95%;">
+						<div class="adminDataSection" style="padding-left:15px; float:right; width:97.5%;">
 							<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Balance</p>
 							<p class="text-primary" style="font-size:30px; padding-top:10px; margin-bottom:0px;"><?php echo "$" . number_format((float)getChapterBalance(), 2, '.', ''); ?></p>
 							<p style="font-size:12px; padding-top:0px; padding-bottom: 15px;">Current Balance</p>
@@ -512,14 +512,14 @@ if(isset($_POST['amount'])){
 
 				<div class="row" style="width:90%; padding:0; margin:0;">
 					<div class="col-4"  style="padding:0; margin:0; text-align:left;">
-						<div class="adminDataSection" style="padding-left:15px; float:left; width:95%;">
+						<div class="adminDataSection" style="padding-left:15px; float:left; width:97.5%;">
 							<p class="userDashSectionHeader" style="padding-left:0px;">Ledger</p>
 							<a style="font-size:20px; padding-bottom:0px; margin-bottom: 0px;" class="text-primary" id="downloadlink" href="../php/ledger.php">Download Ledger</a>
 							<p style="font-size:12px; padding-top:0px; padding-bottom: 15px;">as Excel Spreadsheet</p>
 						</div>
 					</div>
 					<div class="col-8"  style="padding:0; margin:0; text-align:left;">
-						<div class="adminDataSection" style="padding-left:15px; width:95%; float:right; padding-bottom: 20px;">
+						<div class="adminDataSection" style="padding-left:15px; width:97.5%; float:right; padding-bottom: 20px;">
 							<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Account</p>
 							<div class="progress" style="width:95%">
 							  <div class="progress-bar bg-success" role="progressbar" aria-valuenow="<?php echo getChapterIncome(); ?>"
