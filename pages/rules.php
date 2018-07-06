@@ -85,6 +85,7 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
 	<title>
 		Chapter Sweet
@@ -321,7 +322,7 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 <!--Spooky stuff at the bottom-->
 		<footer class="darknav">
 			<center><p class="bodyTextType2">
-				Copyright T1285 2018
+				Copyright Joshua Famous 2018
 			</p></center>
 		</footer>
 		

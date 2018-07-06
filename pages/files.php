@@ -83,6 +83,7 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
 	<title>
 		Chapter Sweet

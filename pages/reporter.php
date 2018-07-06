@@ -121,6 +121,7 @@ $articleBody
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
 	<title>
 		Chapter Sweet
@@ -133,19 +134,20 @@ $articleBody
 <!--Spooky bar at the top-->
 	<nav class="navbar navbar-dark darknav navbar-expand-sm">
 	  	<div class="container-fluid">
-		   	<a class="navbar-brand" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 'freshman'){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
-		<div class="ml-auto navbar-nav">
-		    	<a class="nav-item nav-link active" href="../php/logout.php">Logout</a>
-		</div>
+		   	<span id="openNavButton" style="font-size:30px;cursor:pointer;color:white;padding-right:30px;" onclick="toggleNav()">&#9776;</span>
+			<div class="ml-auto navbar-nav">
+			    	<a class="nav-item nav-link active" href="../php/logout.php">Logout</a>
+			</div>
 	</div>
 	</nav>
 <!--Spooky stuff in the middle-->
 	<div class="container-fluid">
 		<div class="row">
-		<div style="padding-right:0; padding-left:0;" class="col-sm-2 darknav">
+		<div id="mySidenav" style="padding-right:0; padding-left:0;" class="sidenav darknav">
 			<nav style="width:100%;" class="navbar navbar-dark darknav">
-			  <div class="container">
+			  <div class="container" style="padding-left:0px;">
 			  <ul class="nav navbar-nav align-top">
+			   <a class="navbar-brand icon" href="#"><img src="../imgs/iconImage.png" alt="icon" width="60" height="60">Chapter <?php if($_SESSION['chapter'] == 2){ echo "<i>Fresh</i>"; }else{ echo "Sweet"; } ?></a>
 			   <li class="nav-item"><a class="nav-link" href="../index.php">Dashboard</a></li>
 			   <?php
 				if($rank == "admin" || $rank == "officer" || $rank == "adviser"){
@@ -210,10 +212,39 @@ $articleBody
 			  </div>
 			</nav>
 		</div>
-		<div style="padding-right:0; padding-left:0; padding-top:15px; padding-bottom:15px; overflow:hidden; background-color:#efefef;" class="col-sm-10">
-		<p class="display-4" style="padding-left:20px;">
-			Announcements
-		</p>
+		<div id="pageBody">
+			<div class="row">
+				<div class="col-10">
+					<p class="display-4" style="padding-left:20px;">
+						Announcements
+					</p>
+				</div>
+				<div class="col-2">
+					<button type="button" class="btn btn-link openHelpModal" data-toggle="modal" data-target="#helpModal">
+					  Help
+					</button>
+
+					<!-- Help modal -->
+					<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalTitle" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="helpModalTitle">About Announcements</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        The Announcements page is where officers (primarily the Reporter) and the adviser can send out important information to the chapter.
+					        <hr>
+					        <b>Check Back Later</b><br>
+					        This page's help guide is still being written.
+					      </div>
+					    </div>
+					  </div>
+					</div>
+				</div>
+			</div>
 		<center>
 <!--Spooky stuff closer to the middle-->
 
@@ -265,7 +296,7 @@ $articleBody
 <!--Spooky stuff at the bottom-->
 		<footer class="darknav">
 			<center><p class="bodyTextType2">
-				Copyright T1285 2018
+				Copyright Joshua Famous 2018
 			</p></center>
 		</footer>
 		
