@@ -6,7 +6,7 @@
 
 /**Generic Color Class**/
 .color, header, #subTitleBar, .bigButton, .backButton, .utilityButton, button.accordion, .fakeAccordion, .userDashHeader, .fileForm {
-	background-color: #B60000;
+	
 	/**background-color: #0012b7;**/
 	/**background-color: #007750;**/
 }
@@ -147,15 +147,6 @@ footer{
 	width: 300px;
 	height: 60px;
 	font-size: 20px;
-}
-
-.submitButton{
-	color: black; 
-	font-size: 24px; 
-	font-family: tahoma; 
-	width: 200px; 
-	height: 40px; 
-	font-weight: bold;
 }
 
 .input1{
@@ -387,9 +378,9 @@ div.panel {
 .fileForm{
 	width:80%; 
 	height: 40px;
-	padding-top:10px;
+	padding: 10px 10px 10px 10px;
 	font-size:16px; 
-	color:white; 
+	color:black; 
 	display:table; 
 	table-layout:fixed;
 	font-family: tahoma;
