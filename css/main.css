@@ -222,6 +222,10 @@ footer{
 	color: white;
 }
 
+.eventTable{
+	max-width:100%;
+}
+
 .eventTableCell{
 	border: 1px solid black;
 }

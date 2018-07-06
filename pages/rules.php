@@ -251,9 +251,10 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 						  </div>
 						</form>
 					</div>
-				<?php } ?>
 
-				<br>
+					<br>
+					
+				<?php } ?>
 				
 				<div class="adminDataSection">
 					<p class="userDashSectionHeader" style="padding-left:0px;">Browse</p>

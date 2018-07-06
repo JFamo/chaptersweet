@@ -43,16 +43,16 @@ else{
 					</td></tr></form>';
 			}
 		
-			$outputVar = $outputVar . ' <tr><td></td>';
+			$outputVar = $outputVar . ' <tr style="border:none;"><td></td>';
 	
 			if($team == 0){
-				$outputVar = $outputVar . ' <td style="border:none; colspan="3">' . $name . ' - Qualifier</td>';
+				$outputVar = $outputVar . ' <td style="border:none;" colspan="3">' . $name . ' - Qualifier</td>';
 			}
 			else if($m2 == NULL){
-				$outputVar = $outputVar . ' <td style="border:none; colspan="3">' . $name . ' - Individual</td>';
+				$outputVar = $outputVar . ' <td style="border:none;" colspan="3">' . $name . ' - Individual</td>';
 			}
 			else{
-				$outputVar = $outputVar . ' <td style="border:none; colspan="3">' . $name . ' - Team</td>';
+				$outputVar = $outputVar . ' <td style="border:none;" colspan="3">' . $name . ' - Team</td>';
 			}
 	
 			$outputVar = $outputVar . ' </tr>';
@@ -64,7 +64,7 @@ else{
 		
 		if($team > 0){
 
-			$outputVar = $outputVar . '<tr><td style="min-width:80px; padding-left:10px;">Group '.$team;
+			$outputVar = $outputVar . '<tr style="border:none;"><td style="min-width:40px; padding-left:10px;">T'.$team;
 		
 		}
 
@@ -108,7 +108,7 @@ else{
 				
 				if($memberCheck != null){
 
-					$outputVar = $outputVar . ' <td style="background-color: ' . $cellColor . '; min-width: 150px; height: 30px; border: 2px solid black; padding: 10px 10px 10px 10px;" class="eventTableCell">';
+					$outputVar = $outputVar . ' <td style="background-color: ' . $cellColor . '; min-width: 125px; height: 30px; border: none; outline:1px solid black; padding: 5px 5px 5px 5px;" class="eventTableCell">';
 					
 					//this will give value to the OPEN field, stating if an event slot is available
 						if($memberCheck == ' '){
@@ -118,12 +118,12 @@ else{
 							$isOpen = "no";
 						}
 						
-					$outputVar = $outputVar . ' <form method="post" target="hideFrame" style="width:auto;">
+					$outputVar = $outputVar . ' <form method="post" target="hideFrame" style="width:100%;">
 						<input type="hidden" id="name" name="name" value="' . $name . '">
 						<input type="hidden" id="team" name="team" value="' . $team . '">
 						<input type="hidden" id="slot" name="slot" value="' . $q . '">
 						<input type="hidden" id="open" name="open" value="' . $isOpen . '">
-						<input type="submit" id="signup" name="signup" class="eventSignupButton" value="' . $memberCheck . '">
+						<input type="submit" style="width:100%;" id="signup" name="signup" class="eventSignupButton" value="' . $memberCheck . '">
 					</form>
 					</td>';
 				
