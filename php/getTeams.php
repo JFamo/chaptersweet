@@ -25,7 +25,7 @@ if(mysqli_num_rows($result) == 0){
 }
 else{
 
-	$outputVar = $outputVar . '<table class="eventTable">';
+	$outputVar = $outputVar . '<table class="eventTable" id="eventsTable">';
 	
 	$previousEvent = '';
 	$previousNum = 0;
@@ -80,7 +80,7 @@ else{
 						$cellColor = "#e21d58";
 					}
 					else{
-						$cellColor = "#1d69e2";
+						$cellColor = "#1c73ff";
 					}
 				}
 				

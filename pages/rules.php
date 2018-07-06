@@ -256,9 +256,21 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 					
 				<?php } ?>
 				
-				<div class="adminDataSection">
+				<div class="adminDataSection nohover" style="">
 					<p class="userDashSectionHeader" style="padding-left:0px;">Browse</p>
-					<table style="width:90%; height:80%;">
+					<input class="form-control" id="myInput" type="text" placeholder="Search..">
+					<script>
+					$(document).ready(function(){
+					  $("#myInput").on("keyup", function() {
+					    var value = $(this).val().toLowerCase();
+					    $("#rulesTable tr").filter(function() {
+					      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+					    });
+					  });
+					});
+					</script>
+					<br>
+					<table style="width:90%; height:80%;" id="rulesTable">
 
 					<?php
 
