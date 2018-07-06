@@ -480,6 +480,7 @@ if(isset($_POST['deleteObligation'])){
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 	<title>
 		Chapter Sweet
@@ -646,155 +647,214 @@ if(isset($_POST['deleteObligation'])){
 				<!--User Table-->
 				<center>
 				<!--Summary-->
-				<div class="adminDataSection" style="margin-bottom:15px;">
-				<p class="userDashSectionHeader" style="padding-left:0px;">Summary</p>
-				<div class="basicSpanDiv">
+				<div class="row" style="width:100%;">
+				<div class="col-8"  style="text-align:left; padding-right:0px; margin-right:0px; width:97.5%;">
+					<div class="adminDataSection" id="canvasSection" style="margin-bottom:15px;">
+					<p class="userDashSectionHeader" style="padding-left:20px;">Summary</p>
+					<div id="canvasDiv">
+					<canvas id="gradeChart" style="padding-left:10%; padding-bottom:10%; max-width:40%; float:left;"></canvas>
+					<canvas id="rankChart" style="padding-right:10%; padding-bottom:10%; max-width:40%; float:right;"></canvas>
+					</div>
+					<script>
+						var ctx = document.getElementById('gradeChart').getContext('2d');
+						var chart = new Chart(ctx, {
+						    // The type of chart we want to create
+						    type: 'doughnut',
 
-					<?php
+						    // The data for our dataset
+						    data: {
+						        labels: ["Freshmen", "Sophomores", "Juniors", "Seniors"],
+						        datasets: [{
+						            label: "My First dataset",
+						            backgroundColor: ['rgb(28, 115, 255)','rgb(165,70,87)','rgb(238,227,171)','rgb(115,186,155)'],
+						            data: [<?php
 
-					require("../php/connect.php");
+									require("../php/connect.php");
 
-					//get number of users
-					$query="SELECT id FROM users WHERE chapter='$chapter'";
+									//get number of 9th graders
+									$query="SELECT id FROM users WHERE grade='9' AND chapter='$chapter'";
 
-					$result = mysqli_query($link, $query);
+									$result = mysqli_query($link, $query);
 
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
+									if (!$result){
+										die('Error: ' . mysqli_error($link));
+									}
 
-					$numUsers = mysqli_num_rows($result);
+									$numUsers = mysqli_num_rows($result);
 
-					echo "<span><p class='bodyTextType1'>Total Users : <b>" . $numUsers . "</b></p></span>";
+									echo $numUsers . ", ";
 
-					//get number of advisers
-					$query="SELECT id FROM users WHERE rank='adviser' AND chapter='$chapter'";
+									//get number of 10th graders
+									$query="SELECT id FROM users WHERE grade='10' AND chapter='$chapter'";
 
-					$result = mysqli_query($link, $query);
+									$result = mysqli_query($link, $query);
 
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
+									if (!$result){
+										die('Error: ' . mysqli_error($link));
+									}
 
-					$numUsers = mysqli_num_rows($result);
+									$numUsers = mysqli_num_rows($result);
 
-					echo "<span><p class='bodyTextType1'>Advisers : <b>" . $numUsers . "</b></p></span>";
+									echo $numUsers . ", ";
 
-					//get number of officers
-					$query="SELECT id FROM users WHERE rank='officer' AND chapter='$chapter'";
+									//get number of 11th graders
+									$query="SELECT id FROM users WHERE grade='11' AND chapter='$chapter'";
 
-					$result = mysqli_query($link, $query);
+									$result = mysqli_query($link, $query);
 
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
+									if (!$result){
+										die('Error: ' . mysqli_error($link));
+									}
 
-					$numUsers = mysqli_num_rows($result);
+									$numUsers = mysqli_num_rows($result);
 
-					echo "<span><p class='bodyTextType1'>Officers : <b>" . $numUsers . "</b></p></span>";
+									echo $numUsers . ", ";
 
-					//get number of members
-					$query="SELECT id FROM users WHERE rank='member' AND chapter='$chapter'";
+									//get number of 12th graders
+									$query="SELECT id FROM users WHERE grade='12' AND chapter='$chapter'";
 
-					$result = mysqli_query($link, $query);
+									$result = mysqli_query($link, $query);
 
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
+									if (!$result){
+										die('Error: ' . mysqli_error($link));
+									}
 
-					$numUsers = mysqli_num_rows($result);
+									$numUsers = mysqli_num_rows($result);
 
-					echo "<span><p class='bodyTextType1'>Members : <b>" . $numUsers . "</b></p></span>";
+									echo $numUsers;
 
-					?>
+									mysqli_close($link);
 
+									?>],
+						        }]
+						    },
+
+						    // Configuration options go here
+						    options: {
+						    	circumference: 2 * Math.PI,
+						    	cutoutPercentage: 75
+						    }
+						});
+						var ctx = document.getElementById('rankChart').getContext('2d');
+						var chart = new Chart(ctx, {
+						    // The type of chart we want to create
+						    type: 'doughnut',
+
+						    // The data for our dataset
+						    data: {
+						        labels: ["Advisers", "Officers", "Members"],
+						        datasets: [{
+						            label: "My First dataset",
+						            backgroundColor: ['rgb(28, 115, 255)','rgb(165,70,87)','rgb(238,227,171)'],
+						            data: [<?php
+
+									require("../php/connect.php");
+
+									//get number of advisers
+									$query="SELECT id FROM users WHERE rank='adviser' AND chapter='$chapter'";
+
+									$result = mysqli_query($link, $query);
+
+									if (!$result){
+										die('Error: ' . mysqli_error($link));
+									}
+
+									$numUsers = mysqli_num_rows($result);
+
+									echo $numUsers . ", ";
+
+									//get number of officers
+									$query="SELECT id FROM users WHERE rank='officer' AND chapter='$chapter'";
+
+									$result = mysqli_query($link, $query);
+
+									if (!$result){
+										die('Error: ' . mysqli_error($link));
+									}
+
+									$numUsers = mysqli_num_rows($result);
+
+									echo $numUsers . ", ";
+
+									//get number of members
+									$query="SELECT id FROM users WHERE rank='member' AND chapter='$chapter'";
+
+									$result = mysqli_query($link, $query);
+
+									if (!$result){
+										die('Error: ' . mysqli_error($link));
+									}
+
+									$numUsers = mysqli_num_rows($result);
+
+									echo $numUsers;
+
+									?>],
+						        }]
+						    },
+
+						    // Configuration options go here
+						    options: {
+						    	circumference: 2 * Math.PI,
+						    	cutoutPercentage: 75
+						    }
+						});
+						document.getElementById('canvasDiv').style.width = '100%';
+						document.getElementById('canvasDiv').style.height = '100%';
+						document.getElementById('canvasSection').style.width = '97.5%';
+						document.getElementById('canvasSection').style.height = '95%';
+					</script>
 				</div>
-				<div class="basicSpanDiv">
-
-					<?php
-
-					require("../php/connect.php");
-
-					//get number of 9th graders
-					$query="SELECT id FROM users WHERE grade='9' AND chapter='$chapter'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Freshmen : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of 10th graders
-					$query="SELECT id FROM users WHERE grade='10' AND chapter='$chapter'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Sophomores : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of 11th graders
-					$query="SELECT id FROM users WHERE grade='11' AND chapter='$chapter'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Juniors : <b>" . $numUsers . "</b></p></span>";
-
-					//get number of 12th graders
-					$query="SELECT id FROM users WHERE grade='12' AND chapter='$chapter'";
-
-					$result = mysqli_query($link, $query);
-
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
-
-					$numUsers = mysqli_num_rows($result);
-
-					echo "<span><p class='bodyTextType1'>Seniors : <b>" . $numUsers . "</b></p></span>";
-
-					mysqli_close($link);
-
-					?>
-
 				</div>
-				<div class="basicSpanDiv">
+				<div class="col-4"  style="text-align:left; padding-left:0px; margin-left:0px; width:97.5%;">
+					<div class="adminDataSection" style="padding-left:15px; float:right; width:97.5%; margin-bottom:15px;">
+						<p class="userDashSectionHeader" style="padding-left:0px;">User Accounts</p>
+						<p class="text-primary" style="font-size:30px; padding-top:10px; margin-bottom:0px;"><?php
 
-					<?php
+						require("../php/connect.php");
 
-					require("../php/connect.php");
+						//get total balance
+						$query="SELECT SUM(balance) FROM users WHERE chapter='$chapter'";
 
-					//get total balance
-					$query="SELECT SUM(balance) FROM users WHERE chapter='$chapter'";
+						$result = mysqli_query($link, $query);
 
-					$result = mysqli_query($link, $query);
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
 
-					if (!$result){
-						die('Error: ' . mysqli_error($link));
-					}
+						list($cumBalance) = mysqli_fetch_array($result);
 
-					list($cumBalance) = mysqli_fetch_array($result);
+						echo "$" . number_format((float)$cumBalance, 2, '.', '');
 
-					echo "<span><p class='bodyTextType1'>Cumulative Balance : <b>" . $cumBalance . "</b></p></span>";
+						mysqli_close($link);
 
-					mysqli_close($link);
+						?></p>
+						<p style="font-size:12px; padding-top:0px; padding-bottom: 15px;">Cumulative Balance</p>
+					</div>
+					<div class="adminDataSection" style="padding-left:15px; float:right; width:97.5%; margin-bottom:15px;">
+						<p class="userDashSectionHeader" style="padding-left:0px;">Total Users</p>
+						<p class="text-primary" style="font-size:30px; padding-top:10px; margin-bottom:0px;"><?php
 
-					?>
+						require("../php/connect.php");
 
+						//get total users
+						$query="SELECT COUNT(id) FROM users WHERE chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						list($sumUsers) = mysqli_fetch_array($result);
+
+						echo $sumUsers;
+
+						mysqli_close($link);
+
+						?></p>
+						<p style="font-size:12px; padding-top:0px; padding-bottom: 15px;">Users in my Chapter</p>
+					</div>
 				</div>
 				</div>
 				<div class="adminDataSection" style="margin-bottom:15px; overflow:auto;">
