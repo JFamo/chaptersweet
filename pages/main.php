@@ -335,8 +335,11 @@ $blockedPages = $perm;
 		<div id="pageBody">
 			<div class="row">
 				<div class="col-10">
-					<p class="display-4" style="padding-left:20px;">
-						Hello, <?php echo(substr($name, 0, strpos($name," "))); ?>
+					<p class="pageHeader" style="padding-left:20px;">
+						Hello, <?php echo(substr($name, 0, strpos($name," "))); ?>!
+					</p>
+					<p class="" style="padding-left:20px;">
+						Welcome to <span class="text-primary">Your Dashboard</span>
 					</p>
 				</div>
 				<div class="col-2">
@@ -380,10 +383,10 @@ $blockedPages = $perm;
 		<center>
 
 			<div class="container-fluid">
-			<div class="row no-gutter" style="margin: 0; padding-top:15px; padding-bottom:15px;">
+			<div class="row no-gutter" style="margin: 0; padding-bottom:15px;">
 			<?php if($rank == 'admin' || $rank == 'adviser'){ ?>
 			<div class="col-sm-12" style="padding:0; text-align:left;">
-				<div style="height:auto; min-height:0px; margin-bottom:15px;" class="userDashSection">
+				<div style="height:auto; min-height:0px; margin-bottom:15px; min-width:97.5%;" class="userDashSection">
 				<form method="post" style="float:right; padding-right:10px; padding-top:10px;">
 					<input type="submit" name="clearlog" class="btn btn-danger" value="Clear">
 				</form>
