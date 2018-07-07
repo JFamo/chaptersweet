@@ -834,7 +834,7 @@ if(isset($_POST['eventPerm'])){
 						</span>
 						<span>
 							Are You Sure? :
-							<select id="verify3" name="verify7">
+							<select id="verify7" name="verify7">
 								<option value="no">No</option>
 								<option value="yes">Yes</option>
 							</select>

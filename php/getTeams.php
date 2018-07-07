@@ -36,10 +36,10 @@ else{
 		if($name != $previousEvent){
 		
 			if($previousEvent != '' && ($rank == 'adviser' || $rank == 'admin')){
-				$outputVar = $outputVar . '<tr><td></td><td><form method="post" style="width:auto;">
+				$outputVar = $outputVar . '<tr><td></td><td><form method="post" style="width:auto; padding-top:10px;">
 					<input type="hidden" id="evt" name="evt" value="' . $previousEvent. '">
 					<input type="hidden" id="num" name="num" value="' . ($previousNum + 1) . '">
-					<input type="submit" id="addt" name="addt" class="btn-primary" value="Add Team">
+					<input type="submit" id="addt" name="addt" class="btn btn-primary" value="Add Team">
 					</td></tr></form>';
 			}
 		
@@ -130,6 +130,13 @@ else{
 				}
 
 			}
+
+		if($isq == 'yes' && $team > 0){
+			$outputVar = $outputVar . '<td><form method="post">
+						<input type="hidden" id="qualname" name="qualname" value="' . $name . '">
+						<input type="hidden" id="qualteam" name="qualteam" value="' . $team . '">
+						<input type="submit" class="close btn btn-link" value="&times";></form></td>';
+		}
 			
 	$outputVar = $outputVar . '</tr>';
 	

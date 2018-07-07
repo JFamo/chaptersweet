@@ -86,6 +86,22 @@ if(isset($_POST['evt'])){
 				}
 }
 
+//function for removing a team from an event
+if(isset($_POST['qualname'])){
+
+	require('../php/connect.php');
+	
+	$name = $_POST['qualname'];
+	$team = $_POST['qualteam'];
+			
+	//remove from the TEAMS table
+	$sql = "DELETE FROM teams WHERE event='$name' AND chapter='$chapter' AND team='$team'";
+	
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+}
+
 //functions for event signup
 if(isset($_POST['slot'])){
 
