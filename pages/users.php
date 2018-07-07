@@ -639,8 +639,8 @@ if(isset($_POST['deleteObligation'])){
 					      <div class="modal-body">
 					        The 'My Chapter' page provides useful information about your chapter, a summary of user demographics, and important functions to manage user accounts.
 					        <hr>
-					        <b>Summary</b><br>
-					        The summary section contains a breakdown of user demographics. The cumulative balance represents the sum of the funds in all user accounts, not the chapter's balance.
+					        <b>User Breakdown</b><br>
+					        The top section contains a breakdown of user demographics. Hover over the pie charts to see labels on the categories and counts in each group. The 'User Accounts', cumulative balance, represents the sum of the funds in all user accounts, not the chapter's balance. The total users count lists all users in the chapter, including advisers.
 					        <hr>
 					        <b>User Info</b><br>
 					        The 'User Info' table is crucial for chapter management. It provides a listing of all users, sorted alphabetically by first name, along with their grade, rank, email, number of events they're currently registered in, number of event points, and account fundraising balance. A user's event count will appear red if it is outside of the event limits (less than 3 or greater than 6). The searchbar at the top allows you to search for any value in any field, and only displays rows that meet those search conditions. Under 'Options', advisers and officers can open a modal displaying advanced information and settings for that specific user. Read below for more information about the user modal. On the right are fields with 'Yes' or 'No' buttons. These are Obligations, and the buttons track a status for each user. Simply click a button to change a user's status for that obligation. Read the 'Obligations' section below for more information about Obligations.
@@ -648,7 +648,7 @@ if(isset($_POST['deleteObligation'])){
 					        <b>User Modal Dialog</b><br>
 					        For instructions to access a user's modal dialog, read above.
 					        <br><b>Account Information</b><br>
-					        The first section on this dialog is only available to advisers, and provides account information and options. The individual ID is the ID with which a user is registered for the current TSA conference. The input box defaults to the user's current ID, and the 'Set ID' button sets their ID to the current value in the input box. A user's individual ID is visible to them on their dashboard under 'My Account'. The 'Set Rank' field allows promotion/demotion between ranks 'member' and 'officer'. Member are the default rank - they may only perform basic operations. Officers have advanced permissions, some of which may be configured by advisers on the 'Adviser Settings' page. For more information about rank permissions, consult below. 
+					        The first section on this dialog is only available to advisers, and provides account information and options. The individual ID is the ID with which a user is registered for the current TSA conference. The input box defaults to the user's current ID, and the 'Set ID' button sets their ID to the current value in the input box. Under 'Adviser Settings', advisers can choose to allow officers to also change user ID's. A user's individual ID is visible to them on their dashboard under 'My Account'. The 'Set Rank' field allows promotion/demotion between ranks 'member' and 'officer'. Member are the default rank - they may only perform basic operations. Officers have advanced permissions, some of which may be configured by advisers on the 'Adviser Settings' page. For more information about rank permissions, consult below. 
 					        <br><b>User Events</b><br>
 					        Under the next section is a listing of the user's events, pulled from the 'Event Selection' page. Under each event are the user's team's tasks for that event. Tasks are created and shared by teams from the Dashboard. Task status cannot be changed from this dialog - it must be changed by a team member from their Dashboard. Also in this section is the option to remove a user from any of their events. A dropdown allows the adviser to choose which event the user will be removed from, and the 'Remove' button removes them. If done accidentally, the adviser should simply assign the user an event point (see the 'Event Selection' page for more details on Event Points), and they may re-join the event from the 'Event Selection' page. If a user accidentally joins an event, they may drop the event themselves from their Dashboard under 'My Events'. 
 					        <br><b>User Management</b><br>
@@ -658,7 +658,7 @@ if(isset($_POST['deleteObligation'])){
 					        The event points section contains bulk methods for assigning event points. For more information about event points, refer to the help guide on the 'Event Selection' page. The 'By Grade' option gives event points to all users in the specified grade (9, 10, 11, or 12). The 'By Rank' option gives event points to all users of a specified rank (Members, Officers, or Advisers). To test event selection functionality/event point features, an adviser may wish to assign themselves event points using this method, without giving any to the chapter. The 'By Group' option gives event points to a certain group of users (All, Upperclassmen, or Lowerclassmen). Assignment to all users is useful if a chapter does not want preference in event selection. Upperclassmen will give points to grades 11 and 12, while lowerclassmen will give points to grades 9 and 10.
 					        <hr>
 					        <b>Obligations</b><br>
-					        An Obligation in Chaptersweet represents some basic task that all users must complete, tracked in a boolean fashion (yes or no). Advisers are exempt from Obligations. This could be something like turning in a registration packet, or making the payment for the upcoming conference. Advisers and officers can create obligations in this section. The 'Default' field changes whether all users will start with a yes or a no - if set to 'incomplete', each user will begin with a 'no' for that obligation. The name of an Obligation, for ease of use, should be between 5 and 10 characters - one word. Spaces in an Obligation name will be automatically replaced with underscore characters. Under this is the option to delete an obligation, for which a dropdown allows the user to specify which obligation they would like to delete, and doing so removes it from the users table.
+					        An Obligation in Chaptersweet represents some basic task that all users must complete, tracked in a boolean fashion (yes or no). Advisers are exempt from Obligations. This could be something like turning in a registration packet, or making the payment for the upcoming conference. Advisers and officers can create obligations in this section. Advisers can toggle officers' permissions to create and delete obligations on the 'Adviser Settings' page. The 'Default' field changes whether all users will start with a yes or a no - if set to 'incomplete', each user will begin with a 'no' for that obligation. The name of an Obligation, for ease of use, should be between 5 and 10 characters - one word. Spaces in an Obligation name will be automatically replaced with underscore characters. Under this is the option to delete an obligation, for which a dropdown allows the user to specify which obligation they would like to delete, and doing so removes it from the users table.
 					      </div>
 					    </div>
 					  </div>
@@ -690,7 +690,7 @@ if(isset($_POST['deleteObligation'])){
 				<div class="row" style="width:100%;">
 				<div class="col-8"  style="text-align:left; padding-right:0px; margin-right:0px; width:97.5%;">
 					<div class="adminDataSection" id="canvasSection" style="margin-bottom:15px;">
-					<p class="userDashSectionHeader" style="padding-left:20px;">Summary</p>
+					<p class="userDashSectionHeader" style="padding-left:20px;">User Breakdown</p>
 					<div id="canvasDiv">
 					<canvas id="gradeChart" style="padding-left:10%; padding-bottom:10%; max-width:40%; float:left;"></canvas>
 					<canvas id="rankChart" style="padding-right:10%; padding-bottom:10%; max-width:40%; float:right;"></canvas>
@@ -878,7 +878,7 @@ if(isset($_POST['deleteObligation'])){
 						require("../php/connect.php");
 
 						//get total users
-						$query="SELECT COUNT(id) FROM users WHERE chapter='$chapter'";
+						$query="SELECT COUNT(id) FROM users WHERE chapter='$chapter' AND rank<>'admin'";
 
 						$result = mysqli_query($link, $query);
 

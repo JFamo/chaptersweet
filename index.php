@@ -128,7 +128,7 @@ if(isset($_POST['user']) and isset($_POST['pass'])){
 	if($count == 1){
 
 		//fetch the rank of that user
-		$query2 = "SELECT fullname, rank, grade, eventpoints, idnumber FROM users WHERE username='$sessionUsername' and password='$sessionPassword'";
+		$query2 = "SELECT fullname, rank, grade, eventpoints, idnumber FROM users WHERE username='$sessionUsername' AND password='$sessionPassword' AND chapter='$chapter'";
 		$result2 = mysqli_query($link, $query2);
 		if (!$result2){
 			die('Error: ' . mysqli_error($link));
@@ -143,7 +143,7 @@ if(isset($_POST['user']) and isset($_POST['pass'])){
 		$_SESSION['eventpoints'] = $eventPointsValue;
 		
 		//get the conference
-		$conferencequery="SELECT value FROM settings WHERE name='conference'";
+		$conferencequery="SELECT value FROM settings WHERE name='conference' AND chapter='$chapter'";
 		
 		$conferenceresult = mysqli_query($link, $conferencequery);
 		
@@ -309,6 +309,7 @@ if(isset($_SESSION['username'])){
 <!DOCTYPE html>
 
 <head>
+		
 	<!-- Bootstrap, cause it dabs -->
 	<link rel="stylesheet" href="bootstrap-4.1.0/css/bootstrap.min.css">
     <script src="js/jquery.min.js"></script>
