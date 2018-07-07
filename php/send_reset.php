@@ -6,6 +6,9 @@ if(isset($_POST['email']) && isset($_POST['username'])){
 
 	require_once('connect.php');
 
+	$email = $_POST['email'];
+	$username = $_POST['username'];
+
 	//get fullname
 	$query="SELECT fullname, password FROM users WHERE email='$email' AND username='$username'";
 
@@ -16,6 +19,8 @@ if(isset($_POST['email']) && isset($_POST['username'])){
 	}
 
 	list($fullname, $password) = mysqli_fetch_array($result);
+
+		echo "Sending reset email for " . $fullname . " with username " . $username . " to " . $email;
 
 		//actual mail part
 		$mailMessage = "
@@ -35,8 +40,6 @@ if(isset($_POST['email']) && isset($_POST['username'])){
 		$headers .= 'From: Auto-Mail <chapters@xo7.x10hosting.com>' . "\r\n";
 
 		mail($email,"Chaptersweet Password Reset",$mailMessage,$headers);
-
-	}
 
 	mysqli_close($link);
 
