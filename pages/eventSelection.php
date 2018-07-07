@@ -340,7 +340,7 @@ if(isset($_POST['slot'])){
 					<?php
 					if($rank == "admin" || $rank == "adviser" ||($rank == "officer" && $emailPerm == "yes")){
 					?>
-						<form method="post" action="../php/confirmEventsEmail.php">
+						<form method="post" action="../php/confirmEventsEmail.php" style="margin-top:10px;">
 							<input type="submit" id="confirmEventsButton" name="confirmEventsButton" value="Email Event Confirmation" class="btn btn-lg btn-primary" />
 						</form>
 					<?php
