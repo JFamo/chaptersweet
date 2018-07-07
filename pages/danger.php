@@ -485,6 +485,66 @@ if(isset($_POST['eventPerm'])){
 
 }
 
+//function for updating Officer Obligation Permission Setting
+if(isset($_POST['obligPerm'])){
+
+	//file viewability
+	$perm = $_POST['obligPerm'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$perm' WHERE name='obligationPermission' AND chapter='$chapter'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Officer Permissions Updated!";
+
+	mysqli_close($link);
+
+}
+
+//function for updating Officer Event Removal Permission Setting
+if(isset($_POST['removalPerm'])){
+
+	//file viewability
+	$perm = $_POST['removalPerm'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$perm' WHERE name='eventRemovalPermission' AND chapter='$chapter'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Officer Permissions Updated!";
+
+	mysqli_close($link);
+
+}
+
+//function for updating Officer ID Changing Permission Setting
+if(isset($_POST['idPerm'])){
+
+	//file viewability
+	$perm = $_POST['idPerm'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$perm' WHERE name='idPermission' AND chapter='$chapter'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Officer Permissions Updated!";
+
+	mysqli_close($link);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -703,7 +763,8 @@ if(isset($_POST['eventPerm'])){
 						<span>
 							<b>Chapter ID</b>
 							<br>
-							<p class="description">The ID number of your chapter for the current TSA conference.</p>
+							<p class="description" style="margin-bottom:0px;">The ID number of your chapter for the current TSA conference.</p>
+							<p class="description text-danger">Be sure to change this BEFORE resetting event selection!</p>
 						</span>
 						<span>
 							<input type="text" id="chapterID" name="chapterID" onchange="this.form.submit()" value="<?php echo $chapterID ?>" />
@@ -715,7 +776,8 @@ if(isset($_POST['eventPerm'])){
 						<span>
 							<b>Team ID Format</b>
 							<br>
-							<p class="description">How team IDs are formatted at your current TSA conference.</p>
+							<p class="description" style="margin-bottom:0px;">How team IDs are formatted at your current TSA conference.</p>
+							<p class="description text-danger">Be sure to change this BEFORE resetting event selection!</p>
 						</span>
 						<span>
 							<select id="teamIDformat" name="teamIDformat" onchange="this.form.submit()">
@@ -783,7 +845,6 @@ if(isset($_POST['eventPerm'])){
 						list($perm) = mysqli_fetch_array($result);
 						$officerPerm = $perm;
 					?>
-					<br>
 
 					<!--officer email permission setting-->
 					<form class="basicSpanForm" style="width:100%;" method="post">
@@ -817,7 +878,138 @@ if(isset($_POST['eventPerm'])){
 						list($perm) = mysqli_fetch_array($result);
 						$emailPerm = $perm;
 					?>
-					<br>
+
+					<!--officer eventpoints setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permission to Give Event Points</b>
+							<br>
+							<p class="description">Can officers give groups/individuals event points?</p>
+						</span>
+						<span>
+							Permission:
+							<select id="eventPerm" name="eventPerm" onchange="this.form.submit()">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='eventpointsPermission' AND chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$eventpointsPermission = $perm;
+					?>
+
+					<!--officer obligation setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permission for Obligations</b>
+							<br>
+							<p class="description">Can officers create and delete obligations?</p>
+						</span>
+						<span>
+							Permission:
+							<select id="obligPerm" name="obligPerm" onchange="this.form.submit()">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='obligationPermission' AND chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$obligationPermission = $perm;
+					?>
+
+					<!--officer event removal setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permission to Remove From Events</b>
+							<br>
+							<p class="description">Can officers remove other users from events?</p>
+						</span>
+						<span>
+							Permission:
+							<select id="removalPerm" name="removalPerm" onchange="this.form.submit()">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='eventRemovalPermission' AND chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$eventRemovalPermission = $perm;
+					?>
+
+					<!--officer id setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permission to Change ID's</b>
+							<br>
+							<p class="description">Can officers change users' individual ID's?</p>
+						</span>
+						<span>
+							Permission:
+							<select id="idPerm" name="idPerm" onchange="this.form.submit()">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='idPermission' AND chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$idPermission = $perm;
+					?>
 
 					<!--blocked pages setting-->
 					<form class="basicSpanForm" style="width:100%;" method="post">
@@ -853,41 +1045,6 @@ if(isset($_POST['eventPerm'])){
 						list($perm) = mysqli_fetch_array($result);
 						$blockPages = $perm;
 					?>
-					<br>
-					
-					<!--officer eventpoints setting-->
-					<form class="basicSpanForm" style="width:100%;" method="post">
-						<span>
-							<b>Officer Permission to Give Event Points</b>
-							<br>
-							<p class="description">Can officers give groups/individuals event points?</p>
-						</span>
-						<span>
-							Permission:
-							<select id="eventPerm" name="eventPerm" onchange="this.form.submit()">
-								<option value="no">No</option>
-								<option value="yes">Yes</option>
-							</select>
-						</span>
-					</form>
-					<?php
-					//UPDATE THE VALUE OF THE ABOVE FORM
-						//get permission settings
-						require('../php/connect.php');
-
-						$query="SELECT value FROM settings WHERE name='eventpointsPermission' AND chapter='$chapter'";
-
-						$result = mysqli_query($link, $query);
-
-						if (!$result){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						//save the result
-						list($perm) = mysqli_fetch_array($result);
-						$eventpointsPermission = $perm;
-					?>
-					<br>
 
 				<br></div>
 				<br>
@@ -1051,7 +1208,7 @@ if(isset($_POST['eventPerm'])){
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
-	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode).",".json_encode($eventpointsPermission).",".json_encode($teamFormat)); ?> );
+	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode).",".json_encode($eventpointsPermission).",".json_encode($teamFormat).",".json_encode($obligationPermission).",".json_encode($eventRemovalPermission).",".json_encode($idPermission)); ?> );
 </script>
 
 </html>
