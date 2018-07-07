@@ -33,6 +33,32 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $eventPointsPerm = $perm;
 
+//Event Removal Permission for OFFICERS
+$query="SELECT value FROM settings WHERE name='eventRemovalPermission' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$removalPerm = $perm;
+
+//ID Changing Permission for OFFICERS
+$query="SELECT value FROM settings WHERE name='idPermission' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$idPerm = $perm;
+
 //get user's events
 $queryid="SELECT id FROM users WHERE fullname='$daUsah' AND chapter='$chapter'";
 
@@ -70,22 +96,24 @@ $out = $out .  '<button type="button" id="closeModalButton" class="close" data-d
 $out = $out .  '</div>';
 $out = $out .  '<div class="modal-body">';
 //account info
-if($rank == "admin" || $rank == "adviser"){
+if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $idPerm == "yes")){
 	$out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bottom:15px;">';
 	$out = $out .  '<p class="userDashSectionHeader" style="padding-left:0px;">Account Information</p><br>';
-	//show username
-	$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
-		$out = $out .  '<span>';
-			$out = $out .  '<b>Edit Username</b>';
-		$out = $out .  '</span>';
-			$out = $out .  "<input type='hidden' name='usernameFieldUserID' value='" . $daID . "'>";
-		$out = $out .  '<span>';
-			$out = $out .  '<input type="text" id="usernameFieldNewname" name="usernameFieldNewname" value="' . $daUsername . '">';
-		$out = $out .  '</span>';
-		$out = $out .  '<span>';
-			$out = $out .  '<input type="submit" class="btn btn-primary" value="Set Username">';
-		$out = $out .  '</span>';
-	$out = $out .  '</form>';
+	//username setting
+	if($rank == "admin" || $rank == "adviser"){
+		$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+			$out = $out .  '<span>';
+				$out = $out .  '<b>Edit Username</b>';
+			$out = $out .  '</span>';
+				$out = $out .  "<input type='hidden' name='usernameFieldUserID' value='" . $daID . "'>";
+			$out = $out .  '<span>';
+				$out = $out .  '<input type="text" id="usernameFieldNewname" name="usernameFieldNewname" value="' . $daUsername . '">';
+			$out = $out .  '</span>';
+			$out = $out .  '<span>';
+				$out = $out .  '<input type="submit" class="btn btn-primary" value="Set Username">';
+			$out = $out .  '</span>';
+		$out = $out .  '</form>';
+	}
 	//set id
 	$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
 		$out = $out .  '<span>';
@@ -100,27 +128,29 @@ if($rank == "admin" || $rank == "adviser"){
 		$out = $out .  '</span>';
 	$out = $out .  '</form>';
 	//set rank
-	if($thisrank != "admin" && $thisrank != "adviser"){
-		$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; padding-bottom:15px; height:40px; padding-top:15px;">';
-			$out = $out .  '<span>';
-				$out = $out .  '<b>Set Rank</b>';
-			$out = $out .  '</span>';
-				$out = $out .  "<input type='hidden' name='thisUser' value='" . addslashes($daUsah) . "'>";
-			$out = $out .  '<span>';
-				$out = $out . '<input type="hidden" name="newRank" value="';
-				if($thisrank=='member'){ $out = $out . 'officer'; }
-				if($thisrank=='officer'){ $out = $out . 'member'; }
-				$out = $out . '"/>';
-			$out = $out .  '</span>';
-			$out = $out .  '<span>';
-				$out = $out . '<input type="submit" name="promoteUser" class="btn btn-primary" value="Make ';
-				if($thisrank=='member'){ $out = $out . 'Officer'; }
-				if($thisrank=='officer'){ $out = $out . 'Member'; } 
-				$out = $out . '" />';
-			$out = $out .  '</span>';
-		$out = $out .  '</form>';
+	if($rank == "admin" || $rank == "adviser"){
+		if($thisrank != "admin" && $thisrank != "adviser"){
+			$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+				$out = $out .  '<span>';
+					$out = $out .  '<b>Set Rank</b>';
+				$out = $out .  '</span>';
+					$out = $out .  "<input type='hidden' name='thisUser' value='" . addslashes($daUsah) . "'>";
+				$out = $out .  '<span>';
+					$out = $out . '<input type="hidden" name="newRank" value="';
+					if($thisrank=='member'){ $out = $out . 'officer'; }
+					if($thisrank=='officer'){ $out = $out . 'member'; }
+					$out = $out . '"/>';
+				$out = $out .  '</span>';
+				$out = $out .  '<span>';
+					$out = $out . '<input type="submit" name="promoteUser" class="btn btn-primary" value="Make ';
+					if($thisrank=='member'){ $out = $out . 'Officer'; }
+					if($thisrank=='officer'){ $out = $out . 'Member'; } 
+					$out = $out . '" />';
+				$out = $out .  '</span>';
+			$out = $out .  '</form>';
+		}
 	}
-	$out = $out .  '</div>';
+	$out = $out .  '<br></div>';
 }
 //user's events
 $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bottom:15px;">';
@@ -208,41 +238,46 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 
 	$out = $out .  "</tr>";
 	$out = $out .  "</table>";
-
 	$out = $out .  "<br><br>";
-	$out = $out .  '<p class="userDashSectionHeader" style="padding-left:0px;">Remove From Events</p>';
-	$out = $out .  '<p class="bodyTextType1">Here you can remove this user from any of their events.</p>';
+	if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $removalPerm == "yes")){
 
-	$out = $out .  '<form class="basicSpanDiv" method="post" id="removeFromEventForm" style="width:100%; height:40px; padding-top:15px;">';
-	$out = $out .  "<input type='hidden' name='deleteEventUser' value='";
-	$out = $out . 	$_SESSION['eventsUser'];
-	$out = $out .  "' /> ";
-	$out = $out .  "<span>";
-	$out = $out .  "<b>Delete From Event</b>";
-	$out = $out .  '</span>';
-	$out = $out .  '<span>';
-	$out = $out .  'Event:';
-	$out = $out .  '<select id="eventDelete" name="eventDelete">';
+		$out = $out .  '<p class="userDashSectionHeader" style="padding-left:0px;">Remove From Events</p>';
+		$out = $out .  '<p class="bodyTextType1">Here you can remove this user from any of their events.</p>';
 
-//get events for removal
-require('../php/connect.php');
+		$out = $out .  '<form class="basicSpanDiv" method="post" id="removeFromEventForm" style="width:100%; height:40px; padding-top:15px;">';
+		$out = $out .  "<input type='hidden' name='deleteEventUser' value='";
+		$out = $out . 	$_SESSION['eventsUser'];
+		$out = $out .  "' /> ";
+		$out = $out .  "<span>";
+		$out = $out .  "<b>Delete From Event</b>";
+		$out = $out .  '</span>';
+		$out = $out .  '<span>';
+		$out = $out .  'Event:';
+		$out = $out .  '<select id="eventDelete" name="eventDelete">';
 
-//get user's events
-$queryDele="SELECT event FROM teams WHERE (member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah') AND chapter='$chapter'";
+		//get events for removal
+		require('../php/connect.php');
 
-$resultDele = mysqli_query($link, $queryDele);
+		//get user's events
+		$queryDele="SELECT event FROM teams WHERE (member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah') AND chapter='$chapter'";
 
-if (!$resultDele){
-	die('Error: ' . mysqli_error($link));
-}
+		$resultDele = mysqli_query($link, $queryDele);
 
-//show each event as option	
-while(list($event) = mysqli_fetch_array($resultDele)){
-	$out = $out .  '<option value="' . $event . '"">' . $event . '</option>';
-}
+		if (!$resultDele){
+			die('Error: ' . mysqli_error($link));
+		}
 
-//closing stuff, remove event button
-$out = $out .  '</select></span><span><input type="submit" class="btn btn-danger" value="Remove"></span></form><br></div>';
+		//show each event as option	
+		while(list($event) = mysqli_fetch_array($resultDele)){
+			$out = $out .  '<option value="' . $event . '"">' . $event . '</option>';
+		}
+
+		//closing stuff, remove event button
+		$out = $out .  '</select></span><span><input type="submit" class="btn btn-danger" value="Remove"></span></form><br>';
+
+	}
+
+	$out = $out . '</div>';
 
 if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $eventPointsPerm == "yes")){
 	$out = $out .  '<div class="adminDataSection">';
@@ -292,9 +327,10 @@ if($rank == "admin" || $rank == "adviser"){
 			$out = $out .  '<input type="submit" name="deleteUser" class="btn btn-danger" value="Delete Account" />';
 		$out = $out .  '</span>';
 	$out = $out .  '</form>';
-	$out = $out .  '<br>';
-	$out = $out .  '</div>';
 }
+
+$out = $out .  '<br>';
+$out = $out .  '</div>';
 
 $out = $out . "<script>$('#userModal').modal('show');</script>";
 
