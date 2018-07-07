@@ -45,7 +45,7 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 	}
 
 	//file viewality
-	$view = $_POST['view'];
+	$view = 'all';
 
 	//get poster
 	$poster = $_SESSION['fullname'];
@@ -238,12 +238,6 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 						  <div class="form-row">
 						    <div class="col-4">
 						      <input style="font-size:16px;" name="userfile" type="file" id="userfile">
-						    </div>
-						    <div class="col-4">
-						        <small>Who Can View :</small>
-								<select id="view" name="view" class="form-control form-control-sm">
-									<option value="all">All</option>
-								</select>
 						    </div>
 						    <div class="col-4">
 						    <input name="uploadRules" type="submit" class="btn btn-primary" id="uploadRules" value="Upload">
