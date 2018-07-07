@@ -397,6 +397,26 @@ if(isset($_POST['officerEmailPerm'])){
 
 }
 
+//function for updating Team ID Formatting
+if(isset($_POST['teamIDformat'])){
+
+	//formatting style
+	$formattingStyle = $_POST['teamIDformat'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$formattingStyle' WHERE name='teamIDformat' AND chapter='$chapter'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Team ID Formatting Updated!";
+
+	mysqli_close($link);
+
+}
+
 //function for blocking pages
 if(isset($_POST['blockedPages'])){
 
@@ -655,42 +675,44 @@ if(isset($_POST['eventPerm'])){
 						<span>
 							<b>Chapter ID</b>
 							<br>
-							<p class="description">The ID number of your chapter for the current TSA competition.</p>
+							<p class="description">The ID number of your chapter for the current TSA conference.</p>
 						</span>
 						<span>
 							<input type="text" id="chapterID" name="chapterID" onchange="this.form.submit()" value="<?php echo $chapterID ?>" />
 						</span>
 					</form>
-
-					<?php
-					//UPDATE THE VALUE OF THE ID FORM
-						//get permission settings
-						require('../php/connect.php');
-
-						$queryC="SELECT chapterid FROM chapters WHERE id='$chapter'";
-
-						$resultC = mysqli_query($link, $queryC);
-
-						if (!$resultC){
-							die('Error: ' . mysqli_error($link));
-						}
-
-						//save the result
-						list($chid) = mysqli_fetch_array($resultC);
-						$chapterID = $chid;
-					?>
 
 					<!--officer info permission setting-->
 					<form class="basicSpanForm" style="width:100%;" method="post">
 						<span>
-							<b>Chapter ID</b>
+							<b>Team ID Format</b>
 							<br>
-							<p class="description">The ID number of your chapter for the current TSA competition.</p>
+							<p class="description">How team IDs are formatted at your current TSA conference.</p>
 						</span>
 						<span>
-							<input type="text" id="chapterID" name="chapterID" onchange="this.form.submit()" value="<?php echo $chapterID ?>" />
+							<select id="teamIDformat" name="teamIDformat" onchange="this.form.submit()">
+								<option value="1">-1, -2, -3</option>
+								<option value="900">-901, -902, -903</option>
+							</select>
 						</span>
 					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get team id format setting
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='teamIDformat' AND chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($settingValue) = mysqli_fetch_array($result);
+						$teamFormat = $settingValue;
+					?>
 
 				<br></div><br>
 				<div class="adminDataSection">
@@ -1001,7 +1023,7 @@ if(isset($_POST['eventPerm'])){
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
-	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode).",".json_encode($eventpointsPermission)); ?> );
+	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode).",".json_encode($eventpointsPermission).",".json_encode($teamFormat)); ?> );
 </script>
 
 </html>
