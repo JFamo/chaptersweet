@@ -231,6 +231,27 @@ if(isset($_POST['verify3'])){
 			die('Error: ' . mysqli_error($link));
 		}
 
+		//get TEAM ID formatting and chapter ID
+		$query = "SELECT value FROM settings WHERE name='teamIDformat' AND chapter='$chapter'";
+
+		$result = mysqli_query($link, $query);
+
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		list($myTeamIDFormatting) = mysqli_fetch_array($result);
+
+		$query = "SELECT chapterid FROM chapters WHERE id='$chapter'";
+
+		$result = mysqli_query($link, $query);
+
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		list($myChapterID) = mysqli_fetch_array($result);
+
 		//reset TEAMS id
 		//$sql = "ALTER TABLE teams AUTO_INCREMENT = 1";
 
@@ -262,26 +283,33 @@ if(isset($_POST['verify3'])){
 				
 			//for each team of each event
 			for($i = 1; $i <= $teams; $i++){
+
+				if($myTeamIDFormatting == 1){
+					$teamid = $myChapterID . '-' . $i;
+				}
+				else{
+					$teamid = $myChapterID . '-' . (900 + $i);
+				}
 			
 				//add that event to the TEAMS table
 				$blank = ' ';
 				if($max == 1){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq', '$min', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter, teamid) VALUES ('$name', '$i', '$blank', NULL, NULL, NULL, NULL, NULL, '$isq', '$min', '$chapter', '$teamid')";
 				}
 				if($max == 2){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq', '$min', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter, teamid) VALUES ('$name', '$i', '$blank', '$blank', NULL, NULL, NULL, NULL, '$isq', '$min', '$chapter', '$teamid')";
 				}
 				if($max == 3){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq', '$min', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter, teamid) VALUES ('$name', '$i', '$blank', '$blank', '$blank', NULL, NULL, NULL, '$isq', '$min', '$chapter', '$teamid')";
 				}
 				if($max == 4){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq', '$min', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter, teamid) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', NULL, NULL, '$isq', '$min', '$chapter', '$teamid')";
 				}
 				if($max == 5){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq', '$min', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter, teamid) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', NULL, '$isq', '$min', '$chapter', '$teamid')";
 				}
 				if($max == 6){
-					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq', '$min', '$chapter')";
+					$sql = "INSERT INTO teams (event, team, member1, member2, member3, member4, member5, member6, qualifier, min, chapter, teamid) VALUES ('$name', '$i', '$blank', '$blank', '$blank', '$blank', '$blank', '$blank', '$isq', '$min', '$chapter', '$teamid')";
 				}
 				
 
