@@ -131,7 +131,7 @@ else{
 
 			}
 
-		if($isq == 'yes' && $team > 0){
+		if($isq == 'yes' && $team > 0 && ($rank == 'adviser' || $rank == 'admin')){
 			$outputVar = $outputVar . '<td><form method="post">
 						<input type="hidden" id="qualname" name="qualname" value="' . $name . '">
 						<input type="hidden" id="qualteam" name="qualteam" value="' . $team . '">
