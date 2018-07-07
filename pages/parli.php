@@ -200,11 +200,12 @@ if(isset($_POST['scoreValue'])){
 
 			<!--TESTS-->
 			<!--parli assist-->
-			<div class="row">
+			<center>
+			<div class="row" style="width:97.5%;">
 	
-				<div class="col-sm-10" id="content" style="padding-left:5%; padding-right:5%; padding-top:2.5%; padding-bottom: 2.5%">
-
-					<center>
+				<div class="col-sm-9" id="content" style="padding:0 0 0 0;">
+					<div class="adminDataSection" style="margin-bottom:15px; width:97.5%; padding-left:5%; padding-right:5%; padding-bottom: 2.5%"><center>
+					<p class="userDashSectionHeader" style="padding-left:0;">Take a Test</p>
 					<form id="createForm">
 					  <div class="form-group">
 					    <label for="numQuestions">Number of Questions</label>
@@ -229,11 +230,53 @@ if(isset($_POST['scoreValue'])){
 					</form>
 					<button id="generateButton" class="btn btn-primary" onclick="generate()">Generate Test</button>
 					</center>
-	
+					</div>
+					<div class="adminDataSection" style="margin-bottom:15px; width:97.5%; padding-left:5%; padding-right:5%; padding-top:2.5%; padding-bottom: 2.5%"><center>
+					<p class="userDashSectionHeader" style="padding-left:0; padding-bottom:0; margin-bottom:0;">High Scores</p>
+					<p style="font-size:12px; padding-top:0; margin-top:0;">Scores are taken from the 50-question chapter team test</p>
+						<ul class="list-group list-group-flush">
+							<?php
+
+								$counter = 1;
+
+								require('../php/connect.php');
+
+								$query = "SELECT fullname, score FROM scores WHERE test='100' AND chapter='$chapter' ORDER BY score DESC LIMIT 12";
+
+								$result = mysqli_query($link,$query);
+
+								if (!$result){
+									die('Error: ' . mysqli_error($link));
+								}
+
+								while(list($thisname, $thisscore) = mysqli_fetch_array($result)){
+
+									echo '<li class="list-group-item">';
+									if($counter == 1){
+										echo '<img src="../imgs/ribbon-first.png" width="20px" height="20px" />';
+									}
+									else if($counter == 2){
+										echo '<img src="../imgs/ribbon-second.png" width="20px" height="20px" />';
+									}
+									else if($counter == 3){
+										echo '<img src="../imgs/ribbon-third.png" width="20px" height="20px" />';
+									}
+									echo $thisname . ' - ' . $thisscore . '</li>';
+
+									$counter += 1;
+								}
+
+								mysqli_close($link);
+
+							?>
+						</ul>
+					</center></div>
 				</div>
 				
-				<div class="col-sm-2">
+				<div class="col-sm-3" style="padding:0 0 0 0;">
+					<div class="adminDataSection" style="padding-bottom: 15px;">
 					<center>
+					<p class="userDashSectionHeader" style="padding-left:0;">Resources</p>
 					<!--PARLI PRO-->
 					<b><p class="bodyTextType1">Helpful Guides</p></b>
 					<a href="https://docs.google.com/presentation/d/19JnTf9YjODwRgyt2N4jIxER_rYEQZaEyjZtwk_zvyRs/edit?usp=sharing">State Guide</a><br>
@@ -244,8 +287,10 @@ if(isset($_POST['scoreValue'])){
 					<a href="http://www.300questions.org/" target="_blank">300 Questions</a><br>
 					<a href="https://drive.google.com/file/d/0B0djtG22WOS_aEhsVWZLT0xocDg/view?usp=sharing" target="_blank">Dunbar Tests</a><br>
 					</center>
+					</div>
 				</div>
 			</div>
+			</center>
 		</div>
 	</div>
 </div>

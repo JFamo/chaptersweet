@@ -762,7 +762,7 @@ function generate(){
 		questions.push(thisquestion);
 	}
 	//output
-	var out = "";
+	var out = '<div class="adminDataSection nohover" style="width:97.5%; padding-left:5%; padding-right:5%; padding-top:2.5%; padding-bottom: 2.5%">';
 	for(var i = 0; i < numquestions; i ++){
 		out = out + "<form id='question" + (i+1) + "'><div class='form-group'><label>" + (i+1) + ". " + questions[i][0] + "</label><br>";
 		out = out + "<label><input type='radio' name='answer" + (i+1) + "' value='1'>" + questions[i][1] + "</label><br>";
@@ -771,7 +771,7 @@ function generate(){
 		out = out + "<label><input type='radio' name='answer" + (i+1) + "' value='4'>" + questions[i][4] + "</label><br>";		  
 		out = out + "</div></form>";
 	}
-	out = out + "<button id='submitButton' class='btn btn-primary' onclick='submitAnswers()'>Score</button><form id='scoreForm' style='display:none;' method='post'><input type='number' id='scoreValue' name='scoreValue'><input type='number' id='testNumber' name='testNumber'></form>";
+	out = out + "<button id='submitButton' class='btn btn-primary' onclick='submitAnswers()'>Score</button><form id='scoreForm' style='display:none;' method='post'><input type='number' id='scoreValue' name='scoreValue'><input type='number' id='testNumber' name='testNumber'></form></div>";
 	content.innerHTML = out;
 }
 
@@ -797,7 +797,7 @@ function submitAnswers(){
 			choices[q].style.display = "none";
 		}
 	}
-	content.innerHTML = "<center><b>Score : " + numberCorrect + " / " + numquestions + "</b><br></center>" + content.innerHTML;
+	content.innerHTML = '<div class="adminDataSection" style="margin-bottom: 15px; padding-top:15px; padding-bottom:15px;"><center><b style="font-size:20px;">Score : ' + numberCorrect + " / " + numquestions + "</b><br></center></div>" + content.innerHTML;
 	window.scrollTo(0,0);
 	//PHP submission
 	if(difficulty == "benchmark1"){
@@ -807,6 +807,10 @@ function submitAnswers(){
 	if(difficulty == "benchmark2"){
 		document.getElementById('scoreValue').value = numberCorrect;
 		document.getElementById('testNumber').value = 2;
+	}
+	if(difficulty == "chapter"){
+		document.getElementById('scoreValue').value = numberCorrect;
+		document.getElementById('testNumber').value = 100;
 	}
 	document.getElementById('submitButton').innerHTML = "New Test";
 	document.getElementById('submitButton').onclick = function(){
