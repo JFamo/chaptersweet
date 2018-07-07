@@ -370,9 +370,18 @@ if(isset($_SESSION['username'])){
 		 	<form name="loginForm" method="POST" action="?">
 
 		  		Enter your username: <br>
-		  			<input class="input1 form-control" type="text" name="user" required/> <br>
+		  			<input class="input1 form-control" type="text" name="user" required/>
+		  			<a href="#" style="font-size:10px; padding-bottom:5px;" data-container="body" data-toggle="popover" data-placement="top" data-content="Ask your adviser to lookup or reset your username from the 'My Chapter' page.">Forgot Your Username?</a>
+		  			<br>
 		  		Enter your password: <br>
-		  			<input class="input1 form-control" type="password" name="pass" required/> <br>
+		  			<input class="input1 form-control" type="password" name="pass" required/>
+		  			<a href="#" style="font-size:10px; padding-bottom:5px;" data-container="body" data-html=true data-toggle="popover" data-placement="top" data-content='<form method="post" action="../php/send_reset.php">
+						<p>Enter Email Address for Password Reset</p>
+						Email:<input type="email" name="email" required>
+						Username:<input type="text" name="username" required>
+						<input class="btn btn-primary btn-sm" type="submit" name="submit_email">
+						</form>'>Forgot Your Password?</a>
+		  			<br>
 		  		Chapter : <br>
 		  			<select class="input1 form-control" name="chapter">
 		  				<?php

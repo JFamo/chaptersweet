@@ -47,6 +47,20 @@ while(list($hold) = mysqli_fetch_array($resultid)){
 	$daID = $hold;
 }
 
+//get user's events
+$queryid="SELECT username FROM users WHERE fullname='$daUsah' AND chapter='$chapter'";
+
+$resultid = mysqli_query($link, $queryid);
+
+if (!$resultid){
+	die('Error: ' . mysqli_error($link));
+}
+
+//show each event as option	
+while(list($theusername) = mysqli_fetch_array($resultid)){
+	$daUsername = $theusername;
+}
+
 $out = "";
 $out = $out .  '<div class="modal-dialog modal-lg">';
 $out = $out .  '<div class="modal-content">';
@@ -59,10 +73,23 @@ $out = $out .  '<div class="modal-body">';
 if($rank == "admin" || $rank == "adviser"){
 	$out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bottom:15px;">';
 	$out = $out .  '<p class="userDashSectionHeader" style="padding-left:0px;">Account Information</p><br>';
+	//show username
+	$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+		$out = $out .  '<span>';
+			$out = $out .  '<b>Edit Username</b>';
+		$out = $out .  '</span>';
+			$out = $out .  "<input type='hidden' name='usernameFieldUserID' value='" . $daID . "'>";
+		$out = $out .  '<span>';
+			$out = $out .  '<input type="text" id="usernameFieldNewname" name="usernameFieldNewname" value="' . $daUsername . '">';
+		$out = $out .  '</span>';
+		$out = $out .  '<span>';
+			$out = $out .  '<input type="submit" class="btn btn-primary" value="Set Username">';
+		$out = $out .  '</span>';
+	$out = $out .  '</form>';
 	//set id
 	$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
 		$out = $out .  '<span>';
-			$out = $out .  '<b>Set Individual ID</b>';
+			$out = $out .  '<b>Edit Individual ID</b>';
 		$out = $out .  '</span>';
 			$out = $out .  "<input type='hidden' name='idname' value='" . $daID . "'>";
 		$out = $out .  '<span>';
@@ -74,7 +101,7 @@ if($rank == "admin" || $rank == "adviser"){
 	$out = $out .  '</form>';
 	//set rank
 	if($thisrank != "admin" && $thisrank != "adviser"){
-		$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+		$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; padding-bottom:15px; height:40px; padding-top:15px;">';
 			$out = $out .  '<span>';
 				$out = $out .  '<b>Set Rank</b>';
 			$out = $out .  '</span>';

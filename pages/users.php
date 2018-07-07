@@ -298,6 +298,33 @@ if(isset($_POST['idname'])){
 
 }
 
+//function to change username
+if(isset($_POST['usernameFieldUserID'])){
+
+	$user = $_POST['usernameFieldUserID'];
+	$newName = $_POST['usernameFieldNewname'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET username='$newName' WHERE id='$user' AND chapter='$chapter'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Changed username " . $_POST['usernameFieldNewname'] . " to username " . $newName . " Successfully!";
+		
+		$activityForm = "Changed username " . $_POST['usernameFieldNewname'] . " to username " . $newName;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+
+	mysqli_close($link);
+}
+
 //function to delete user
 if(isset($_POST['deleteUser'])){
 
