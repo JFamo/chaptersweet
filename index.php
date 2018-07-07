@@ -239,6 +239,16 @@ if(isset($_POST['chname']) && $_POST['chpaid'] == '8675309'){
 		if (!$result){
 			die('Error: ' . mysqli_error($link));
 		}
+		$sql = "INSERT INTO settings (name, value, chapter) VALUES ('teamIDformat', '1', '$thisid')";
+		$result = mysqli_query($link, $sql);
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+		$sql = "INSERT INTO settings (name, value, chapter) VALUES ('obligationPermission', 'yes', '$thisid')";
+		$result = mysqli_query($link, $sql);
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
 		$sql = "INSERT INTO settings (name, value, chapter) VALUES ('eventRemovalPermission', 'no', '$thisid')";
 		$result = mysqli_query($link, $sql);
 		if (!$result){
@@ -250,7 +260,7 @@ if(isset($_POST['chname']) && $_POST['chpaid'] == '8675309'){
 			die('Error: ' . mysqli_error($link));
 		}
 		
-		//create admin
+		//create adviser
 		$sqlp = "INSERT INTO users (fullname, username, password, email, grade, chapter, rank) VALUES ('$valuef', '$value1', '$value2', '$valuee', '0', '$thisid', 'adviser')";
 	
 			if (!mysqli_query($link, $sqlp)){
