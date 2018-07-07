@@ -337,6 +337,26 @@ if(isset($_POST['chapterCode'])){
 
 }
 
+//function for updating Chapter ID Setting
+if(isset($_POST['chapterID'])){
+
+	//id
+	$newID = $_POST['chapterID'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE chapters SET chapterid='$newID' WHERE id='$chapter'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Chapter ID Updated!";
+	
+	mysqli_close($link);
+
+}
+
 //function for updating Officer Info Permission Setting
 if(isset($_POST['officerInfoPerm'])){
 
@@ -568,19 +588,22 @@ if(isset($_POST['eventPerm'])){
 				}
 			?>
 
+				<center>
+
 				<!--Description-->
+				<div class="adminDataSection">
 					<p class="bodyTextType1">
-						These settings are for ADVISERS ONLY. They are <b> DANGEROUS </b> and have a risk of <b> OVERRIDING IMPORTANT DATA! </b> Proceed with caution, and verify that any function here is used intentionally.
+						These settings are for ADVISERS ONLY. They are <b> DANGEROUS </b> and have a risk of <b> OVERRIDING IMPORTANT DATA! </b>Proceed with caution, and verify that any function here is used intentionally.
 					</p>
+				</div>
 
 				<!--SETTINGS PANES-->
-				<center>
 				<!--General Settings-->
 				<div class="adminDataSection">
-				<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Code</p><br>
+				<p class="userDashSectionHeader" style="padding-left:0px;">Chapter Information</p><br>
 
 					<?php
-					//UPDATE THE VALUE OF THE ABOVE FORM
+					//UPDATE THE VALUE OF THE CODE FORM
 						//get permission settings
 						require('../php/connect.php');
 
@@ -606,6 +629,66 @@ if(isset($_POST['eventPerm'])){
 						</span>
 						<span>
 							<input type="text" id="chapterCode" name="chapterCode" onchange="this.form.submit()" value="<?php echo $chapterCode ?>" />
+						</span>
+					</form>
+
+					<?php
+					//UPDATE THE VALUE OF THE ID FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$queryC="SELECT chapterid FROM chapters WHERE id='$chapter'";
+
+						$resultC = mysqli_query($link, $queryC);
+
+						if (!$resultC){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($chid) = mysqli_fetch_array($resultC);
+						$chapterID = $chid;
+					?>
+
+					<!--officer info permission setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Chapter ID</b>
+							<br>
+							<p class="description">The ID number of your chapter for the current TSA competition.</p>
+						</span>
+						<span>
+							<input type="text" id="chapterID" name="chapterID" onchange="this.form.submit()" value="<?php echo $chapterID ?>" />
+						</span>
+					</form>
+
+					<?php
+					//UPDATE THE VALUE OF THE ID FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$queryC="SELECT chapterid FROM chapters WHERE id='$chapter'";
+
+						$resultC = mysqli_query($link, $queryC);
+
+						if (!$resultC){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($chid) = mysqli_fetch_array($resultC);
+						$chapterID = $chid;
+					?>
+
+					<!--officer info permission setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Chapter ID</b>
+							<br>
+							<p class="description">The ID number of your chapter for the current TSA competition.</p>
+						</span>
+						<span>
+							<input type="text" id="chapterID" name="chapterID" onchange="this.form.submit()" value="<?php echo $chapterID ?>" />
 						</span>
 					</form>
 
