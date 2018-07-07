@@ -295,6 +295,8 @@ if(isset($_POST['scoreValue'])){
 	</div>
 </div>
 
+<iframe name="hideframe" style="display:none;"></iframe>
+
 <!--Spooky stuff at the bottom-->
 	<footer class="darknav">
 		<center><p class="bodyTextType2">

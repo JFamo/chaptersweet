@@ -771,7 +771,7 @@ function generate(){
 		out = out + "<label><input type='radio' name='answer" + (i+1) + "' value='4'>" + questions[i][4] + "</label><br>";		  
 		out = out + "</div></form>";
 	}
-	out = out + "<button id='submitButton' class='btn btn-primary' onclick='submitAnswers()'>Score</button><form id='scoreForm' style='display:none;' method='post'><input type='number' id='scoreValue' name='scoreValue'><input type='number' id='testNumber' name='testNumber'></form></div>";
+	out = out + "<button id='submitButton' class='btn btn-primary' onclick='submitAnswers()'>Score</button><form target='hideframe' id='scoreForm' style='display:none;' method='post'><input type='number' id='scoreValue' name='scoreValue'><input type='number' id='testNumber' name='testNumber'></form></div>";
 	content.innerHTML = out;
 }
 
@@ -812,11 +812,11 @@ function submitAnswers(){
 		document.getElementById('scoreValue').value = numberCorrect;
 		document.getElementById('testNumber').value = 100;
 	}
+	if(document.getElementById('testNumber').value > 0){
+		document.getElementById('scoreForm').submit();
+	}
 	document.getElementById('submitButton').innerHTML = "New Test";
 	document.getElementById('submitButton').onclick = function(){
-		if(document.getElementById('testNumber').value > 0){
-			document.getElementById('scoreForm').submit();
-		}
 		content.innerHTML = defaultContent;
 	}
 }
