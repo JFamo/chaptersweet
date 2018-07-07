@@ -44,6 +44,22 @@ if(isset($_POST['scoreValue'])){
 	mysqli_close($link);
 }
 
+//clear scores
+if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
+
+	require('../php/connect.php');
+
+	$query = "TRUNCATE TABLE scores";
+
+	$result = mysqli_query($link,$query);
+
+	if (!$result){
+		die('Error: ' . mysqli_error($link));
+	}
+
+	mysqli_close($link);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -270,6 +286,12 @@ if(isset($_POST['scoreValue'])){
 
 							?>
 						</ul>
+					<?php if($rank == "admin" || $rank == "adviser") { ?>
+						<br>
+						<form method="post">
+							<input type="submit" name="clearScores" class="btn btn-danger" value="Clear Scores"/>
+						</form>
+					<?php } ?>
 					</center></div>
 				</div>
 				
