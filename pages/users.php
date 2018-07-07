@@ -25,6 +25,19 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
 
+//OBLIGATION PERMISSION
+$query="SELECT value FROM settings WHERE name='obligationPermission' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$obligPerm = $perm;
+
 //EVENT POINTS for OFFICERS
 $query="SELECT value FROM settings WHERE name='eventpointsPermission' AND chapter='$chapter'";
 
@@ -1131,6 +1144,7 @@ if(isset($_POST['deleteObligation'])){
 				<br>
 				</div>
 				<?php } ?>
+				<?php if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $obligPerm == "yes")){ ?>
 				<!--Obligations-->
 				<div class="adminDataSection" style="margin-bottom:15px;">
 				<p class="userDashSectionHeader" style="padding-left:0px;">Obligations</p>
@@ -1189,6 +1203,7 @@ if(isset($_POST['deleteObligation'])){
 					</form>
 					<br>
 				</div>
+				<?php } ?>
 				
 				</center>
 
