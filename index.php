@@ -30,6 +30,8 @@ if(isset($_POST['username']) and isset($_POST['password'])){
 	$value4 = validate($value4);
 	$value5 = validate($value5);
 	$valuec = validate($valuec);
+
+	$value3 = password_hash($value3, PASSWORD_DEFAULT);
 	
 	require_once('php/connect.php');
 	
@@ -121,7 +123,7 @@ if(isset($_POST['user']) and isset($_POST['pass'])){
 	
 	require('php/connect.php');
 	
-	$query= "SELECT * FROM users WHERE username='$sessionUsername' AND password='$sessionPassword' AND chapter='$chapter'";
+	$query= "SELECT id FROM users WHERE username='$sessionUsername' AND chapter='$chapter'";
 
 	$result = mysqli_query($link, $query);
 
@@ -134,32 +136,36 @@ if(isset($_POST['user']) and isset($_POST['pass'])){
 	if($count == 1){
 
 		//fetch the rank of that user
-		$query2 = "SELECT fullname, rank, grade, eventpoints, idnumber FROM users WHERE username='$sessionUsername' AND password='$sessionPassword' AND chapter='$chapter'";
+		$query2 = "SELECT fullname, rank, grade, eventpoints, idnumber, password FROM users WHERE username='$sessionUsername' AND chapter='$chapter'";
 		$result2 = mysqli_query($link, $query2);
 		if (!$result2){
 			die('Error: ' . mysqli_error($link));
 		}
 
-		list($fullnameValue, $rankValue, $gradeValue, $eventPointsValue, $idnumber) = mysqli_fetch_array($result2);
+		list($fullnameValue, $rankValue, $gradeValue, $eventPointsValue, $idnumber, $password) = mysqli_fetch_array($result2);
 
-		$_SESSION['username'] = $sessionUsername;
-		$_SESSION['rank'] = $rankValue;
-		$_SESSION['fullname'] = $fullnameValue;
-		$_SESSION['grade'] = $gradeValue;
-		$_SESSION['eventpoints'] = $eventPointsValue;
-		
-		//get the conference
-		$conferencequery="SELECT value FROM settings WHERE name='conference' AND chapter='$chapter'";
-		
-		$conferenceresult = mysqli_query($link, $conferencequery);
-		
-		if (!$conferenceresult){
-			die('Error: ' . mysqli_error($link));
+		if(password_verify($sessionPassword, $password)){
+
+			$_SESSION['username'] = $sessionUsername;
+			$_SESSION['rank'] = $rankValue;
+			$_SESSION['fullname'] = $fullnameValue;
+			$_SESSION['grade'] = $gradeValue;
+			$_SESSION['eventpoints'] = $eventPointsValue;
+			
+			//get the conference
+			$conferencequery="SELECT value FROM settings WHERE name='conference' AND chapter='$chapter'";
+			
+			$conferenceresult = mysqli_query($link, $conferencequery);
+			
+			if (!$conferenceresult){
+				die('Error: ' . mysqli_error($link));
+			}
+			
+			list($conference) = mysqli_fetch_array($conferenceresult);
+			
+			$_SESSION['conference'] = $conference;
+
 		}
-		
-		list($conference) = mysqli_fetch_array($conferenceresult);
-		
-		$_SESSION['conference'] = $conference;
 
 	}
 	else{
@@ -187,6 +193,8 @@ if(isset($_POST['chname']) && $_POST['chpaid'] == '8675309'){
 	$value2 = validate($value2);
 	$valuee = validate($valuee);
 	$valuef = validate($valuef);
+
+	$value2 = password_hash($value2, PASSWORD_DEFAULT);
 	
 	$query= "SELECT * FROM users WHERE username='$value1'";
 

@@ -1,10 +1,26 @@
 <?php
 
+function validate($data){
+  $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    $data = str_replace('\\', '', $data);
+    $data = str_replace('/', '', $data);
+    $data = str_replace("'", '', $data);
+    $data = str_replace(";", '', $data);
+    $data = str_replace("(", '', $data);
+    $data = str_replace(")", '', $data);
+    return $data;
+}
+
 if($_POST['username'] && $_POST['password']){
 
   $user = $_POST['username'];
   $pass = $_POST['password'];
   $email = $_POST['email'];
+
+  $pass = validate($pass);
+  $pass = password_hash($pass, PASSWORD_DEFAULT);
 
   require_once('connect.php');
 
