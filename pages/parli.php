@@ -266,7 +266,7 @@ if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
 
 								require('../php/connect.php');
 
-								$query = "SELECT fullname, MAX(score) FROM scores WHERE test='100' AND chapter='$chapter' GROUP BY fullname ORDER BY score DESC LIMIT 12";
+								$query = "SELECT fullname, MAX(score) FROM scores WHERE test='100' AND chapter='$chapter' GROUP BY fullname ORDER BY MAX(score) DESC LIMIT 12";
 
 								$result = mysqli_query($link,$query);
 
