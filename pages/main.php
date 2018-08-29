@@ -233,6 +233,16 @@ $blockedPages = $perm;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110539742-3"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'UA-110539742-3');
+	</script>
+
 	<!-- Bootstrap, cause it dabs -->
 	<link rel="stylesheet" href="../bootstrap-4.1.0/css/bootstrap.min.css">
     <script src="../js/jquery.min.js"></script>
