@@ -71,6 +71,15 @@ if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
     <script src="../js/popper.min.js"></script>
     <script src="../bootstrap-4.1.0/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110539742-3"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		
+		  gtag('config', 'UA-110539742-3');
+		</script>
 
 	<title>
 		Chapter Sweet
@@ -257,7 +266,7 @@ if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
 
 								require('../php/connect.php');
 
-								$query = "SELECT fullname, score FROM scores WHERE test='100' AND chapter='$chapter' ORDER BY score DESC LIMIT 12";
+								$query = "SELECT fullname, MAX(score) FROM scores WHERE test='100' AND chapter='$chapter' GROUP BY fullname ORDER BY score DESC LIMIT 12";
 
 								$result = mysqli_query($link,$query);
 
