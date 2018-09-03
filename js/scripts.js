@@ -285,7 +285,7 @@ $('input[class="noCheckBox"]').click(function(event) {
 });
 
 //function to update Settings on Admin Page
-function updateSettings(infoPerm, emailPerm, blockPages, chapterCode, eventpointsPerm, teamIDformat, obligPerm, removalPerm, idPerm){
+function updateSettings(infoPerm, emailPerm, blockPages, chapterCode, eventpointsPerm, teamIDformat, obligPerm, removalPerm, idPerm, fileDeletionPerm){
 
   var officerInfoPerm = document.getElementById('officerInfoPerm');
   officerInfoPerm.value = infoPerm;
@@ -313,6 +313,9 @@ function updateSettings(infoPerm, emailPerm, blockPages, chapterCode, eventpoint
 
   var idpm = document.getElementById('idPerm');
   idpm.value = idPerm;
+
+  var fdpm = document.getElementById('fileDeletionPerm');
+  fdpm.value = fileDeletionPerm;
 
 }
 

@@ -405,6 +405,26 @@ if(isset($_POST['officerInfoPerm'])){
 
 }
 
+//function for updating Officer Info Permission Setting
+if(isset($_POST['fileDeletionPerm'])){
+
+	//file viewability
+	$level = $_POST['fileDeletionPerm'];
+
+	require('../php/connect.php');
+
+	$sql = "UPDATE settings SET value='$level' WHERE name='fileDeletionPermission' AND chapter='$chapter'";
+
+	if (!mysqli_query($link, $sql)){
+		die('Error: ' . mysqli_error($link));
+	}
+	
+	$fmsg =  "Officer Permissions Updated!";
+
+	mysqli_close($link);
+
+}
+
 //function for updating Officer Email Permission Setting
 if(isset($_POST['officerEmailPerm'])){
 
@@ -1011,6 +1031,39 @@ if(isset($_POST['idPerm'])){
 						$idPermission = $perm;
 					?>
 
+					<!--officer file deletion setting-->
+					<form class="basicSpanForm" style="width:100%;" method="post">
+						<span>
+							<b>Officer Permission to Delete Files</b>
+							<br>
+							<p class="description">Can officers delete files and minutes?</p>
+						</span>
+						<span>
+							Permission:
+							<select id="fileDeletionPerm" name="fileDeletionPerm" onchange="this.form.submit()">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+						</span>
+					</form>
+					<?php
+					//UPDATE THE VALUE OF THE ABOVE FORM
+						//get permission settings
+						require('../php/connect.php');
+
+						$query="SELECT value FROM settings WHERE name='fileDeletionPermission' AND chapter='$chapter'";
+
+						$result = mysqli_query($link, $query);
+
+						if (!$result){
+							die('Error: ' . mysqli_error($link));
+						}
+
+						//save the result
+						list($perm) = mysqli_fetch_array($result);
+						$fileDeletionPermission = $perm;
+					?>
+
 					<!--blocked pages setting-->
 					<form class="basicSpanForm" style="width:100%;" method="post">
 						<span>
@@ -1208,7 +1261,7 @@ if(isset($_POST['idPerm'])){
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../js/scripts.js" type="text/javascript"></script>
 <script type="text/javascript">
-	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode).",".json_encode($eventpointsPermission).",".json_encode($teamFormat).",".json_encode($obligationPermission).",".json_encode($eventRemovalPermission).",".json_encode($idPermission)); ?> );
+	updateSettings( <?php echo(json_encode($officerPerm).",".json_encode($emailPerm).",".json_encode($blockPages).",".json_encode($chapterCode).",".json_encode($eventpointsPermission).",".json_encode($teamFormat).",".json_encode($obligationPermission).",".json_encode($eventRemovalPermission).",".json_encode($idPermission).",".json_encode($fileDeletionPermission)); ?> );
 </script>
 
 </html>
