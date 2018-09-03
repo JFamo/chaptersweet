@@ -23,6 +23,19 @@ if (!$result){
 list($perm) = mysqli_fetch_array($result);
 $officerPerm = $perm;
 
+//FILE DELETION
+$query="SELECT value FROM settings WHERE name='fileDeletionPermission' AND chapter='$chapter'";
+
+$result = mysqli_query($link, $query);
+
+if (!$result){
+	die('Error: ' . mysqli_error($link));
+}
+
+//save the result
+list($perm) = mysqli_fetch_array($result);
+$deletionPerm = $perm;
+
 if(isset($_POST['uploadMinutes']) && $_FILES['userfile']['size'] > 0){
 
 	//file details
@@ -359,7 +372,7 @@ if(isset($_POST['deleteFileID'])){
 									<td><p style="float:right;"><?php echo "".$date ?></p></td>
 									<td><p style="float:right;"><?php echo "".$poster ?></p></td>
 									<?php
-										if($rank == "officer" || $rank == "admin" || $rank == "adviser"){
+										if(($rank == "officer" && $deletionPerm == "yes") || $rank == "admin" || $rank == "adviser"){
 									?>
 									<td>
 										<form method="post" id="deleteFileForm">
