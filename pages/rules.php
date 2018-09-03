@@ -94,6 +94,13 @@ if(isset($_POST['deleteFileID'])){
 			die('Error: ' . mysqli_error($link));
 		}
 
+		$activityForm = "Deleted File " . $filename;
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$fullname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+
 		mysqli_close($link);
 
 		$fmsg =  "File ".$filename." Deleted Successfully!";
