@@ -75,6 +75,38 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 
 }
 
+//file deletion
+if(isset($_POST['deleteFileID'])){
+
+	//file details
+	$fileid = $_POST['deleteFileID'];
+	$filename = $_POST['deleteFileName'];
+
+	if($rank == "officer" || $rank == "admin" || $rank == "adviser"){
+
+		require('../php/connect.php');
+
+		$query = "DELETE FROM minutes WHERE id = '$fileid'";
+
+		$result = mysqli_query($link, $query);
+
+		if (!$result){
+			die('Error: ' . mysqli_error($link));
+		}
+
+		mysqli_close($link);
+
+		$fmsg =  "File ".$filename." Deleted Successfully!";
+
+	}
+	else{
+
+		$fmsg =  "Failed to Authorize File Deletion!";
+
+	}
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -329,6 +361,19 @@ if(isset($_POST['uploadRules']) && $_FILES['userfile']['size'] > 0){
 									<?php } ?>
 								<td><p style="float:right;"><?php echo "".$date ?></p></td>
 								<td><p style="float:right;"><?php echo "".$poster ?></p></td>
+								<?php
+									if($rank == "admin" || $rank == "adviser"){
+								?>
+								<td>
+									<form method="post" id="deleteFileForm">
+										<input name="deleteFileID" type="hidden" value="<?php echo $id ?>">
+										<input name="deleteFileName" type="hidden" value="<?php echo $name ?>">
+										<input style="padding:0 0 0 0;" type="submit" class="close btn btn-link" value="&times";>
+									</form>
+								</td>
+								<?php
+									}
+								?>
 								</tr>
 								<?php
 								}
