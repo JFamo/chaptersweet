@@ -312,19 +312,31 @@ if(isset($_POST['uploadFile']) && $_FILES['userfile']['size'] > 0){
 								if(($view == "officer" && ($rank == "officer" || $rank == "admin" || $rank == "adviser")) || ($view == "all")){
 									?>
 								<tr>
-								<td>
+									<td>
+										<?php
+											if($view == "officer"){
+										?>
+											<p id="privateTooltip" style="float:left;cursor:default;" data-toggle="tooltip" data-placement="bottom" title="Available to Officers Only">&#x1F512;</p>
+											<script>
+												$('#privateTooltip').tooltip();
+											</script>
+										<?php } ?>
+										<a class="text-primary minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left;"><?php echo "".$name ?></a>
+									</td>
+									<td><p style="float:right; margin-top:8px;"><?php echo "".$date ?></p></td>
+									<td><p style="float:right; margin-top:8px;"><?php echo "".$poster ?></p></td>
 									<?php
-										if($view == "officer"){
+										if($rank == "officer" || $rank == "admin" || $rank == "adviser"){
 									?>
-										<p id="privateTooltip" style="float:left;cursor:default;" data-toggle="tooltip" data-placement="bottom" title="Available to Officers Only">&#x1F512;</p>
-										<script>
-											$('#privateTooltip').tooltip();
-										</script>
-									<?php } ?>
-									<a class="text-primary minutesLink" href="../php/download.php?id=<?php echo "".$id ?>" style="float:left;"><?php echo "".$name ?></a>
-								</td>
-								<td><p style="float:right;"><?php echo "".$date ?></p></td>
-								<td><p style="float:right;"><?php echo "".$poster ?></p></td>
+									<td>
+										<form method="post" id="deleteFileForm">
+											<input name="deleteFileID" type="hidden" value="<$php echo $id ?>">
+											<input style="padding:0 0 0 0;" type="submit" class="close btn btn-link" value="&times";>
+										</form>
+									</td>
+									<?php
+										}
+									?>
 								</tr>
 								
 								<?php
