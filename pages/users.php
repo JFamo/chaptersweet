@@ -325,9 +325,36 @@ if(isset($_POST['usernameFieldUserID'])){
 			die('Error: ' . mysqli_error($link));
 		}
 		
-		$fmsg =  "Changed username " . $_POST['usernameFieldNewname'] . " to username " . $newName . " Successfully!";
+		$fmsg =  "Changed username to " . $newName . " Successfully!";
 		
-		$activityForm = "Changed username " . $_POST['usernameFieldNewname'] . " to username " . $newName;
+		$activityForm = "Changed username to " . $newName;
+		$longname = $_SESSION['fullname'];
+		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+
+	mysqli_close($link);
+}
+
+//function to change fullname
+if(isset($_POST['fullnameFieldUserID'])){
+
+	$user = $_POST['fullnameFieldUserID'];
+	$newName = $_POST['fullnameFieldNewname'];
+
+	require('../php/connect.php');
+
+		$sql = "UPDATE users SET fullname='$newName' WHERE id='$user' AND chapter='$chapter'";
+
+		if (!mysqli_query($link, $sql)){
+			die('Error: ' . mysqli_error($link));
+		}
+		
+		$fmsg =  "Changed fullname to " . $newName . " Successfully!";
+		
+		$activityForm = "Changed fullname to " . $newName;
 		$longname = $_SESSION['fullname'];
 		$sql = "INSERT INTO activity (user, activity, date, chapter) VALUES ('$longname', '$activityForm', now(), '$chapter')";
 

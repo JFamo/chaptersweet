@@ -1,7 +1,7 @@
 <?php
 session_start();
 $rank = $_SESSION['rank'];
-$daUsah = $_SESSION['eventsUser'];
+$eventsUser = $_SESSION['eventsUser'];
 $thisrank = $_SESSION['eventsUserRank'];
 $chapter = $_SESSION['chapter'];
 
@@ -9,7 +9,7 @@ $chapter = $_SESSION['chapter'];
 require('../php/connect.php');
 
 //current ID
-$query="SELECT idnumber FROM users WHERE fullname='$daUsah' AND chapter='$chapter'";
+$query="SELECT idnumber FROM users WHERE fullname='$eventsUser' AND chapter='$chapter'";
 
 $result = mysqli_query($link, $query);
 
@@ -60,7 +60,7 @@ list($perm) = mysqli_fetch_array($result);
 $idPerm = $perm;
 
 //get user's events
-$queryid="SELECT id FROM users WHERE fullname='$daUsah' AND chapter='$chapter'";
+$queryid="SELECT id FROM users WHERE fullname='$eventsUser' AND chapter='$chapter'";
 
 $resultid = mysqli_query($link, $queryid);
 
@@ -70,11 +70,11 @@ if (!$resultid){
 
 //show each event as option	
 while(list($hold) = mysqli_fetch_array($resultid)){
-	$daID = $hold;
+	$eventsUserID = $hold;
 }
 
 //get user's events
-$queryid="SELECT username FROM users WHERE fullname='$daUsah' AND chapter='$chapter'";
+$queryid="SELECT username FROM users WHERE fullname='$eventsUser' AND chapter='$chapter'";
 
 $resultid = mysqli_query($link, $queryid);
 
@@ -84,11 +84,11 @@ if (!$resultid){
 
 //show each event as option	
 while(list($theusername) = mysqli_fetch_array($resultid)){
-	$daUsername = $theusername;
+	$eventsUserUsername = $theusername;
 }
 
 $out = "";
-$out = $out .  '<div class="modal-dialog modal-lg">';
+$out = $out .  '<div class="moeventsUserl-dialog modal-lg">';
 $out = $out .  '<div class="modal-content">';
 $out = $out .  '<div class="modal-header">';
 $out = $out .  '<h4 class="modal-title">' . $_SESSION['eventsUser'] . '</h4>';
@@ -105,12 +105,27 @@ if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $idPerm == "
 			$out = $out .  '<span>';
 				$out = $out .  '<b>Edit Username</b>';
 			$out = $out .  '</span>';
-				$out = $out .  "<input type='hidden' name='usernameFieldUserID' value='" . $daID . "'>";
+				$out = $out .  "<input type='hidden' name='usernameFieldUserID' value='" . $eventsUserID . "'>";
 			$out = $out .  '<span>';
-				$out = $out .  '<input type="text" id="usernameFieldNewname" name="usernameFieldNewname" value="' . $daUsername . '">';
+				$out = $out .  '<input type="text" id="usernameFieldNewname" name="usernameFieldNewname" value="' . $eventsUserUsername . '">';
 			$out = $out .  '</span>';
 			$out = $out .  '<span>';
 				$out = $out .  '<input type="submit" class="btn btn-primary" value="Set Username">';
+			$out = $out .  '</span>';
+		$out = $out .  '</form>';
+	}
+	//fullname setting
+	if($rank == "admin" || $rank == "adviser"){
+		$out = $out .  '<form class="basicSpanDiv" method="post" style="width:100%; height:40px; padding-top:15px;">';
+			$out = $out .  '<span>';
+				$out = $out .  '<b>Edit Full Name</b>';
+			$out = $out .  '</span>';
+				$out = $out .  "<input type='hidden' name='fullnameFieldUserID' value='" . $eventsUserID . "'>";
+			$out = $out .  '<span>';
+				$out = $out .  '<input type="text" id="fullnameFieldNewname" name="fullnameFieldNewname" value="' . $eventsUser . '">';
+			$out = $out .  '</span>';
+			$out = $out .  '<span>';
+				$out = $out .  '<input type="submit" class="btn btn-primary" value="Set Full Name">';
 			$out = $out .  '</span>';
 		$out = $out .  '</form>';
 	}
@@ -119,7 +134,7 @@ if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $idPerm == "
 		$out = $out .  '<span>';
 			$out = $out .  '<b>Edit Individual ID</b>';
 		$out = $out .  '</span>';
-			$out = $out .  "<input type='hidden' name='idname' value='" . $daID . "'>";
+			$out = $out .  "<input type='hidden' name='idname' value='" . $eventsUserID . "'>";
 		$out = $out .  '<span>';
 			$out = $out .  '<input type="number" id="idnum" name="idnum" value="' . $idnumber . '">';
 		$out = $out .  '</span>';
@@ -134,7 +149,7 @@ if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $idPerm == "
 				$out = $out .  '<span>';
 					$out = $out .  '<b>Set Rank</b>';
 				$out = $out .  '</span>';
-					$out = $out .  "<input type='hidden' name='thisUser' value='" . addslashes($daUsah) . "'>";
+					$out = $out .  "<input type='hidden' name='thisUser' value='" . addslashes($eventsUser) . "'>";
 				$out = $out .  '<span>';
 					$out = $out . '<input type="hidden" name="newRank" value="';
 					if($thisrank=='member'){ $out = $out . 'officer'; }
@@ -162,7 +177,7 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 	require('../php/connect.php');
 
 	//get user's events
-	$queryEve="SELECT event, team FROM teams WHERE (member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah') AND chapter='$chapter'";
+	$queryEve="SELECT event, team FROM teams WHERE (member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser') AND chapter='$chapter'";
 
 	$resultEve = mysqli_query($link, $queryEve);
 
@@ -259,7 +274,7 @@ $out = $out .  '<div class="adminDataSection" id="userEvents" style="margin-bott
 		require('../php/connect.php');
 
 		//get user's events
-		$queryDele="SELECT event FROM teams WHERE (member1='$daUsah' OR member2='$daUsah' OR member3='$daUsah' OR member4='$daUsah' OR member5='$daUsah' OR member6='$daUsah') AND chapter='$chapter'";
+		$queryDele="SELECT event FROM teams WHERE (member1='$eventsUser' OR member2='$eventsUser' OR member3='$eventsUser' OR member4='$eventsUser' OR member5='$eventsUser' OR member6='$eventsUser') AND chapter='$chapter'";
 
 		$resultDele = mysqli_query($link, $queryDele);
 
@@ -287,7 +302,7 @@ if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $eventPoints
 		$out = $out .  '<span>';
 			$out = $out .  '<b>Assign User Event Points</b>';
 		$out = $out .  '</span>';
-			$out = $out .  "<input type='hidden' name='pointsTo' value='" . $daID . "'>";
+			$out = $out .  "<input type='hidden' name='pointsTo' value='" . $eventsUserID . "'>";
 		$out = $out .  '<span>';
 			$out = $out .  'How Many Points :';
 			$out = $out .  '<input type="number" id="points" name="points">';
@@ -300,7 +315,7 @@ if($rank == "admin" || $rank == "adviser" || ($rank == "officer" && $eventPoints
 		$out = $out .  '<span>';
 			$out = $out .  '<b>Remove User Event Points</b>';
 		$out = $out .  '</span>';
-			$out = $out .  "<input type='hidden' name='pointsFrom' value='" . $daID . "'>";
+			$out = $out .  "<input type='hidden' name='pointsFrom' value='" . $eventsUserID . "'>";
 		$out = $out .  '<span>';
 			$out = $out .  'How Many Points :';
 			$out = $out .  '<input type="number" id="points" name="points">';
@@ -315,7 +330,7 @@ if($rank == "admin" || $rank == "adviser"){
 		$out = $out .  '<span>';
 			$out = $out .  '<b>Delete Account</b>';
 		$out = $out .  '</span>';
-			$out = $out .  "<input type='hidden' name='thisUser' id='thisUser' value='" . $daID . "'>";
+			$out = $out .  "<input type='hidden' name='thisUser' id='thisUser' value='" . $eventsUserID . "'>";
 		$out = $out .  '<span>';
 		$out = $out .  'Are You Sure? :';
 			$out = $out .  '<select id="confirmDeleteUser" name="confirmDeleteUser">';
