@@ -800,19 +800,19 @@ function generate(){
 			var thisquestion = challenging[rand];
 		}
 		else if(difficulty == "chapter"){
-			if(i < 10){ // 10 beginner
+			if(i < 11){ // 10 beginner
 				rand = Math.floor(Math.random() * beginner.length);
 				var thisquestion = beginner[rand];
 			}
-			else if(i >= 10 && i < 25){ // 15 simple
+			else if(i >= 11 && i < 26){ // 15 simple
 				rand = Math.floor(Math.random() * simple.length);
 				var thisquestion = simple[rand];
 			}
-			else if(i >= 25 && i < 40){ // 15 average
+			else if(i >= 26 && i < 46){ // 20 average
 				rand = Math.floor(Math.random() * average.length);
 				var thisquestion = average[rand];
 			}
-			else if(i >= 40 && i < 50){ // 10 challenging
+			else if(i >= 46 && i < 50){ // 5 challenging
 				rand = Math.floor(Math.random() * challenging.length);
 				var thisquestion = challenging[rand];
 			}
