@@ -718,6 +718,15 @@ $blockedPages = $perm;
 			</div>
 			<div style="height:auto; min-height:0px;" class="userDashSection">
 				<p class="userDashSectionHeader">
+					Communication
+				</p>
+				<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:10px;'>Join the BASHTSA Remind by texting <b>@tsabash</b> to <b>81010</b></p>
+				<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:10px;'>Follow BASHTSA on Instagram <b>@bash.tsa</b></p>
+				<p style='font-family:tahoma; font-size:14px; padding-left:20px; padding-top:10px;'>Join the BASHTSA Slack at <a href="https://join.slack.com/t/bashtsa/shared_invite/enQtNDUwMTkxNDg2OTk4LWZmMDQzNDljNTczYjliMzAzMzIyN2FkZDhiYTQ4ZmU2OWNkNmQ2YjE1YzdmNTY0OWVlMTZmZDI2YjAzZmY1OTQ">Join the Slack</a></p>
+				<br>
+			</div>
+			<div style="height:auto; min-height:0px;" class="userDashSection">
+				<p class="userDashSectionHeader">
 					Announcements
 				</p>
 				<br>
