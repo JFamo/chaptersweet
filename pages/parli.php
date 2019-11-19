@@ -244,6 +244,7 @@ if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
 					    	<option value="average">Average</option>
 					    	<option value="challenging">Challenging</option>
 					    	<option value="chapter">Chapter Team (50 questions)</option>
+					    	<option value="basics">The Complete Basics</option>
 					    	<option value="benchmark1">Beginner Benchmark</option>
 					    	<option value="benchmark2">Dunbar Benchmark</option>
 					    </select>
@@ -266,7 +267,7 @@ if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
 
 								require('../php/connect.php');
 
-								$query = "SELECT fullname, MAX(score) FROM scores WHERE test='100' AND chapter='$chapter' GROUP BY fullname ORDER BY MAX(score) DESC LIMIT 12";
+								$query = "SELECT fullname, MAX(score) FROM scores WHERE test='100' AND chapter='$chapter' GROUP BY fullname ORDER BY MAX(score) DESC, date DESC LIMIT 12";
 
 								$result = mysqli_query($link,$query);
 
@@ -314,9 +315,19 @@ if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
 					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Basics.pptx">National Beginner Guide</a><br>
 					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Advanced.pptx">National Advanced Guide</a><br>
 	
-					<b><p class="bodyTextType1">Practice Tests</p></b>
+					<b><p class="bodyTextType1">Test Banks</p></b>
 					<a href="http://www.300questions.org/" target="_blank">300 Questions</a><br>
 					<a href="https://drive.google.com/file/d/0B0djtG22WOS_aEhsVWZLT0xocDg/view?usp=sharing" target="_blank">Dunbar Tests</a><br>
+					
+					<b><p class="bodyTextType1">Josh's Practice Tests</p></b>
+					
+					<a href="https://drive.google.com/open?id=1yw0gDFygiePkYI4nc8vioT3cy-apvLEy" target="_blank">Beginner</a><br>
+					<a href="https://drive.google.com/open?id=1HGGagnnYCFNGxxRf-IfOYwrEOEZunbH4" target="_blank">Practice2018</a><br>
+					<a href="https://drive.google.com/open?id=1NEb_4TVgGJ1LS195KW6yFXUI7xB_m1SH" target="_blank">ThingsIGotWrong</a><br>
+					<br>
+					<a href="https://drive.google.com/open?id=1w4y6ys_GfzWTdWaYwNcAYzHGK6L8FVkh" target="_blank">Beginner Answers</a><br>
+					<a href="https://drive.google.com/open?id=1rJmKD0B2lE491iNNsDESz2ldjLNCu_6T" target="_blank">Practice2018 Answers</a><br>
+					<a href="https://drive.google.com/open?id=1axtxXzDEPFoOlWKx9ghQCroQtyX1H--O" target="_blank">ThingsIGotWrong Answers</a><br>
 					</center>
 					</div>
 				</div>
