@@ -310,24 +310,33 @@ if(isset($_POST['clearScores']) && ($rank == "admin" || $rank == "adviser")){
 					<center>
 					<p class="userDashSectionHeader" style="padding-left:0;">Resources</p>
 					<!--PARLI PRO-->
-					<b><p class="bodyTextType1">Helpful Guides</p></b>
-					<a href="https://docs.google.com/presentation/d/19JnTf9YjODwRgyt2N4jIxER_rYEQZaEyjZtwk_zvyRs/edit?usp=sharing">State Guide</a><br>
-					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Basics.pptx">National Beginner Guide</a><br>
-					<a href="http://tsaweb.org/sites/default/files/Parliamentary_Procedure_Advanced.pptx">National Advanced Guide</a><br>
 	
 					<b><p class="bodyTextType1">Test Banks</p></b>
 					<a href="http://www.300questions.org/" target="_blank">300 Questions</a><br>
 					<a href="https://drive.google.com/file/d/0B0djtG22WOS_aEhsVWZLT0xocDg/view?usp=sharing" target="_blank">Dunbar Tests</a><br>
 					
 					<b><p class="bodyTextType1">Josh's Practice Tests</p></b>
+					<small>These are all tests I wrote in 2017-2019. They're almost all more difficult than the actual tests taken for the event, and a 50% is usually a good score.</small>
+
+					<br>
+					<br>
 					
 					<a href="https://drive.google.com/open?id=1yw0gDFygiePkYI4nc8vioT3cy-apvLEy" target="_blank">Beginner</a><br>
-					<a href="https://drive.google.com/open?id=1HGGagnnYCFNGxxRf-IfOYwrEOEZunbH4" target="_blank">Practice2018</a><br>
-					<a href="https://drive.google.com/open?id=1NEb_4TVgGJ1LS195KW6yFXUI7xB_m1SH" target="_blank">ThingsIGotWrong</a><br>
-					<br>
-					<a href="https://drive.google.com/open?id=1w4y6ys_GfzWTdWaYwNcAYzHGK6L8FVkh" target="_blank">Beginner Answers</a><br>
-					<a href="https://drive.google.com/open?id=1rJmKD0B2lE491iNNsDESz2ldjLNCu_6T" target="_blank">Practice2018 Answers</a><br>
-					<a href="https://drive.google.com/open?id=1axtxXzDEPFoOlWKx9ghQCroQtyX1H--O" target="_blank">ThingsIGotWrong Answers</a><br>
+					<small><a href="https://drive.google.com/open?id=1w4y6ys_GfzWTdWaYwNcAYzHGK6L8FVkh" target="_blank">Answers</a><br></small>
+					<a href="https://drive.google.com/open?id=1HGGagnnYCFNGxxRf-IfOYwrEOEZunbH4" target="_blank">The Big Parli Pro Test</a><br>
+					<small><a href="https://drive.google.com/open?id=1rJmKD0B2lE491iNNsDESz2ldjLNCu_6T" target="_blank">Answers</a><br></small>
+					<a href="https://drive.google.com/open?id=18hIKj9xbxxAUCW9rOtHd9t2YLFzc7M1z" target="_blank">2019 Test</a><br>
+					<small><a href="https://drive.google.com/open?id=1WwyHM7NtrLJtp0pbsN2whhocOxXRXsFS" target="_blank">Answers</a><br></small>
+					<a href="https://drive.google.com/open?id=19dGxjTsA0BJEzFKUzgoZ4qGd56c1PrzQ" target="_blank">Hard Test 2019</a><br>
+					<small><a href="https://drive.google.com/open?id=1EvReRf1Sc_RRMdYRXA-A6u9_HQ3s6AE-" target="_blank">Answers</a><br></small>
+					<a href="https://drive.google.com/open?id=1HGGagnnYCFNGxxRf-IfOYwrEOEZunbH4" target="_blank">2018 Test</a><br>
+					<small><a href="https://drive.google.com/open?id=1rJmKD0B2lE491iNNsDESz2ldjLNCu_6T" target="_blank">Answers</a><br></small>
+					<a href="https://drive.google.com/open?id=1I0rQcPqUiUUa_ERrKITHQxiDUowYYHpu" target="_blank">Nationals Warmup 1</a><br>
+					<small><a href="https://drive.google.com/open?id=1-vJwf4bj-cB5uSAiycaZ3VXZXiC-uLsM" target="_blank">Answers</a><br></small>
+					<a href="https://drive.google.com/open?id=1sDD6f6Br73Eb1IBR20_pHhw5h3qudpkj" target="_blank">Nationals Warmup 2</a><br>
+					<small><a href="https://drive.google.com/open?id=1KKQqYPc8vKgahgR09t2CziBonxe86pT5" target="_blank">Answers</a><br></small>
+					<a href="https://drive.google.com/open?id=1NEb_4TVgGJ1LS195KW6yFXUI7xB_m1SH" target="_blank">Things I Don't Know</a><br>
+					<small><a href="https://drive.google.com/open?id=1axtxXzDEPFoOlWKx9ghQCroQtyX1H--O" target="_blank">Answers</a><br></small>
 					</center>
 					</div>
 				</div>
